@@ -180,8 +180,8 @@ namespace HappyHarvest
                 UIHandler.UpdateInventory(this);
             }
 
-            //we couldn't add everything, return false
-            return false;
+            //Return true only if we fit everything
+            return remainingToFit == 0;
         }
 
         //return the actual amount removed
