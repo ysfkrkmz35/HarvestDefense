@@ -31,6 +31,30 @@ public class InventoryManager : MonoBehaviour
         UpdateResourceUI();
     }
 
+    // Kaynak harcama fonksiyonu. Eğer yeterli kaynak varsa true döner ve azaltır.
+    public bool SpendResource(ItemType type, int amount)
+    {
+        if (type == ItemType.Wood)
+        {
+            if (woodCount >= amount)
+            {
+                woodCount -= amount;
+                UpdateResourceUI(); // UI'ı güncelle
+                return true; // Harcama başarılı
+            }
+        }
+        else if (type == ItemType.Rock)
+        {
+            if (rockCount >= amount)
+            {
+                rockCount -= amount;
+                UpdateResourceUI();
+                return true;
+            }
+        }
+        return false; // Yetersiz bakiye
+    }
+
     public bool AddItem(ItemData item)
     {
         // --- 1. DURUM: Eşya bir KAYNAK ise (Odun veya Taş) ---
