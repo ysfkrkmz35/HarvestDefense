@@ -161,7 +161,8 @@ namespace HappyHarvest
                 if (Entries[i].Item == null)
                 {
                     Entries[i].Item = newItem;
-                    int fit = Mathf.Min(newItem.MaxStackSize, remainingToFit); // Fixed: was subtracting from 0
+                    // For empty slots, StackSize is 0, so we just need MaxStackSize vs remainingToFit
+                    int fit = Mathf.Min(newItem.MaxStackSize, remainingToFit);
                     remainingToFit -= fit;
                     Entries[i].StackSize = fit;
                     inventoryChanged = true;

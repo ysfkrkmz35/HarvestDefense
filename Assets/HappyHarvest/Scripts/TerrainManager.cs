@@ -252,13 +252,13 @@ namespace HappyHarvest
             Profiler.BeginSample("TerrainManager.UpdateWateredCells");
             // Optimization: Only iterate through watered cells instead of all ground data
             // Use a temporary list to collect cells to remove (can't modify HashSet while iterating)
-            List<Vector3Int> cellsToRemove = null;
+            List<Vector3Int> cellsToRemove = null; // Lazy init to avoid allocation when not needed
             
             foreach (var cell in m_WateredCells)
             {
                 if (!m_GroundData.TryGetValue(cell, out var groundData))
                 {
-                    if (cellsToRemove == null) cellsToRemove = new List<Vector3Int>();
+                    if (cellsToRemove == null) cellsToRemove = new List<Vector3Int>(8); // Pre-allocate reasonable capacity
                     cellsToRemove.Add(cell);
                     continue;
                 }
@@ -270,7 +270,7 @@ namespace HappyHarvest
                     if (groundData.WaterTimer <= 0.0f)
                     {
                         WaterTilemap.SetTile(cell, null);
-                        if (cellsToRemove == null) cellsToRemove = new List<Vector3Int>();
+                        if (cellsToRemove == null) cellsToRemove = new List<Vector3Int>(8); // Pre-allocate reasonable capacity
                         cellsToRemove.Add(cell); // No longer watered
                         //GroundTilemap.SetColor(cell, Color.white);
                     }
