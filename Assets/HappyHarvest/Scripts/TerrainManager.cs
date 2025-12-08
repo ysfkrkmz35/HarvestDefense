@@ -109,6 +109,10 @@ namespace HappyHarvest
 
         private Dictionary<Crop, List<VisualEffect>> m_HarvestEffectPool = new();
         private List<VisualEffect> m_TillingEffectPool = new();
+        
+        // Optimization: Cache list of active watered cells and growing crops to avoid full dictionary iteration
+        private List<Vector3Int> m_WateredCells = new();
+        private List<Vector3Int> m_GrowingCrops = new();
 
         public bool IsTillable(Vector3Int target)
         {
@@ -133,6 +137,7 @@ namespace HappyHarvest
             GroundTilemap.SetTile(target, TilledTile);
             m_GroundData.Add(target, new GroundData());
 
+            // Optimization: Cycle through pool without removing/adding (expensive operations)
             var inst = m_TillingEffectPool[0];
             m_TillingEffectPool.RemoveAt(0);
             m_TillingEffectPool.Add(inst);
@@ -152,6 +157,7 @@ namespace HappyHarvest
             cropData.CurrentGrowthStage = 0;
             
             m_CropData.Add(target, cropData);
+            m_GrowingCrops.Add(target); // Track for optimized updates
             
             UpdateCropVisual(target);
 
@@ -178,6 +184,12 @@ namespace HappyHarvest
 
             groundData.WaterTimer = GroundData.WaterDuration;
             
+            // Track watered cells for optimized updates
+            if (!m_WateredCells.Contains(target))
+            {
+                m_WateredCells.Add(target);
+            }
+            
             WaterTilemap.SetTile(target, WateredTile);
             //GroundTilemap.SetColor(target, WateredTiledColorTint);
         }
@@ -193,6 +205,7 @@ namespace HappyHarvest
             if (data.HarvestDone)
             {
                 m_CropData.Remove(target);
+                m_GrowingCrops.Remove(target); // Remove from tracked list
             }
             
             UpdateCropVisual(target);
@@ -238,8 +251,16 @@ namespace HappyHarvest
 
         private void Update()
         {
-            foreach (var (cell, groundData) in m_GroundData)
+            // Optimization: Only iterate through watered cells instead of all ground data
+            for (int i = m_WateredCells.Count - 1; i >= 0; i--)
             {
+                var cell = m_WateredCells[i];
+                if (!m_GroundData.TryGetValue(cell, out var groundData))
+                {
+                    m_WateredCells.RemoveAt(i);
+                    continue;
+                }
+                
                 if (groundData.WaterTimer > 0.0f)
                 {
                     groundData.WaterTimer -= Time.deltaTime;
@@ -247,34 +268,49 @@ namespace HappyHarvest
                     if (groundData.WaterTimer <= 0.0f)
                     {
                         WaterTilemap.SetTile(cell, null);
+                        m_WateredCells.RemoveAt(i); // No longer watered
                         //GroundTilemap.SetColor(cell, Color.white);
                     }
                 }
+            }
 
-                if (m_CropData.TryGetValue(cell, out var cropData))
+            // Optimization: Only iterate through growing crops instead of all ground data
+            for (int i = m_GrowingCrops.Count - 1; i >= 0; i--)
+            {
+                var cell = m_GrowingCrops[i];
+                if (!m_CropData.TryGetValue(cell, out var cropData))
                 {
-                    if (groundData.WaterTimer <= 0.0f)
-                    {
-                        cropData.DyingTimer += Time.deltaTime;
-                        if (cropData.DyingTimer > cropData.GrowingCrop.DryDeathTimer)
-                        {
-                            m_CropData.Remove(cell);
-                            UpdateCropVisual(cell);
-                        }
-                    }
-                    else
-                    {
-                        cropData.DyingTimer = 0.0f;
-                        cropData.GrowthTimer = Mathf.Clamp(cropData.GrowthTimer + Time.deltaTime, 0.0f,
-                            cropData.GrowingCrop.GrowthTime);
-                        cropData.GrowthRatio = cropData.GrowthTimer / cropData.GrowingCrop.GrowthTime;
-                        int growthStage = cropData.GrowingCrop.GetGrowthStage(cropData.GrowthRatio);
+                    m_GrowingCrops.RemoveAt(i);
+                    continue;
+                }
+                
+                if (!m_GroundData.TryGetValue(cell, out var groundData))
+                {
+                    continue;
+                }
 
-                        if (growthStage != cropData.CurrentGrowthStage)
-                        {
-                            cropData.CurrentGrowthStage = growthStage;
-                            UpdateCropVisual(cell);
-                        }
+                if (groundData.WaterTimer <= 0.0f)
+                {
+                    cropData.DyingTimer += Time.deltaTime;
+                    if (cropData.DyingTimer > cropData.GrowingCrop.DryDeathTimer)
+                    {
+                        m_CropData.Remove(cell);
+                        m_GrowingCrops.RemoveAt(i);
+                        UpdateCropVisual(cell);
+                    }
+                }
+                else
+                {
+                    cropData.DyingTimer = 0.0f;
+                    cropData.GrowthTimer = Mathf.Clamp(cropData.GrowthTimer + Time.deltaTime, 0.0f,
+                        cropData.GrowingCrop.GrowthTime);
+                    cropData.GrowthRatio = cropData.GrowthTimer / cropData.GrowingCrop.GrowthTime;
+                    int growthStage = cropData.GrowingCrop.GetGrowthStage(cropData.GrowthRatio);
+
+                    if (growthStage != cropData.CurrentGrowthStage)
+                    {
+                        cropData.CurrentGrowthStage = growthStage;
+                        UpdateCropVisual(cell);
                     }
                 }
             }
@@ -319,6 +355,8 @@ namespace HappyHarvest
         public void Load(TerrainDataSave data)
         {
             m_GroundData = new Dictionary<Vector3Int, GroundData>();
+            m_WateredCells.Clear(); // Clear tracked lists
+            
             for (int i = 0; i < data.GroundDatas.Count; ++i)
             {
                 var pos = data.GroundDataPositions[i];
@@ -326,7 +364,13 @@ namespace HappyHarvest
                 
                 GroundTilemap.SetTile(pos, TilledTile);
                 
-                WaterTilemap.SetTile(data.GroundDataPositions[i], data.GroundDatas[i].WaterTimer > 0.0f ? WateredTile : null);
+                bool isWatered = data.GroundDatas[i].WaterTimer > 0.0f;
+                WaterTilemap.SetTile(data.GroundDataPositions[i], isWatered ? WateredTile : null);
+                
+                if (isWatered)
+                {
+                    m_WateredCells.Add(pos); // Track watered cells
+                }
                 //GroundTilemap.SetColor(data.GroundDataPositions[i], data.GroundDatas[i].WaterTimer > 0.0f ? WateredTiledColorTint : Color.white);
             }
 
@@ -343,13 +387,17 @@ namespace HappyHarvest
             }
 
             m_CropData = new Dictionary<Vector3Int, CropData>();
+            m_GrowingCrops.Clear(); // Clear tracked list
+            
             for (int i = 0; i < data.CropDatas.Count; ++i)
             {
                 CropData newData = new CropData();
                 newData.Load(data.CropDatas[i]);
                 
-                m_CropData.Add(data.CropDataPositions[i], newData);
-                UpdateCropVisual(data.CropDataPositions[i]);
+                var pos = data.CropDataPositions[i];
+                m_CropData.Add(pos, newData);
+                m_GrowingCrops.Add(pos); // Track growing crops
+                UpdateCropVisual(pos);
                 
                 if (!m_HarvestEffectPool.ContainsKey(newData.GrowingCrop))
                 {

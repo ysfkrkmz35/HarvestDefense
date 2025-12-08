@@ -64,8 +64,11 @@ public class EnemyAI : MonoBehaviour
 
     private void Start()
     {
-        // Base objesini bul (Tag: "Base")
-        TryFindBase();
+        // Base objesini bul (Tag: "Base") - Cache it to avoid repeated FindGameObjectWithTag calls
+        if (baseTransform == null)
+        {
+            TryFindBase();
+        }
 
         if (baseTransform != null)
         {
@@ -129,6 +132,7 @@ public class EnemyAI : MonoBehaviour
     private void HandleMoveToBase()
     {
         // Base'e doğru hareket et
+        // Optimization: Only search for base if it's null, avoiding repeated FindGameObjectWithTag calls
         if (baseTransform == null)
         {
             // Base hala null ise tekrar bul
@@ -141,8 +145,9 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        // Base'e olan mesafe
-        float distanceToBase = Vector2.Distance(transform.position, baseTransform.position);
+        // Base'e olan mesafe - Cache position to avoid multiple property accesses
+        Vector3 basePosition = baseTransform.position;
+        float distanceToBase = Vector2.Distance(transform.position, basePosition);
 
         // Base'e yeterince yakınsa saldır
         if (distanceToBase <= attackRange)
@@ -159,7 +164,7 @@ public class EnemyAI : MonoBehaviour
         else
         {
             // Base'e doğru git
-            MoveTowards(baseTransform.position);
+            MoveTowards(basePosition);
         }
     }
 
