@@ -71,10 +71,12 @@ namespace HappyHarvest
         }
 
         // Will return true if we have enough space in the inventory to fit the required amount of the given item.
+        // Optimized: Early exit when space is found, combined loop to reduce iterations
         public bool CanFitItem(Item newItem, int amount)
         {
             int toFit = amount;
 
+            // Single pass: check existing stacks and empty slots together
             for (int i = 0; i < InventorySize; ++i)
             {
                 if (Entries[i].Item == newItem)
@@ -83,21 +85,17 @@ namespace HappyHarvest
                     toFit -= size;
 
                     if (toFit <= 0)
-                        return true;
+                        return true; // Early exit
                 }
-            }
-
-            for (int i = 0; i < InventorySize; ++i)
-            {
-                if (Entries[i].Item == null)
+                else if (Entries[i].Item == null)
                 {
                     toFit -= newItem.MaxStackSize;
                     if (toFit <= 0)
-                        return true;
+                        return true; // Early exit
                 }
             }
 
-            return toFit == 0;
+            return false; // If we get here, not enough space
         }
 
         //will return how much of said item can be fit in the inventory (accounting for already existing stack)
@@ -137,6 +135,7 @@ namespace HappyHarvest
         public bool AddItem(Item newItem, int amount = 1)
         {
             int remainingToFit = amount;
+            bool inventoryChanged = false;
 
             //first we check if there is already that item in the inventory
             for (int i = 0; i < InventorySize; ++i)
@@ -146,10 +145,13 @@ namespace HappyHarvest
                     int fit = Mathf.Min(newItem.MaxStackSize - Entries[i].StackSize, remainingToFit);
                     Entries[i].StackSize += fit;
                     remainingToFit -= fit;
-                    UIHandler.UpdateInventory(this);
+                    inventoryChanged = true;
 
                     if (remainingToFit == 0)
+                    {
+                        UIHandler.UpdateInventory(this); // Update once at the end
                         return true;
+                    }
                 }
             }
 
@@ -159,18 +161,27 @@ namespace HappyHarvest
                 if (Entries[i].Item == null)
                 {
                     Entries[i].Item = newItem;
-                    int fit = Mathf.Min(newItem.MaxStackSize - Entries[i].StackSize, remainingToFit);
+                    // For empty slots, StackSize is 0, so we just need MaxStackSize vs remainingToFit
+                    int fit = Mathf.Min(newItem.MaxStackSize, remainingToFit);
                     remainingToFit -= fit;
                     Entries[i].StackSize = fit;
-
-                    UIHandler.UpdateInventory(this);
+                    inventoryChanged = true;
 
                     if (remainingToFit == 0)
+                    {
+                        UIHandler.UpdateInventory(this); // Update once at the end
                         return true;
+                    }
                 }
             }
 
-            //we couldn't had so no space left
+            // Update UI if anything changed, even if we couldn't fit everything
+            if (inventoryChanged)
+            {
+                UIHandler.UpdateInventory(this);
+            }
+
+            //Return true only if we fit everything
             return remainingToFit == 0;
         }
 

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.Profiling;
 
 /// <summary>
 /// Düşman Yapay Zeka Sistemi (NavMesh Kullanmayan Versiyon)
@@ -34,6 +35,9 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float obstacleDetectionDistance = 1.5f;
     [SerializeField] private float avoidanceForce = 2f;
     [SerializeField] private LayerMask obstacleLayer; // Wall layer
+    
+    // Optimization: Reuse array to avoid allocations
+    private readonly RaycastHit2D[] m_RaycastHits = new RaycastHit2D[1];
 
     [Header("Boundary Settings")]
     [SerializeField] private float maxDistanceFromCenter = 14f; // Ground yarıçapı (30/2 = 15, biraz içerde 14)
@@ -64,8 +68,11 @@ public class EnemyAI : MonoBehaviour
 
     private void Start()
     {
-        // Base objesini bul (Tag: "Base")
-        TryFindBase();
+        // Base objesini bul (Tag: "Base") - Cache it to avoid repeated FindGameObjectWithTag calls
+        if (baseTransform == null)
+        {
+            TryFindBase();
+        }
 
         if (baseTransform != null)
         {
@@ -129,6 +136,7 @@ public class EnemyAI : MonoBehaviour
     private void HandleMoveToBase()
     {
         // Base'e doğru hareket et
+        // Optimization: Only search for base if it's null, avoiding repeated FindGameObjectWithTag calls
         if (baseTransform == null)
         {
             // Base hala null ise tekrar bul
@@ -141,8 +149,9 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        // Base'e olan mesafe
-        float distanceToBase = Vector2.Distance(transform.position, baseTransform.position);
+        // Base'e olan mesafe - Cache position to avoid multiple property accesses
+        Vector3 basePosition = baseTransform.position;
+        float distanceToBase = Vector2.Distance(transform.position, basePosition);
 
         // Base'e yeterince yakınsa saldır
         if (distanceToBase <= attackRange)
@@ -159,7 +168,7 @@ public class EnemyAI : MonoBehaviour
         else
         {
             // Base'e doğru git
-            MoveTowards(baseTransform.position);
+            MoveTowards(basePosition);
         }
     }
 
@@ -211,7 +220,9 @@ public class EnemyAI : MonoBehaviour
         // Hedef yönü hesapla - BU ÖNCELİKLİDİR!
         Vector2 direction = (targetPosition - transform.position).normalized;
 
+#if UNITY_EDITOR
         Debug.DrawLine(transform.position, targetPosition, Color.green, 0.1f);
+#endif
 
         // Engellerden kaçınma (sadece hafif düzeltme) - direction'ı parametre olarak gönder
         Vector2 avoidanceDirection = GetAvoidanceDirection(direction);
@@ -223,7 +234,9 @@ public class EnemyAI : MonoBehaviour
         // Hareketi uygula
         rb.linearVelocity = direction * moveSpeed;
 
+#if UNITY_EDITOR
         Debug.DrawRay(transform.position, direction * 2f, Color.yellow, 0.1f);
+#endif
     }
 
     /// <summary>
@@ -242,7 +255,9 @@ public class EnemyAI : MonoBehaviour
         {
             // Base'e doğru güçlü itme
             pushDirection = (centerPoint - (Vector2)transform.position).normalized;
+#if UNITY_EDITOR
             Debug.DrawLine(transform.position, centerPoint, Color.red);
+#endif
         }
 
         return pushDirection;
@@ -253,6 +268,7 @@ public class EnemyAI : MonoBehaviour
     /// </summary>
     private Vector2 GetAvoidanceDirection(Vector2 moveDirection)
     {
+        Profiler.BeginSample("EnemyAI.GetAvoidanceDirection");
         Vector2 avoidance = Vector2.zero;
 
         // Hareket yönünde engel kontrolü (velocity değil, hedef yönü kullan!)
@@ -265,19 +281,30 @@ public class EnemyAI : MonoBehaviour
 
         foreach (Vector2 dir in directions)
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, obstacleDetectionDistance, obstacleLayer);
+            // Optimization: Use non-allocating raycast version
+            int hitCount = Physics2D.RaycastNonAlloc(transform.position, dir, m_RaycastHits, obstacleDetectionDistance, obstacleLayer);
 
-            if (hit.collider != null)
+            if (hitCount > 0 && m_RaycastHits[0].collider != null)
             {
                 // Engelden kaçınma yönü hesapla (engelden uzaklaş)
-                Vector2 awayFromObstacle = ((Vector2)transform.position - hit.point).normalized;
+                Vector2 awayFromObstacle = ((Vector2)transform.position - m_RaycastHits[0].point).normalized;
                 avoidance += awayFromObstacle;
+                
+#if UNITY_EDITOR
+                // Debug için ray çiz (only in editor)
+                Debug.DrawRay(transform.position, dir * obstacleDetectionDistance, Color.red);
+#endif
             }
-
-            // Debug için ray çiz
-            Debug.DrawRay(transform.position, dir * obstacleDetectionDistance, hit.collider != null ? Color.red : Color.cyan);
+#if UNITY_EDITOR
+            else
+            {
+                // Debug için ray çiz (only in editor)
+                Debug.DrawRay(transform.position, dir * obstacleDetectionDistance, Color.cyan);
+            }
+#endif
         }
 
+        Profiler.EndSample();
         return avoidance.normalized;
     }
 

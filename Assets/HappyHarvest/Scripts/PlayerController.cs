@@ -63,9 +63,13 @@ namespace HappyHarvest
 
         private Dictionary<Item, ItemInstance> m_ItemVisualInstance = new();
 
+        // Cache animator hash calculations (computed once instead of repeatedly)
         private int m_DirXHash = Animator.StringToHash("DirX");
         private int m_DirYHash = Animator.StringToHash("DirY");
         private int m_SpeedHash = Animator.StringToHash("Speed");
+        
+        // Cache Camera.main to avoid repeated FindGameObjectsWithTag calls
+        private Camera m_MainCamera;
 
         void Awake()
         {
@@ -90,6 +94,9 @@ namespace HappyHarvest
         
         void Start()
         {
+            // Cache main camera to avoid repeated lookups
+            m_MainCamera = Camera.main;
+            
             //Retrieve the action from the InputAction asset, enable them and add the callbacks.
             
             //Move action doesn't have any callback as it will be polled in the movement code directly.
@@ -153,7 +160,8 @@ namespace HappyHarvest
                 return;
             }
             
-            m_CurrentWorldMousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            // Use cached camera reference instead of Camera.main lookup
+            m_CurrentWorldMousePos = m_MainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             //check if we are above an interactive object
             var overlapCol = Physics2D.OverlapPoint(m_CurrentWorldMousePos, 1 << 31);
                 
@@ -174,7 +182,9 @@ namespace HappyHarvest
             //some scene may not have a terrain (interior scene)
             if (grid != null)
             {
-                var currentCell = grid.WorldToCell(transform.position);
+                // Cache position to avoid multiple transform.position accesses
+                Vector3 currentPosition = transform.position;
+                var currentCell = grid.WorldToCell(currentPosition);
                 var pointedCell = grid.WorldToCell(m_CurrentWorldMousePos);
 
                 currentCell.z = 0;
@@ -194,10 +204,11 @@ namespace HappyHarvest
 
 
                 m_CurrentTarget = currentCell + toTarget;
-                Target.transform.position = GameManager.Instance.Terrain.Grid.GetCellCenterWorld(m_CurrentTarget);
+                Target.transform.position = grid.GetCellCenterWorld(m_CurrentTarget);
 
-                if (m_Inventory.EquippedItem != null
-                    && m_Inventory.EquippedItem.CanUse(m_CurrentTarget))
+                // Cache equipped item to avoid repeated property access
+                var equippedItem = m_Inventory.EquippedItem;
+                if (equippedItem != null && equippedItem.CanUse(m_CurrentTarget))
                 {
                     m_HasTarget = true;
                     m_TargetMarker.Activate();

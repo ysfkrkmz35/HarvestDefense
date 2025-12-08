@@ -25,6 +25,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private LayerMask obstacleLayer; // Wall layer (spawn engellemek için)
 
     private List<GameObject> enemyPool;
+    private Queue<GameObject> availableEnemies; // Queue for O(1) pooled enemy retrieval
     private int currentWave = 0;
     private bool isSpawning = false;
 
@@ -54,6 +55,7 @@ public class EnemySpawner : MonoBehaviour
     private void InitializePool()
     {
         enemyPool = new List<GameObject>();
+        availableEnemies = new Queue<GameObject>();
 
         // Pool'u doldur
         for (int i = 0; i < poolSize; i++)
@@ -61,22 +63,21 @@ public class EnemySpawner : MonoBehaviour
             GameObject enemy = Instantiate(enemyPrefab, transform);
             enemy.SetActive(false);
             enemyPool.Add(enemy);
+            availableEnemies.Enqueue(enemy); // Add to available queue
         }
 
         Debug.Log($"EnemySpawner: {poolSize} düşmanlık pool oluşturuldu.");
     }
 
     /// <summary>
-    /// Pool'dan pasif düşman al
+    /// Pool'dan pasif düşman al - Optimized with Queue for O(1) retrieval
     /// </summary>
     private GameObject GetPooledEnemy()
     {
-        foreach (GameObject enemy in enemyPool)
+        // Use queue for O(1) retrieval instead of O(n) linear search
+        if (availableEnemies.Count > 0)
         {
-            if (!enemy.activeInHierarchy)
-            {
-                return enemy;
-            }
+            return availableEnemies.Dequeue();
         }
 
         // Pool doluysa yeni düşman oluştur (Dinamik genişletme)
@@ -187,9 +188,8 @@ public class EnemySpawner : MonoBehaviour
                 continue; // Çok yakın, tekrar dene
             }
 
-            // O noktada engel var mı kontrol et
-            Collider2D hit = Physics2D.OverlapCircle(spawnPos, 0.5f, obstacleLayer);
-            if (hit == null)
+            // O noktada engel var mı kontrol et - Optimized: Direct bool check is faster
+            if (!Physics2D.OverlapCircle(spawnPos, 0.5f, obstacleLayer))
             {
                 // Geçerli pozisyon bulundu
                 return spawnPos;
@@ -226,12 +226,21 @@ public class EnemySpawner : MonoBehaviour
     /// </summary>
     private void DeactivateAllEnemies()
     {
+        // Clear and rebuild the queue
+        availableEnemies.Clear();
+        
         foreach (GameObject enemy in enemyPool)
         {
             if (enemy.activeInHierarchy)
             {
                 enemy.SetActive(false);
             }
+        }
+        
+        // All enemies are now inactive, add them all back to queue
+        foreach (GameObject enemy in enemyPool)
+        {
+            availableEnemies.Enqueue(enemy);
         }
     }
 
