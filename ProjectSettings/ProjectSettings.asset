@@ -392,6 +392,7 @@ PlayerSettings:
       m_Height: 1024
       m_Kind: 4
       m_SubKind: App Store
+<<<<<<< HEAD
   - m_BuildTarget: VisionOS
     m_Icons:
     - m_Textures: []
@@ -399,6 +400,8 @@ PlayerSettings:
       m_Height: 1024
       m_Kind: 0
       m_SubKind: 
+=======
+>>>>>>> 30d1a6ee723c0e887ad1a92960075f161c5f3735
   - m_BuildTarget: Android
     m_Icons:
     - m_Textures: []
@@ -491,6 +494,7 @@ PlayerSettings:
       m_Height: 36
       m_Kind: 0
       m_SubKind: 
+<<<<<<< HEAD
   - m_BuildTarget: tvOS
     m_Icons:
     - m_Textures: []
@@ -528,6 +532,8 @@ PlayerSettings:
       m_Height: 720
       m_Kind: 1
       m_SubKind: 
+=======
+>>>>>>> 30d1a6ee723c0e887ad1a92960075f161c5f3735
   m_BuildTargetBatching: []
   m_BuildTargetShaderSettings: []
   m_BuildTargetGraphicsJobs: []
