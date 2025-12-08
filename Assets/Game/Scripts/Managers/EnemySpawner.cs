@@ -226,7 +226,7 @@ public class EnemySpawner : MonoBehaviour
     /// </summary>
     private void DeactivateAllEnemies()
     {
-        // Clear and rebuild the queue to avoid duplicates
+        // Clear and rebuild the queue
         availableEnemies.Clear();
         
         foreach (GameObject enemy in enemyPool)
@@ -235,11 +235,12 @@ public class EnemySpawner : MonoBehaviour
             {
                 enemy.SetActive(false);
             }
-            // Only add inactive enemies back to available queue
-            if (!enemy.activeInHierarchy)
-            {
-                availableEnemies.Enqueue(enemy);
-            }
+        }
+        
+        // All enemies are now inactive, add them all back to queue
+        foreach (GameObject enemy in enemyPool)
+        {
+            availableEnemies.Enqueue(enemy);
         }
     }
 

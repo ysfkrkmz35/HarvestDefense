@@ -220,7 +220,9 @@ public class EnemyAI : MonoBehaviour
         // Hedef yönü hesapla - BU ÖNCELİKLİDİR!
         Vector2 direction = (targetPosition - transform.position).normalized;
 
+#if UNITY_EDITOR
         Debug.DrawLine(transform.position, targetPosition, Color.green, 0.1f);
+#endif
 
         // Engellerden kaçınma (sadece hafif düzeltme) - direction'ı parametre olarak gönder
         Vector2 avoidanceDirection = GetAvoidanceDirection(direction);
@@ -232,7 +234,9 @@ public class EnemyAI : MonoBehaviour
         // Hareketi uygula
         rb.linearVelocity = direction * moveSpeed;
 
+#if UNITY_EDITOR
         Debug.DrawRay(transform.position, direction * 2f, Color.yellow, 0.1f);
+#endif
     }
 
     /// <summary>
@@ -251,7 +255,9 @@ public class EnemyAI : MonoBehaviour
         {
             // Base'e doğru güçlü itme
             pushDirection = (centerPoint - (Vector2)transform.position).normalized;
+#if UNITY_EDITOR
             Debug.DrawLine(transform.position, centerPoint, Color.red);
+#endif
         }
 
         return pushDirection;
@@ -284,14 +290,18 @@ public class EnemyAI : MonoBehaviour
                 Vector2 awayFromObstacle = ((Vector2)transform.position - m_RaycastHits[0].point).normalized;
                 avoidance += awayFromObstacle;
                 
-                // Debug için ray çiz
+#if UNITY_EDITOR
+                // Debug için ray çiz (only in editor)
                 Debug.DrawRay(transform.position, dir * obstacleDetectionDistance, Color.red);
+#endif
             }
+#if UNITY_EDITOR
             else
             {
-                // Debug için ray çiz
+                // Debug için ray çiz (only in editor)
                 Debug.DrawRay(transform.position, dir * obstacleDetectionDistance, Color.cyan);
             }
+#endif
         }
 
         Profiler.EndSample();

@@ -370,7 +370,7 @@ namespace HappyHarvest
         public void Load(TerrainDataSave data)
         {
             m_GroundData = new Dictionary<Vector3Int, GroundData>();
-            m_WateredCells.Clear(); // Clear tracked lists
+            m_WateredCells.Clear(); // Clear tracked watered cells
             
             for (int i = 0; i < data.GroundDatas.Count; ++i)
             {
@@ -402,7 +402,7 @@ namespace HappyHarvest
             }
 
             m_CropData = new Dictionary<Vector3Int, CropData>();
-            m_GrowingCrops.Clear(); // Clear tracked list
+            m_GrowingCrops.Clear(); // Clear tracked growing crops
             
             for (int i = 0; i < data.CropDatas.Count; ++i)
             {
