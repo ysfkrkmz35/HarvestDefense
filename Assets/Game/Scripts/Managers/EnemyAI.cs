@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.Profiling;
 
 /// <summary>
 /// Düşman Yapay Zeka Sistemi (NavMesh Kullanmayan Versiyon)
@@ -34,6 +35,9 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float obstacleDetectionDistance = 1.5f;
     [SerializeField] private float avoidanceForce = 2f;
     [SerializeField] private LayerMask obstacleLayer; // Wall layer
+    
+    // Optimization: Reuse array to avoid allocations
+    private readonly RaycastHit2D[] m_RaycastHits = new RaycastHit2D[1];
 
     [Header("Boundary Settings")]
     [SerializeField] private float maxDistanceFromCenter = 14f; // Ground yarıçapı (30/2 = 15, biraz içerde 14)
@@ -258,6 +262,7 @@ public class EnemyAI : MonoBehaviour
     /// </summary>
     private Vector2 GetAvoidanceDirection(Vector2 moveDirection)
     {
+        Profiler.BeginSample("EnemyAI.GetAvoidanceDirection");
         Vector2 avoidance = Vector2.zero;
 
         // Hareket yönünde engel kontrolü (velocity değil, hedef yönü kullan!)
@@ -270,19 +275,26 @@ public class EnemyAI : MonoBehaviour
 
         foreach (Vector2 dir in directions)
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, obstacleDetectionDistance, obstacleLayer);
+            // Optimization: Use non-allocating raycast version
+            int hitCount = Physics2D.RaycastNonAlloc(transform.position, dir, m_RaycastHits, obstacleDetectionDistance, obstacleLayer);
 
-            if (hit.collider != null)
+            if (hitCount > 0 && m_RaycastHits[0].collider != null)
             {
                 // Engelden kaçınma yönü hesapla (engelden uzaklaş)
-                Vector2 awayFromObstacle = ((Vector2)transform.position - hit.point).normalized;
+                Vector2 awayFromObstacle = ((Vector2)transform.position - m_RaycastHits[0].point).normalized;
                 avoidance += awayFromObstacle;
+                
+                // Debug için ray çiz
+                Debug.DrawRay(transform.position, dir * obstacleDetectionDistance, Color.red);
             }
-
-            // Debug için ray çiz
-            Debug.DrawRay(transform.position, dir * obstacleDetectionDistance, hit.collider != null ? Color.red : Color.cyan);
+            else
+            {
+                // Debug için ray çiz
+                Debug.DrawRay(transform.position, dir * obstacleDetectionDistance, Color.cyan);
+            }
         }
 
+        Profiler.EndSample();
         return avoidance.normalized;
     }
 

@@ -188,9 +188,8 @@ public class EnemySpawner : MonoBehaviour
                 continue; // Çok yakın, tekrar dene
             }
 
-            // O noktada engel var mı kontrol et
-            Collider2D hit = Physics2D.OverlapCircle(spawnPos, 0.5f, obstacleLayer);
-            if (hit == null)
+            // O noktada engel var mı kontrol et - Optimized: Direct bool check is faster
+            if (!Physics2D.OverlapCircle(spawnPos, 0.5f, obstacleLayer))
             {
                 // Geçerli pozisyon bulundu
                 return spawnPos;

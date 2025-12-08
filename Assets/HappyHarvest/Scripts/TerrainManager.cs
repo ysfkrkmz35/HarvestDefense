@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.VFX;
+using UnityEngine.Profiling;
 
 
 namespace HappyHarvest
@@ -251,6 +252,7 @@ namespace HappyHarvest
 
         private void Update()
         {
+            Profiler.BeginSample("TerrainManager.UpdateWateredCells");
             // Optimization: Only iterate through watered cells instead of all ground data
             for (int i = m_WateredCells.Count - 1; i >= 0; i--)
             {
@@ -273,7 +275,9 @@ namespace HappyHarvest
                     }
                 }
             }
+            Profiler.EndSample();
 
+            Profiler.BeginSample("TerrainManager.UpdateGrowingCrops");
             // Optimization: Only iterate through growing crops instead of all ground data
             for (int i = m_GrowingCrops.Count - 1; i >= 0; i--)
             {
@@ -314,6 +318,7 @@ namespace HappyHarvest
                     }
                 }
             }
+            Profiler.EndSample();
         }
 
         void UpdateCropVisual(Vector3Int target)

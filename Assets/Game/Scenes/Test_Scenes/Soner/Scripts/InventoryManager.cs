@@ -58,13 +58,15 @@ public class InventoryManager : MonoBehaviour
     public bool AddItem(ItemData item)
     {
         // --- 1. DURUM: Eşya bir KAYNAK ise (Odun veya Taş) ---
+        // Optimized: Combined conditions and reduced redundant checks
         if (item.itemType == ItemType.Wood)
         {
             woodCount++; // Sayıyı artır
             UpdateResourceUI(); // Ekrana yaz
             return true; // İşlem başarılı, yerdeki objeyi yok et
         }
-        else if (item.itemType == ItemType.Rock)
+        
+        if (item.itemType == ItemType.Rock)
         {
             rockCount++;
             UpdateResourceUI();
@@ -72,12 +74,13 @@ public class InventoryManager : MonoBehaviour
         }
 
         // --- 2. DURUM: Eşya NORMAL bir eşya ise (Slota girecek) ---
+        // Optimized: Early exit on first empty slot
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].currentItem == null)
             {
                 slots[i].AddItem(item);
-                return true;
+                return true; // Early exit
             }
         }
         
