@@ -1,0 +1,767 @@
+fileFormatVersion: 2
+guid: 0cd54179350c3a74188b55a496abc04a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5860970649269862338
+    second: Jump_Fast_Body_150_0
+  - first:
+      213: 2703012243685829514
+    second: Jump_Fast_Body_150_1
+  - first:
+      213: -7908571988745818916
+    second: Jump_Fast_Body_150_2
+  - first:
+      213: -9141940101570954864
+    second: Jump_Fast_Body_150_3
+  - first:
+      213: 2080363863969629411
+    second: Jump_Fast_Body_150_4
+  - first:
+      213: 7844927425487188855
+    second: Jump_Fast_Body_150_5
+  - first:
+      213: -1162036779324492116
+    second: Jump_Fast_Body_150_6
+  - first:
+      213: 2024868526229644785
+    second: Jump_Fast_Body_150_7
+  - first:
+      213: -7998598840661746186
+    second: Jump_Fast_Body_150_8
+  - first:
+      213: -4740071843976204079
+    second: Jump_Fast_Body_150_9
+  - first:
+      213: 7729021063264717057
+    second: Jump_Fast_Body_150_10
+  - first:
+      213: 87203028492449782
+    second: Jump_Fast_Body_150_11
+  - first:
+      213: 5979973221657928375
+    second: Jump_Fast_Body_150_12
+  - first:
+      213: 4347000302877960459
+    second: Jump_Fast_Body_150_13
+  - first:
+      213: 7637565137795325461
+    second: Jump_Fast_Body_150_14
+  - first:
+      213: -775222101919707519
+    second: Jump_Fast_Body_150_15
+  - first:
+      213: 8232502132562396347
+    second: Jump_Fast_Body_150_16
+  - first:
+      213: -8333971412851499569
+    second: Jump_Fast_Body_150_17
+  - first:
+      213: 1020830574423467146
+    second: Jump_Fast_Body_150_18
+  - first:
+      213: 8701536216666057338
+    second: Jump_Fast_Body_150_19
+  - first:
+      213: -2365470459375845807
+    second: Jump_Fast_Body_150_20
+  - first:
+      213: -3111580316547454906
+    second: Jump_Fast_Body_150_21
+  - first:
+      213: -2722123146773767812
+    second: Jump_Fast_Body_150_22
+  - first:
+      213: -1695161179204658836
+    second: Jump_Fast_Body_150_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_0
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 851
+        width: 88
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2cf78b4b0c9565150800000000000000
+      internalID: 5860970649269862338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_1
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 845
+        width: 93
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8bec608057038520800000000000000
+      internalID: 2703012243685829514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_2
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 841
+        width: 90
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cdc633a7dab1f3290800000000000000
+      internalID: -7908571988745818916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_3
+      rect:
+        serializedVersion: 2
+        x: 853
+        y: 843
+        width: 89
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 099f6f7e9ed412180800000000000000
+      internalID: -9141940101570954864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_4
+      rect:
+        serializedVersion: 2
+        x: 1110
+        y: 847
+        width: 88
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e4087b79efeedc10800000000000000
+      internalID: 2080363863969629411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_5
+      rect:
+        serializedVersion: 2
+        x: 1366
+        y: 850
+        width: 88
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77332e4ede7cedc60800000000000000
+      internalID: 7844927425487188855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_6
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 605
+        width: 88
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca6bc68b4bd9fdfe0800000000000000
+      internalID: -1162036779324492116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_7
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 611
+        width: 85
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f569c64237c91c10800000000000000
+      internalID: 2024868526229644785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_8
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 613
+        width: 85
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fd51899bb44ff090800000000000000
+      internalID: -7998598840661746186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_9
+      rect:
+        serializedVersion: 2
+        x: 854
+        y: 612
+        width: 85
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d0b7f995c1e73eb0800000000000000
+      internalID: -4740071843976204079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_10
+      rect:
+        serializedVersion: 2
+        x: 1110
+        y: 607
+        width: 86
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 109c769f4bff24b60800000000000000
+      internalID: 7729021063264717057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_11
+      rect:
+        serializedVersion: 2
+        x: 1366
+        y: 606
+        width: 86
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f771a041bec53100800000000000000
+      internalID: 87203028492449782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_12
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 347
+        width: 76
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b2e44b36f12df250800000000000000
+      internalID: 5979973221657928375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_13
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 347
+        width: 78
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b096e8b7eb5a35c30800000000000000
+      internalID: 4347000302877960459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_14
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 347
+        width: 81
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51e923bf6051ef960800000000000000
+      internalID: 7637565137795325461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_15
+      rect:
+        serializedVersion: 2
+        x: 855
+        y: 346
+        width: 83
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18e4b090b9bdd35f0800000000000000
+      internalID: -775222101919707519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_16
+      rect:
+        serializedVersion: 2
+        x: 1111
+        y: 343
+        width: 83
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb407086219bf3270800000000000000
+      internalID: 8232502132562396347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_17
+      rect:
+        serializedVersion: 2
+        x: 1366
+        y: 340
+        width: 85
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcdd9b0c729c75c80800000000000000
+      internalID: -8333971412851499569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_18
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 84
+        width: 86
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a846e54bff7ba2e00800000000000000
+      internalID: 1020830574423467146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_19
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 84
+        width: 89
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7aa39a161112c870800000000000000
+      internalID: 8701536216666057338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_20
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 84
+        width: 91
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15ef83666292c2fd0800000000000000
+      internalID: -2365470459375845807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_21
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 84
+        width: 91
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 648671e103271d4d0800000000000000
+      internalID: -3111580316547454906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_22
+      rect:
+        serializedVersion: 2
+        x: 1108
+        y: 84
+        width: 91
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c795ea1ab63193ad0800000000000000
+      internalID: -2722123146773767812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Body_150_23
+      rect:
+        serializedVersion: 2
+        x: 1364
+        y: 84
+        width: 91
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c69597c83e39978e0800000000000000
+      internalID: -1695161179204658836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Jump_Fast_Body_150_0: 5860970649269862338
+      Jump_Fast_Body_150_1: 2703012243685829514
+      Jump_Fast_Body_150_10: 7729021063264717057
+      Jump_Fast_Body_150_11: 87203028492449782
+      Jump_Fast_Body_150_12: 5979973221657928375
+      Jump_Fast_Body_150_13: 4347000302877960459
+      Jump_Fast_Body_150_14: 7637565137795325461
+      Jump_Fast_Body_150_15: -775222101919707519
+      Jump_Fast_Body_150_16: 8232502132562396347
+      Jump_Fast_Body_150_17: -8333971412851499569
+      Jump_Fast_Body_150_18: 1020830574423467146
+      Jump_Fast_Body_150_19: 8701536216666057338
+      Jump_Fast_Body_150_2: -7908571988745818916
+      Jump_Fast_Body_150_20: -2365470459375845807
+      Jump_Fast_Body_150_21: -3111580316547454906
+      Jump_Fast_Body_150_22: -2722123146773767812
+      Jump_Fast_Body_150_23: -1695161179204658836
+      Jump_Fast_Body_150_3: -9141940101570954864
+      Jump_Fast_Body_150_4: 2080363863969629411
+      Jump_Fast_Body_150_5: 7844927425487188855
+      Jump_Fast_Body_150_6: -1162036779324492116
+      Jump_Fast_Body_150_7: 2024868526229644785
+      Jump_Fast_Body_150_8: -7998598840661746186
+      Jump_Fast_Body_150_9: -4740071843976204079
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

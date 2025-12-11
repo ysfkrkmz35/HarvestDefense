@@ -1,0 +1,663 @@
+fileFormatVersion: 2
+guid: 4fe2a2706415eb44db504cb9666d127f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6485978006024752689
+    second: Die2_Body_120_0
+  - first:
+      213: -9129857569386387299
+    second: Die2_Body_120_1
+  - first:
+      213: -776858780992707238
+    second: Die2_Body_120_2
+  - first:
+      213: 3858840940848523257
+    second: Die2_Body_120_3
+  - first:
+      213: 2464734653887134028
+    second: Die2_Body_120_4
+  - first:
+      213: -2153170119424217906
+    second: Die2_Body_120_5
+  - first:
+      213: -3927503673853407436
+    second: Die2_Body_120_6
+  - first:
+      213: -1090024692447009240
+    second: Die2_Body_120_7
+  - first:
+      213: -254734614751155255
+    second: Die2_Body_120_8
+  - first:
+      213: -7252828927211408007
+    second: Die2_Body_120_9
+  - first:
+      213: 5135183446604933934
+    second: Die2_Body_120_10
+  - first:
+      213: 3718759049086651211
+    second: Die2_Body_120_11
+  - first:
+      213: 6000442183445260703
+    second: Die2_Body_120_12
+  - first:
+      213: -8355269219696725986
+    second: Die2_Body_120_13
+  - first:
+      213: -46589153636576454
+    second: Die2_Body_120_14
+  - first:
+      213: -1672589665677488354
+    second: Die2_Body_120_15
+  - first:
+      213: 7790090489392981432
+    second: Die2_Body_120_16
+  - first:
+      213: -4496167667773660101
+    second: Die2_Body_120_17
+  - first:
+      213: 2129568575848222325
+    second: Die2_Body_120_18
+  - first:
+      213: 7230884025700924914
+    second: Die2_Body_120_19
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Die2_Body_120_0
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 847
+        width: 98
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc1f5e12e5d2df5a0800000000000000
+      internalID: -6485978006024752689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_1
+      rect:
+        serializedVersion: 2
+        x: 349
+        y: 861
+        width: 82
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9820d6a9ea3c4180800000000000000
+      internalID: -9129857569386387299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_2
+      rect:
+        serializedVersion: 2
+        x: 614
+        y: 910
+        width: 52
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a55694efd0b0835f0800000000000000
+      internalID: -776858780992707238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_3
+      rect:
+        serializedVersion: 2
+        x: 868
+        y: 910
+        width: 64
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f7a204046b5d8530800000000000000
+      internalID: 3858840940848523257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_4
+      rect:
+        serializedVersion: 2
+        x: 1121
+        y: 906
+        width: 74
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c49b986eb1f743220800000000000000
+      internalID: 2464734653887134028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_5
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 626
+        width: 76
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eccebb23f276e12e0800000000000000
+      internalID: -2153170119424217906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_6
+      rect:
+        serializedVersion: 2
+        x: 355
+        y: 616
+        width: 68
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43f0de9a734be79c0800000000000000
+      internalID: -3927503673853407436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_7
+      rect:
+        serializedVersion: 2
+        x: 612
+        y: 615
+        width: 66
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 826aa4241547fd0f0800000000000000
+      internalID: -1090024692447009240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_8
+      rect:
+        serializedVersion: 2
+        x: 868
+        y: 616
+        width: 66
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cbe2cfa730077cf0800000000000000
+      internalID: -254734614751155255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_9
+      rect:
+        serializedVersion: 2
+        x: 1124
+        y: 614
+        width: 65
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 975f2e09486c85b90800000000000000
+      internalID: -7252828927211408007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_10
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 358
+        width: 68
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2b6a572326d34740800000000000000
+      internalID: 5135183446604933934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_11
+      rect:
+        serializedVersion: 2
+        x: 353
+        y: 358
+        width: 68
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4b441ef6afab9330800000000000000
+      internalID: 3718759049086651211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_12
+      rect:
+        serializedVersion: 2
+        x: 609
+        y: 358
+        width: 68
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f992687cf5ad54350800000000000000
+      internalID: 6000442183445260703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_13
+      rect:
+        serializedVersion: 2
+        x: 866
+        y: 358
+        width: 67
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e10b83da9ee1c0c80800000000000000
+      internalID: -8355269219696725986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_14
+      rect:
+        serializedVersion: 2
+        x: 1122
+        y: 358
+        width: 67
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a331b1f596b7a5ff0800000000000000
+      internalID: -46589153636576454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_15
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 102
+        width: 67
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1fcd429f84c9c8e0800000000000000
+      internalID: -1672589665677488354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_16
+      rect:
+        serializedVersion: 2
+        x: 353
+        y: 103
+        width: 68
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b5ea64c606fb1c60800000000000000
+      internalID: 7790090489392981432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_17
+      rect:
+        serializedVersion: 2
+        x: 609
+        y: 104
+        width: 68
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3421cfe3576a91c0800000000000000
+      internalID: -4496167667773660101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_18
+      rect:
+        serializedVersion: 2
+        x: 866
+        y: 107
+        width: 66
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57e8448365fbd8d10800000000000000
+      internalID: 2129568575848222325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Die2_Body_120_19
+      rect:
+        serializedVersion: 2
+        x: 1123
+        y: 113
+        width: 63
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fd33f3e5b2495460800000000000000
+      internalID: 7230884025700924914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Die2_Body_120_0: -6485978006024752689
+      Die2_Body_120_1: -9129857569386387299
+      Die2_Body_120_10: 5135183446604933934
+      Die2_Body_120_11: 3718759049086651211
+      Die2_Body_120_12: 6000442183445260703
+      Die2_Body_120_13: -8355269219696725986
+      Die2_Body_120_14: -46589153636576454
+      Die2_Body_120_15: -1672589665677488354
+      Die2_Body_120_16: 7790090489392981432
+      Die2_Body_120_17: -4496167667773660101
+      Die2_Body_120_18: 2129568575848222325
+      Die2_Body_120_19: 7230884025700924914
+      Die2_Body_120_2: -776858780992707238
+      Die2_Body_120_3: 3858840940848523257
+      Die2_Body_120_4: 2464734653887134028
+      Die2_Body_120_5: -2153170119424217906
+      Die2_Body_120_6: -3927503673853407436
+      Die2_Body_120_7: -1090024692447009240
+      Die2_Body_120_8: -254734614751155255
+      Die2_Body_120_9: -7252828927211408007
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

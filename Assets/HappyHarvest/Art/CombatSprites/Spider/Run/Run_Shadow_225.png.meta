@@ -1,0 +1,559 @@
+fileFormatVersion: 2
+guid: a6ed4f5e03c7f6e4b90e0eb8394a2dfc
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6441680654138373226
+    second: Run_Shadow_225_0
+  - first:
+      213: -2765777046942105606
+    second: Run_Shadow_225_1
+  - first:
+      213: 2910208331709206079
+    second: Run_Shadow_225_2
+  - first:
+      213: -4575918348739638974
+    second: Run_Shadow_225_3
+  - first:
+      213: -5387260521111810445
+    second: Run_Shadow_225_4
+  - first:
+      213: 7864552736208417038
+    second: Run_Shadow_225_5
+  - first:
+      213: -1168373635277687373
+    second: Run_Shadow_225_6
+  - first:
+      213: -1799825330553354516
+    second: Run_Shadow_225_7
+  - first:
+      213: -76941141542744188
+    second: Run_Shadow_225_8
+  - first:
+      213: 6187631674824549592
+    second: Run_Shadow_225_9
+  - first:
+      213: -3344894280045087068
+    second: Run_Shadow_225_10
+  - first:
+      213: -7292602054893033104
+    second: Run_Shadow_225_11
+  - first:
+      213: -7483880806498018136
+    second: Run_Shadow_225_12
+  - first:
+      213: -2485054199191106103
+    second: Run_Shadow_225_13
+  - first:
+      213: 3494970795743757752
+    second: Run_Shadow_225_14
+  - first:
+      213: -3747057921473820942
+    second: Run_Shadow_225_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Run_Shadow_225_0
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 842
+        width: 111
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69b8395139d8a96a0800000000000000
+      internalID: -6441680654138373226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Run_Shadow_225_1
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 843
+        width: 107
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aff3615fd6cfd99d0800000000000000
+      internalID: -2765777046942105606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Run_Shadow_225_2
+      rect:
+        serializedVersion: 2
+        x: 577
+        y: 844
+        width: 114
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3ec8e90f03236820800000000000000
+      internalID: 2910208331709206079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Run_Shadow_225_3
+      rect:
+        serializedVersion: 2
+        x: 833
+        y: 842
+        width: 122
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2498e2e81821f70c0800000000000000
+      internalID: -4575918348739638974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Run_Shadow_225_4
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 583
+        width: 122
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37e05a6591b9c35b0800000000000000
+      internalID: -5387260521111810445
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Run_Shadow_225_5
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 580
+        width: 118
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e01770f9b01842d60800000000000000
+      internalID: 7864552736208417038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Run_Shadow_225_6
+      rect:
+        serializedVersion: 2
+        x: 594
+        y: 578
+        width: 109
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b577587e5a19cfe0800000000000000
+      internalID: -1168373635277687373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Run_Shadow_225_7
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 577
+        width: 106
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce60e92d56cb507e0800000000000000
+      internalID: -1799825330553354516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Run_Shadow_225_8
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 324
+        width: 106
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48f4bbd7076aeeef0800000000000000
+      internalID: -76941141542744188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Run_Shadow_225_9
+      rect:
+        serializedVersion: 2
+        x: 333
+        y: 324
+        width: 110
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d46fda8932eed550800000000000000
+      internalID: 6187631674824549592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Run_Shadow_225_10
+      rect:
+        serializedVersion: 2
+        x: 588
+        y: 325
+        width: 109
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a63da2df5c8491d0800000000000000
+      internalID: -3344894280045087068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Run_Shadow_225_11
+      rect:
+        serializedVersion: 2
+        x: 841
+        y: 326
+        width: 105
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07921d5a1197bca90800000000000000
+      internalID: -7292602054893033104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Run_Shadow_225_12
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 73
+        width: 104
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ac525bce0ae32890800000000000000
+      internalID: -7483880806498018136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Run_Shadow_225_13
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 78
+        width: 109
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cd0f994f50538dd0800000000000000
+      internalID: -2485054199191106103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Run_Shadow_225_14
+      rect:
+        serializedVersion: 2
+        x: 573
+        y: 77
+        width: 110
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b5cbaceb61a08030800000000000000
+      internalID: 3494970795743757752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Run_Shadow_225_15
+      rect:
+        serializedVersion: 2
+        x: 829
+        y: 74
+        width: 111
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f64db55ca6cffbc0800000000000000
+      internalID: -3747057921473820942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Run_Shadow_225_0: -6441680654138373226
+      Run_Shadow_225_1: -2765777046942105606
+      Run_Shadow_225_10: -3344894280045087068
+      Run_Shadow_225_11: -7292602054893033104
+      Run_Shadow_225_12: -7483880806498018136
+      Run_Shadow_225_13: -2485054199191106103
+      Run_Shadow_225_14: 3494970795743757752
+      Run_Shadow_225_15: -3747057921473820942
+      Run_Shadow_225_2: 2910208331709206079
+      Run_Shadow_225_3: -4575918348739638974
+      Run_Shadow_225_4: -5387260521111810445
+      Run_Shadow_225_5: 7864552736208417038
+      Run_Shadow_225_6: -1168373635277687373
+      Run_Shadow_225_7: -1799825330553354516
+      Run_Shadow_225_8: -76941141542744188
+      Run_Shadow_225_9: 6187631674824549592
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

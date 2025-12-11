@@ -1,0 +1,559 @@
+fileFormatVersion: 2
+guid: 6779fbe01c0a2264b92d3ed36e7760e1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2002823997292427019
+    second: Defense_Shadow_090_0
+  - first:
+      213: 7334852098717544826
+    second: Defense_Shadow_090_1
+  - first:
+      213: -738585692652026397
+    second: Defense_Shadow_090_2
+  - first:
+      213: 3695828531278517406
+    second: Defense_Shadow_090_3
+  - first:
+      213: 2270733824638467950
+    second: Defense_Shadow_090_4
+  - first:
+      213: 2331367562494334215
+    second: Defense_Shadow_090_5
+  - first:
+      213: -7696261979232520687
+    second: Defense_Shadow_090_6
+  - first:
+      213: 6952198559649786661
+    second: Defense_Shadow_090_7
+  - first:
+      213: -8069430855646059924
+    second: Defense_Shadow_090_8
+  - first:
+      213: -1562865825680556095
+    second: Defense_Shadow_090_9
+  - first:
+      213: -6152379862970182150
+    second: Defense_Shadow_090_10
+  - first:
+      213: -480130175237609997
+    second: Defense_Shadow_090_11
+  - first:
+      213: -3276731373284175192
+    second: Defense_Shadow_090_12
+  - first:
+      213: 4251698019982926676
+    second: Defense_Shadow_090_13
+  - first:
+      213: 6464124890371478443
+    second: Defense_Shadow_090_14
+  - first:
+      213: 2279736133980437719
+    second: Defense_Shadow_090_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Defense_Shadow_090_0
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 849
+        width: 87
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b073e3a60d57bcb10800000000000000
+      internalID: 2002823997292427019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Defense_Shadow_090_1
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 849
+        width: 86
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7176104f11aac560800000000000000
+      internalID: 7334852098717544826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Defense_Shadow_090_2
+      rect:
+        serializedVersion: 2
+        x: 603
+        y: 849
+        width: 93
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e54a49c93400c5f0800000000000000
+      internalID: -738585692652026397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Defense_Shadow_090_3
+      rect:
+        serializedVersion: 2
+        x: 860
+        y: 849
+        width: 93
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e941c95c7783a4330800000000000000
+      internalID: 3695828531278517406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Defense_Shadow_090_4
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 593
+        width: 94
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6f3a05f164438f10800000000000000
+      internalID: 2270733824638467950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Defense_Shadow_090_5
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 593
+        width: 97
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 705d75b227eaa5020800000000000000
+      internalID: 2331367562494334215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Defense_Shadow_090_6
+      rect:
+        serializedVersion: 2
+        x: 604
+        y: 593
+        width: 97
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1163085a182613590800000000000000
+      internalID: -7696261979232520687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Defense_Shadow_090_7
+      rect:
+        serializedVersion: 2
+        x: 859
+        y: 593
+        width: 98
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52b68e371cb2b7060800000000000000
+      internalID: 6952198559649786661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Defense_Shadow_090_8
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 338
+        width: 98
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c62e3a5f36f930090800000000000000
+      internalID: -8069430855646059924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Defense_Shadow_090_9
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 338
+        width: 98
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1cf76bcdfc59f4ae0800000000000000
+      internalID: -1562865825680556095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Defense_Shadow_090_10
+      rect:
+        serializedVersion: 2
+        x: 603
+        y: 338
+        width: 97
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af555608c1b5e9aa0800000000000000
+      internalID: -6152379862970182150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Defense_Shadow_090_11
+      rect:
+        serializedVersion: 2
+        x: 859
+        y: 338
+        width: 94
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f52403462c3659f0800000000000000
+      internalID: -480130175237609997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Defense_Shadow_090_12
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 81
+        width: 91
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a2d4074d26b682d0800000000000000
+      internalID: -3276731373284175192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Defense_Shadow_090_13
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 81
+        width: 89
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 453605d92d0110b30800000000000000
+      internalID: 4251698019982926676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Defense_Shadow_090_14
+      rect:
+        serializedVersion: 2
+        x: 603
+        y: 81
+        width: 86
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba35a52e65f25b950800000000000000
+      internalID: 6464124890371478443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Defense_Shadow_090_15
+      rect:
+        serializedVersion: 2
+        x: 859
+        y: 81
+        width: 87
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7dcb68f6fef33af10800000000000000
+      internalID: 2279736133980437719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Defense_Shadow_090_0: 2002823997292427019
+      Defense_Shadow_090_1: 7334852098717544826
+      Defense_Shadow_090_10: -6152379862970182150
+      Defense_Shadow_090_11: -480130175237609997
+      Defense_Shadow_090_12: -3276731373284175192
+      Defense_Shadow_090_13: 4251698019982926676
+      Defense_Shadow_090_14: 6464124890371478443
+      Defense_Shadow_090_15: 2279736133980437719
+      Defense_Shadow_090_2: -738585692652026397
+      Defense_Shadow_090_3: 3695828531278517406
+      Defense_Shadow_090_4: 2270733824638467950
+      Defense_Shadow_090_5: 2331367562494334215
+      Defense_Shadow_090_6: -7696261979232520687
+      Defense_Shadow_090_7: 6952198559649786661
+      Defense_Shadow_090_8: -8069430855646059924
+      Defense_Shadow_090_9: -1562865825680556095
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

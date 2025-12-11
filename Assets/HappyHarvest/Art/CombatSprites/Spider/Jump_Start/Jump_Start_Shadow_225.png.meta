@@ -1,0 +1,559 @@
+fileFormatVersion: 2
+guid: e1739b4e93a36bb44ae4273b47a9ba87
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2968555448034696719
+    second: Jump_Start_Shadow_225_0
+  - first:
+      213: -8744653153537770349
+    second: Jump_Start_Shadow_225_1
+  - first:
+      213: 4495799106804126687
+    second: Jump_Start_Shadow_225_2
+  - first:
+      213: -1347418064522517297
+    second: Jump_Start_Shadow_225_3
+  - first:
+      213: 6926641350859158279
+    second: Jump_Start_Shadow_225_4
+  - first:
+      213: 4423676758287858017
+    second: Jump_Start_Shadow_225_5
+  - first:
+      213: 8060757400817685645
+    second: Jump_Start_Shadow_225_6
+  - first:
+      213: 4380602530256288430
+    second: Jump_Start_Shadow_225_7
+  - first:
+      213: -3400746210160289609
+    second: Jump_Start_Shadow_225_8
+  - first:
+      213: -3434527529484314951
+    second: Jump_Start_Shadow_225_9
+  - first:
+      213: 8687469750598221747
+    second: Jump_Start_Shadow_225_10
+  - first:
+      213: -3613639528595093943
+    second: Jump_Start_Shadow_225_11
+  - first:
+      213: -5875508083568999425
+    second: Jump_Start_Shadow_225_12
+  - first:
+      213: -9173556379755572032
+    second: Jump_Start_Shadow_225_13
+  - first:
+      213: -2241379831176728635
+    second: Jump_Start_Shadow_225_14
+  - first:
+      213: -7983375047438608331
+    second: Jump_Start_Shadow_225_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Jump_Start_Shadow_225_0
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 843
+        width: 93
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0e9820b37d623920800000000000000
+      internalID: 2968555448034696719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Start_Shadow_225_1
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 843
+        width: 92
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39cb16bb940c4a680800000000000000
+      internalID: -8744653153537770349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Start_Shadow_225_2
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 842
+        width: 90
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd31496c779446e30800000000000000
+      internalID: 4495799106804126687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Start_Shadow_225_3
+      rect:
+        serializedVersion: 2
+        x: 844
+        y: 842
+        width: 89
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc4e034c8620d4de0800000000000000
+      internalID: -1347418064522517297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Start_Shadow_225_4
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 587
+        width: 89
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 703fd741c9f502060800000000000000
+      internalID: 6926641350859158279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Start_Shadow_225_5
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 588
+        width: 90
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16936e2f29e046d30800000000000000
+      internalID: 4423676758287858017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Start_Shadow_225_6
+      rect:
+        serializedVersion: 2
+        x: 588
+        y: 588
+        width: 89
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d84d658f5209ddf60800000000000000
+      internalID: 8060757400817685645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Start_Shadow_225_7
+      rect:
+        serializedVersion: 2
+        x: 844
+        y: 588
+        width: 88
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eaa7a16bac60bcc30800000000000000
+      internalID: 4380602530256288430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Start_Shadow_225_8
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 330
+        width: 89
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b8d32cf65f1ec0d0800000000000000
+      internalID: -3400746210160289609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Start_Shadow_225_9
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 325
+        width: 93
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b699c9a86b1650d0800000000000000
+      internalID: -3434527529484314951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Start_Shadow_225_10
+      rect:
+        serializedVersion: 2
+        x: 586
+        y: 317
+        width: 96
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bfbb51c5b7109870800000000000000
+      internalID: 8687469750598221747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Start_Shadow_225_11
+      rect:
+        serializedVersion: 2
+        x: 846
+        y: 302
+        width: 87
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94687cf9ef5c9ddc0800000000000000
+      internalID: -3613639528595093943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Start_Shadow_225_12
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 41
+        width: 86
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff30feb1780067ea0800000000000000
+      internalID: -5875508083568999425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Start_Shadow_225_13
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 37
+        width: 95
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c496a1831bf0b080800000000000000
+      internalID: -9173556379755572032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Start_Shadow_225_14
+      rect:
+        serializedVersion: 2
+        x: 580
+        y: 44
+        width: 111
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5cf6cfb3be405e0e0800000000000000
+      internalID: -2241379831176728635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Start_Shadow_225_15
+      rect:
+        serializedVersion: 2
+        x: 836
+        y: 49
+        width: 115
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53854bc21ba553190800000000000000
+      internalID: -7983375047438608331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Jump_Start_Shadow_225_0: 2968555448034696719
+      Jump_Start_Shadow_225_1: -8744653153537770349
+      Jump_Start_Shadow_225_10: 8687469750598221747
+      Jump_Start_Shadow_225_11: -3613639528595093943
+      Jump_Start_Shadow_225_12: -5875508083568999425
+      Jump_Start_Shadow_225_13: -9173556379755572032
+      Jump_Start_Shadow_225_14: -2241379831176728635
+      Jump_Start_Shadow_225_15: -7983375047438608331
+      Jump_Start_Shadow_225_2: 4495799106804126687
+      Jump_Start_Shadow_225_3: -1347418064522517297
+      Jump_Start_Shadow_225_4: 6926641350859158279
+      Jump_Start_Shadow_225_5: 4423676758287858017
+      Jump_Start_Shadow_225_6: 8060757400817685645
+      Jump_Start_Shadow_225_7: 4380602530256288430
+      Jump_Start_Shadow_225_8: -3400746210160289609
+      Jump_Start_Shadow_225_9: -3434527529484314951
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

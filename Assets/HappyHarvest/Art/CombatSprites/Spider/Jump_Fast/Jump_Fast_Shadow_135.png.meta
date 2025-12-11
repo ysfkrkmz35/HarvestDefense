@@ -1,0 +1,767 @@
+fileFormatVersion: 2
+guid: 7675ad97140d74f448b29a4a110c72c0
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3849779276672506048
+    second: Jump_Fast_Shadow_135_0
+  - first:
+      213: -3380962922010058168
+    second: Jump_Fast_Shadow_135_1
+  - first:
+      213: 1455762673525329303
+    second: Jump_Fast_Shadow_135_2
+  - first:
+      213: -8596060229736002724
+    second: Jump_Fast_Shadow_135_3
+  - first:
+      213: 7774475382394729050
+    second: Jump_Fast_Shadow_135_4
+  - first:
+      213: 7910831956754853706
+    second: Jump_Fast_Shadow_135_5
+  - first:
+      213: 5800658741020152630
+    second: Jump_Fast_Shadow_135_6
+  - first:
+      213: 711776980719383796
+    second: Jump_Fast_Shadow_135_7
+  - first:
+      213: 3085186672728655463
+    second: Jump_Fast_Shadow_135_8
+  - first:
+      213: 7579518864206647661
+    second: Jump_Fast_Shadow_135_9
+  - first:
+      213: -7893843685370613494
+    second: Jump_Fast_Shadow_135_10
+  - first:
+      213: 2692782485870135999
+    second: Jump_Fast_Shadow_135_11
+  - first:
+      213: -6635062629632472295
+    second: Jump_Fast_Shadow_135_12
+  - first:
+      213: -4074312755189682783
+    second: Jump_Fast_Shadow_135_13
+  - first:
+      213: 3211797464517569701
+    second: Jump_Fast_Shadow_135_14
+  - first:
+      213: 7310642016239502198
+    second: Jump_Fast_Shadow_135_15
+  - first:
+      213: -8691706742494844904
+    second: Jump_Fast_Shadow_135_16
+  - first:
+      213: 6426114382426892278
+    second: Jump_Fast_Shadow_135_17
+  - first:
+      213: -9122818093734939501
+    second: Jump_Fast_Shadow_135_18
+  - first:
+      213: -6968496786482847350
+    second: Jump_Fast_Shadow_135_19
+  - first:
+      213: 4891022690217143513
+    second: Jump_Fast_Shadow_135_20
+  - first:
+      213: -4933001941865109205
+    second: Jump_Fast_Shadow_135_21
+  - first:
+      213: 9056304506655060115
+    second: Jump_Fast_Shadow_135_22
+  - first:
+      213: 9164106184733109931
+    second: Jump_Fast_Shadow_135_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_0
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 848
+        width: 91
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04766461526d29ac0800000000000000
+      internalID: -3849779276672506048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_1
+      rect:
+        serializedVersion: 2
+        x: 339
+        y: 847
+        width: 95
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 842e2d2b2286411d0800000000000000
+      internalID: -3380962922010058168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_2
+      rect:
+        serializedVersion: 2
+        x: 597
+        y: 847
+        width: 92
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79d00c84078e33410800000000000000
+      internalID: 1455762673525329303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_3
+      rect:
+        serializedVersion: 2
+        x: 853
+        y: 847
+        width: 92
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5b09b2d3c8a4b880800000000000000
+      internalID: -8596060229736002724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_4
+      rect:
+        serializedVersion: 2
+        x: 1108
+        y: 847
+        width: 93
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5238aa5b2c74eb60800000000000000
+      internalID: 7774475382394729050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_5
+      rect:
+        serializedVersion: 2
+        x: 1363
+        y: 847
+        width: 93
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4f6e2450cbe8cd60800000000000000
+      internalID: 7910831956754853706
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_6
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 592
+        width: 90
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63355c94464108050800000000000000
+      internalID: 5800658741020152630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_7
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 593
+        width: 88
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f4341f846db0e900800000000000000
+      internalID: 711776980719383796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_8
+      rect:
+        serializedVersion: 2
+        x: 597
+        y: 593
+        width: 86
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 766c2cdcee8c0da20800000000000000
+      internalID: 3085186672728655463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_9
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 593
+        width: 87
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d61d86dbf3cdf2960800000000000000
+      internalID: 7579518864206647661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_10
+      rect:
+        serializedVersion: 2
+        x: 1108
+        y: 593
+        width: 88
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a013605ddfe637290800000000000000
+      internalID: -7893843685370613494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_11
+      rect:
+        serializedVersion: 2
+        x: 1364
+        y: 593
+        width: 88
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbacea7676fae5520800000000000000
+      internalID: 2692782485870135999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_12
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 340
+        width: 78
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91b894241b58be3a0800000000000000
+      internalID: -6635062629632472295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_13
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 340
+        width: 79
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ad6313c2222577c0800000000000000
+      internalID: -4074312755189682783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_14
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 339
+        width: 83
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ace113f6c8929c20800000000000000
+      internalID: 3211797464517569701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_15
+      rect:
+        serializedVersion: 2
+        x: 855
+        y: 338
+        width: 84
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 673400a2e2e947560800000000000000
+      internalID: 7310642016239502198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_16
+      rect:
+        serializedVersion: 2
+        x: 1110
+        y: 337
+        width: 85
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8182ab1b4cad06780800000000000000
+      internalID: -8691706742494844904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_17
+      rect:
+        serializedVersion: 2
+        x: 1365
+        y: 335
+        width: 88
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f7659adbf42e2950800000000000000
+      internalID: 6426114382426892278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_18
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 79
+        width: 89
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3943c6c474d356180800000000000000
+      internalID: -9122818093734939501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_19
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 79
+        width: 91
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a812d37e71dea4f90800000000000000
+      internalID: -6968496786482847350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_20
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 79
+        width: 93
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9dca4c6193760e340800000000000000
+      internalID: 4891022690217143513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_21
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 79
+        width: 93
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2961dabed47a8bb0800000000000000
+      internalID: -4933001941865109205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_22
+      rect:
+        serializedVersion: 2
+        x: 1108
+        y: 80
+        width: 93
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 390b1f867f47ead70800000000000000
+      internalID: 9056304506655060115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fast_Shadow_135_23
+      rect:
+        serializedVersion: 2
+        x: 1364
+        y: 79
+        width: 93
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bae2af085027d2f70800000000000000
+      internalID: 9164106184733109931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Jump_Fast_Shadow_135_0: -3849779276672506048
+      Jump_Fast_Shadow_135_1: -3380962922010058168
+      Jump_Fast_Shadow_135_10: -7893843685370613494
+      Jump_Fast_Shadow_135_11: 2692782485870135999
+      Jump_Fast_Shadow_135_12: -6635062629632472295
+      Jump_Fast_Shadow_135_13: -4074312755189682783
+      Jump_Fast_Shadow_135_14: 3211797464517569701
+      Jump_Fast_Shadow_135_15: 7310642016239502198
+      Jump_Fast_Shadow_135_16: -8691706742494844904
+      Jump_Fast_Shadow_135_17: 6426114382426892278
+      Jump_Fast_Shadow_135_18: -9122818093734939501
+      Jump_Fast_Shadow_135_19: -6968496786482847350
+      Jump_Fast_Shadow_135_2: 1455762673525329303
+      Jump_Fast_Shadow_135_20: 4891022690217143513
+      Jump_Fast_Shadow_135_21: -4933001941865109205
+      Jump_Fast_Shadow_135_22: 9056304506655060115
+      Jump_Fast_Shadow_135_23: 9164106184733109931
+      Jump_Fast_Shadow_135_3: -8596060229736002724
+      Jump_Fast_Shadow_135_4: 7774475382394729050
+      Jump_Fast_Shadow_135_5: 7910831956754853706
+      Jump_Fast_Shadow_135_6: 5800658741020152630
+      Jump_Fast_Shadow_135_7: 711776980719383796
+      Jump_Fast_Shadow_135_8: 3085186672728655463
+      Jump_Fast_Shadow_135_9: 7579518864206647661
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

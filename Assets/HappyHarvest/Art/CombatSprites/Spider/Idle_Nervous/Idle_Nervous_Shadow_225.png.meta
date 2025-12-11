@@ -1,0 +1,767 @@
+fileFormatVersion: 2
+guid: 0b1c736918a4da446917d375cce7bd91
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1350126870262564217
+    second: Idle_Nervous_Shadow_225_0
+  - first:
+      213: -1884706012244585006
+    second: Idle_Nervous_Shadow_225_1
+  - first:
+      213: -388220768485203729
+    second: Idle_Nervous_Shadow_225_2
+  - first:
+      213: -7044134633953772778
+    second: Idle_Nervous_Shadow_225_3
+  - first:
+      213: 5233298493691360082
+    second: Idle_Nervous_Shadow_225_4
+  - first:
+      213: 523413657417065386
+    second: Idle_Nervous_Shadow_225_5
+  - first:
+      213: 8705515259564466187
+    second: Idle_Nervous_Shadow_225_6
+  - first:
+      213: 3511317858813857398
+    second: Idle_Nervous_Shadow_225_7
+  - first:
+      213: -8592071354314896411
+    second: Idle_Nervous_Shadow_225_8
+  - first:
+      213: -4670222215967171787
+    second: Idle_Nervous_Shadow_225_9
+  - first:
+      213: -3851545924845903738
+    second: Idle_Nervous_Shadow_225_10
+  - first:
+      213: 5027947371027638716
+    second: Idle_Nervous_Shadow_225_11
+  - first:
+      213: -1356098936871471897
+    second: Idle_Nervous_Shadow_225_12
+  - first:
+      213: -4531838656934949002
+    second: Idle_Nervous_Shadow_225_13
+  - first:
+      213: 3767379542298607497
+    second: Idle_Nervous_Shadow_225_14
+  - first:
+      213: 6414897216988288223
+    second: Idle_Nervous_Shadow_225_15
+  - first:
+      213: 5688645302874227774
+    second: Idle_Nervous_Shadow_225_16
+  - first:
+      213: 5293313390983905923
+    second: Idle_Nervous_Shadow_225_17
+  - first:
+      213: 5522599328263905552
+    second: Idle_Nervous_Shadow_225_18
+  - first:
+      213: -526227441089047600
+    second: Idle_Nervous_Shadow_225_19
+  - first:
+      213: 4309182742775624231
+    second: Idle_Nervous_Shadow_225_20
+  - first:
+      213: 2607548909049278017
+    second: Idle_Nervous_Shadow_225_21
+  - first:
+      213: -885331123303697712
+    second: Idle_Nervous_Shadow_225_22
+  - first:
+      213: 5384754740483001946
+    second: Idle_Nervous_Shadow_225_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_0
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 843
+        width: 93
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78a3a48c3c2634de0800000000000000
+      internalID: -1350126870262564217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_1
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 843
+        width: 92
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d55e121edd28d5e0800000000000000
+      internalID: -1884706012244585006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_2
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 843
+        width: 93
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe0a2089443cc9af0800000000000000
+      internalID: -388220768485203729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_3
+      rect:
+        serializedVersion: 2
+        x: 846
+        y: 843
+        width: 92
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61bb8213fd43e3e90800000000000000
+      internalID: -7044134633953772778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_4
+      rect:
+        serializedVersion: 2
+        x: 1102
+        y: 844
+        width: 92
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2537f08b04960a840800000000000000
+      internalID: 5233298493691360082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_5
+      rect:
+        serializedVersion: 2
+        x: 1358
+        y: 844
+        width: 91
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa3aee0c2f9834700800000000000000
+      internalID: 523413657417065386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_6
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 587
+        width: 93
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b002519310430d870800000000000000
+      internalID: 8705515259564466187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_7
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 587
+        width: 95
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67ec5142df4bab030800000000000000
+      internalID: 3511317858813857398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_8
+      rect:
+        serializedVersion: 2
+        x: 586
+        y: 587
+        width: 96
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5eb404140a4d2c880800000000000000
+      internalID: -8592071354314896411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_9
+      rect:
+        serializedVersion: 2
+        x: 842
+        y: 587
+        width: 95
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53b932373a9003fb0800000000000000
+      internalID: -4670222215967171787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_10
+      rect:
+        serializedVersion: 2
+        x: 1098
+        y: 587
+        width: 95
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 680e471436f8c8ac0800000000000000
+      internalID: -3851545924845903738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_11
+      rect:
+        serializedVersion: 2
+        x: 1354
+        y: 587
+        width: 96
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb92677ae7bd6c540800000000000000
+      internalID: 5027947371027638716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_12
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 331
+        width: 96
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e4bd7ba33b2e2de0800000000000000
+      internalID: -1356098936871471897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_13
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 331
+        width: 96
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67f420290ccab11c0800000000000000
+      internalID: -4531838656934949002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_14
+      rect:
+        serializedVersion: 2
+        x: 586
+        y: 331
+        width: 97
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98f38c8bbbb684430800000000000000
+      internalID: 3767379542298607497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_15
+      rect:
+        serializedVersion: 2
+        x: 842
+        y: 331
+        width: 97
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd49a31080b460950800000000000000
+      internalID: 6414897216988288223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_16
+      rect:
+        serializedVersion: 2
+        x: 1098
+        y: 331
+        width: 97
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e34430363c022fe40800000000000000
+      internalID: 5688645302874227774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_17
+      rect:
+        serializedVersion: 2
+        x: 1354
+        y: 331
+        width: 97
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3820a62eb70a57940800000000000000
+      internalID: 5293313390983905923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_18
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 75
+        width: 97
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0112bfd34d634ac40800000000000000
+      internalID: 5522599328263905552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_19
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 75
+        width: 97
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d313de2ee672b8f0800000000000000
+      internalID: -526227441089047600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_20
+      rect:
+        serializedVersion: 2
+        x: 590
+        y: 75
+        width: 93
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 722726f9fda4dcb30800000000000000
+      internalID: 4309182742775624231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_21
+      rect:
+        serializedVersion: 2
+        x: 846
+        y: 75
+        width: 93
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14ee65adaefdf2420800000000000000
+      internalID: 2607548909049278017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_22
+      rect:
+        serializedVersion: 2
+        x: 1102
+        y: 75
+        width: 93
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d2b2e6b80ca6b3f0800000000000000
+      internalID: -885331123303697712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Nervous_Shadow_225_23
+      rect:
+        serializedVersion: 2
+        x: 1358
+        y: 75
+        width: 93
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5e071528ed7aba40800000000000000
+      internalID: 5384754740483001946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Idle_Nervous_Shadow_225_0: -1350126870262564217
+      Idle_Nervous_Shadow_225_1: -1884706012244585006
+      Idle_Nervous_Shadow_225_10: -3851545924845903738
+      Idle_Nervous_Shadow_225_11: 5027947371027638716
+      Idle_Nervous_Shadow_225_12: -1356098936871471897
+      Idle_Nervous_Shadow_225_13: -4531838656934949002
+      Idle_Nervous_Shadow_225_14: 3767379542298607497
+      Idle_Nervous_Shadow_225_15: 6414897216988288223
+      Idle_Nervous_Shadow_225_16: 5688645302874227774
+      Idle_Nervous_Shadow_225_17: 5293313390983905923
+      Idle_Nervous_Shadow_225_18: 5522599328263905552
+      Idle_Nervous_Shadow_225_19: -526227441089047600
+      Idle_Nervous_Shadow_225_2: -388220768485203729
+      Idle_Nervous_Shadow_225_20: 4309182742775624231
+      Idle_Nervous_Shadow_225_21: 2607548909049278017
+      Idle_Nervous_Shadow_225_22: -885331123303697712
+      Idle_Nervous_Shadow_225_23: 5384754740483001946
+      Idle_Nervous_Shadow_225_3: -7044134633953772778
+      Idle_Nervous_Shadow_225_4: 5233298493691360082
+      Idle_Nervous_Shadow_225_5: 523413657417065386
+      Idle_Nervous_Shadow_225_6: 8705515259564466187
+      Idle_Nervous_Shadow_225_7: 3511317858813857398
+      Idle_Nervous_Shadow_225_8: -8592071354314896411
+      Idle_Nervous_Shadow_225_9: -4670222215967171787
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

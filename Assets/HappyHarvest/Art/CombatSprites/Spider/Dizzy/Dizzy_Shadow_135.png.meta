@@ -1,0 +1,559 @@
+fileFormatVersion: 2
+guid: 885bfa334ca1b2f44bf9a8dbdcce697a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3433915171793665058
+    second: Dizzy_Shadow_135_0
+  - first:
+      213: -485216623469357270
+    second: Dizzy_Shadow_135_1
+  - first:
+      213: -3000777790871102442
+    second: Dizzy_Shadow_135_2
+  - first:
+      213: -7045185335696938362
+    second: Dizzy_Shadow_135_3
+  - first:
+      213: 5496237454630253776
+    second: Dizzy_Shadow_135_4
+  - first:
+      213: -972050572472632192
+    second: Dizzy_Shadow_135_5
+  - first:
+      213: -2512466547351667971
+    second: Dizzy_Shadow_135_6
+  - first:
+      213: -1099111692696068119
+    second: Dizzy_Shadow_135_7
+  - first:
+      213: 6953798947471852899
+    second: Dizzy_Shadow_135_8
+  - first:
+      213: 1314064697029951272
+    second: Dizzy_Shadow_135_9
+  - first:
+      213: -3320002712970258969
+    second: Dizzy_Shadow_135_10
+  - first:
+      213: 4206706772117793277
+    second: Dizzy_Shadow_135_11
+  - first:
+      213: 7614143739722582199
+    second: Dizzy_Shadow_135_12
+  - first:
+      213: 3140182344983260050
+    second: Dizzy_Shadow_135_13
+  - first:
+      213: -1315848781931475800
+    second: Dizzy_Shadow_135_14
+  - first:
+      213: 6069450059516393123
+    second: Dizzy_Shadow_135_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Dizzy_Shadow_135_0
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 846
+        width: 96
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed30a6c48584850d0800000000000000
+      internalID: -3433915171793665058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dizzy_Shadow_135_1
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 846
+        width: 97
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a279efe3d0a2449f0800000000000000
+      internalID: -485216623469357270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dizzy_Shadow_135_2
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 846
+        width: 97
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61c1f3d7f781b56d0800000000000000
+      internalID: -3000777790871102442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dizzy_Shadow_135_3
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 846
+        width: 97
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68a2ef0a3497a3e90800000000000000
+      internalID: -7045185335696938362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dizzy_Shadow_135_4
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 590
+        width: 97
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d4fe6c38de864c40800000000000000
+      internalID: 5496237454630253776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dizzy_Shadow_135_5
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 590
+        width: 96
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08cbd0c87259282f0800000000000000
+      internalID: -972050572472632192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dizzy_Shadow_135_6
+      rect:
+        serializedVersion: 2
+        x: 597
+        y: 590
+        width: 96
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfa3d0f9cfce12dd0800000000000000
+      internalID: -2512466547351667971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dizzy_Shadow_135_7
+      rect:
+        serializedVersion: 2
+        x: 854
+        y: 590
+        width: 95
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ef5f542dbb2fb0f0800000000000000
+      internalID: -1099111692696068119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dizzy_Shadow_135_8
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 334
+        width: 95
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3658b87cc4bd08060800000000000000
+      internalID: 6953798947471852899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dizzy_Shadow_135_9
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 334
+        width: 94
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82ff95631ee7c3210800000000000000
+      internalID: 1314064697029951272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dizzy_Shadow_135_10
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 334
+        width: 94
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e513186f1bfce1d0800000000000000
+      internalID: -3320002712970258969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dizzy_Shadow_135_11
+      rect:
+        serializedVersion: 2
+        x: 854
+        y: 333
+        width: 95
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df9af4a6589316a30800000000000000
+      internalID: 4206706772117793277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dizzy_Shadow_135_12
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 77
+        width: 95
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b8cdeac36fdaa960800000000000000
+      internalID: 7614143739722582199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dizzy_Shadow_135_13
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 78
+        width: 95
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29b2ea2943b249b20800000000000000
+      internalID: 3140182344983260050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dizzy_Shadow_135_14
+      rect:
+        serializedVersion: 2
+        x: 597
+        y: 78
+        width: 96
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ac08d6218a2dbde0800000000000000
+      internalID: -1315848781931475800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dizzy_Shadow_135_15
+      rect:
+        serializedVersion: 2
+        x: 853
+        y: 78
+        width: 96
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a6b27bfba40b3450800000000000000
+      internalID: 6069450059516393123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Dizzy_Shadow_135_0: -3433915171793665058
+      Dizzy_Shadow_135_1: -485216623469357270
+      Dizzy_Shadow_135_10: -3320002712970258969
+      Dizzy_Shadow_135_11: 4206706772117793277
+      Dizzy_Shadow_135_12: 7614143739722582199
+      Dizzy_Shadow_135_13: 3140182344983260050
+      Dizzy_Shadow_135_14: -1315848781931475800
+      Dizzy_Shadow_135_15: 6069450059516393123
+      Dizzy_Shadow_135_2: -3000777790871102442
+      Dizzy_Shadow_135_3: -7045185335696938362
+      Dizzy_Shadow_135_4: 5496237454630253776
+      Dizzy_Shadow_135_5: -972050572472632192
+      Dizzy_Shadow_135_6: -2512466547351667971
+      Dizzy_Shadow_135_7: -1099111692696068119
+      Dizzy_Shadow_135_8: 6953798947471852899
+      Dizzy_Shadow_135_9: 1314064697029951272
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

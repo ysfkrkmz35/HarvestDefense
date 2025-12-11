@@ -1,0 +1,559 @@
+fileFormatVersion: 2
+guid: 7a4e7ca2acd670d49b77bebaa995ade8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7821864852349841078
+    second: Jump_Fly_Body_120_0
+  - first:
+      213: 397678417485982561
+    second: Jump_Fly_Body_120_1
+  - first:
+      213: 4891635521143000994
+    second: Jump_Fly_Body_120_2
+  - first:
+      213: -8494057918480375086
+    second: Jump_Fly_Body_120_3
+  - first:
+      213: -7704301831779335835
+    second: Jump_Fly_Body_120_4
+  - first:
+      213: -6512203659454230595
+    second: Jump_Fly_Body_120_5
+  - first:
+      213: 1050172925504821720
+    second: Jump_Fly_Body_120_6
+  - first:
+      213: 3990513966035681880
+    second: Jump_Fly_Body_120_7
+  - first:
+      213: -2740694444674150331
+    second: Jump_Fly_Body_120_8
+  - first:
+      213: 1286561699752295085
+    second: Jump_Fly_Body_120_9
+  - first:
+      213: -1642000434120718383
+    second: Jump_Fly_Body_120_10
+  - first:
+      213: -3318673336563296173
+    second: Jump_Fly_Body_120_11
+  - first:
+      213: 5428649686759861149
+    second: Jump_Fly_Body_120_12
+  - first:
+      213: 6042617866796964081
+    second: Jump_Fly_Body_120_13
+  - first:
+      213: 6885991496340429429
+    second: Jump_Fly_Body_120_14
+  - first:
+      213: 6247078804076125015
+    second: Jump_Fly_Body_120_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Jump_Fly_Body_120_0
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 849
+        width: 111
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a41139adb57237390800000000000000
+      internalID: -7821864852349841078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fly_Body_120_1
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 849
+        width: 110
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16b6719e966d48500800000000000000
+      internalID: 397678417485982561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fly_Body_120_2
+      rect:
+        serializedVersion: 2
+        x: 587
+        y: 850
+        width: 110
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2af4968e69492e340800000000000000
+      internalID: 4891635521143000994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fly_Body_120_3
+      rect:
+        serializedVersion: 2
+        x: 842
+        y: 851
+        width: 110
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d2226b935b0f1a80800000000000000
+      internalID: -8494057918480375086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fly_Body_120_4
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 595
+        width: 110
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 561c66a9d42d41590800000000000000
+      internalID: -7704301831779335835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fly_Body_120_5
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 595
+        width: 111
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbf4b3d564100a5a0800000000000000
+      internalID: -6512203659454230595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fly_Body_120_6
+      rect:
+        serializedVersion: 2
+        x: 587
+        y: 595
+        width: 110
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d9927136b6f29e00800000000000000
+      internalID: 1050172925504821720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fly_Body_120_7
+      rect:
+        serializedVersion: 2
+        x: 844
+        y: 595
+        width: 110
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 852cac83f47216730800000000000000
+      internalID: 3990513966035681880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fly_Body_120_8
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 339
+        width: 111
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5409f436ce817f9d0800000000000000
+      internalID: -2740694444674150331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fly_Body_120_9
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 338
+        width: 110
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: daabb57ac09cad110800000000000000
+      internalID: 1286561699752295085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fly_Body_120_10
+      rect:
+        serializedVersion: 2
+        x: 590
+        y: 337
+        width: 111
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d7823b0e417639e0800000000000000
+      internalID: -1642000434120718383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fly_Body_120_11
+      rect:
+        serializedVersion: 2
+        x: 846
+        y: 337
+        width: 111
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3589598fe24b1f1d0800000000000000
+      internalID: -3318673336563296173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fly_Body_120_12
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 81
+        width: 110
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9b6b5db020765b40800000000000000
+      internalID: 5428649686759861149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fly_Body_120_13
+      rect:
+        serializedVersion: 2
+        x: 333
+        y: 81
+        width: 110
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f89cd74fe0bbd350800000000000000
+      internalID: 6042617866796964081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fly_Body_120_14
+      rect:
+        serializedVersion: 2
+        x: 588
+        y: 80
+        width: 110
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57a5bb948c4ff8f50800000000000000
+      internalID: 6885991496340429429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jump_Fly_Body_120_15
+      rect:
+        serializedVersion: 2
+        x: 843
+        y: 81
+        width: 111
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75b54d8e21512b650800000000000000
+      internalID: 6247078804076125015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Jump_Fly_Body_120_0: -7821864852349841078
+      Jump_Fly_Body_120_1: 397678417485982561
+      Jump_Fly_Body_120_10: -1642000434120718383
+      Jump_Fly_Body_120_11: -3318673336563296173
+      Jump_Fly_Body_120_12: 5428649686759861149
+      Jump_Fly_Body_120_13: 6042617866796964081
+      Jump_Fly_Body_120_14: 6885991496340429429
+      Jump_Fly_Body_120_15: 6247078804076125015
+      Jump_Fly_Body_120_2: 4891635521143000994
+      Jump_Fly_Body_120_3: -8494057918480375086
+      Jump_Fly_Body_120_4: -7704301831779335835
+      Jump_Fly_Body_120_5: -6512203659454230595
+      Jump_Fly_Body_120_6: 1050172925504821720
+      Jump_Fly_Body_120_7: 3990513966035681880
+      Jump_Fly_Body_120_8: -2740694444674150331
+      Jump_Fly_Body_120_9: 1286561699752295085
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
