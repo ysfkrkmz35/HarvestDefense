@@ -423,6 +423,23 @@ namespace HappyHarvest
             if (m_Inventory.EquippedItem != null && m_ItemVisualInstance.TryGetValue(m_Inventory.EquippedItem, out var itemVisual))
             {
                 itemVisual.Instance.SetActive(enable);
+
+                // Fener ise ışığı aç/kapat
+                if (m_Inventory.EquippedItem is Flashlight)
+                {
+                    ToggleFlashlightLights(itemVisual.Instance, enable);
+                }
+            }
+            else if (!enable)
+            {
+                // Tüm fener ışıklarını kapat
+                foreach (var kvp in m_ItemVisualInstance)
+                {
+                    if (kvp.Key is Flashlight)
+                    {
+                        ToggleFlashlightLights(kvp.Value.Instance, false);
+                    }
+                }
             }
         }
 
@@ -431,6 +448,24 @@ namespace HappyHarvest
             if (item != null && m_ItemVisualInstance.TryGetValue(item, out var itemVisual))
             {
                 itemVisual.Instance.SetActive(enable);
+
+                // Fener ise ışığı aç/kapat
+                if (item is Flashlight)
+                {
+                    ToggleFlashlightLights(itemVisual.Instance, enable);
+                }
+            }
+        }
+
+        void ToggleFlashlightLights(GameObject flashlightInstance, bool enable)
+        {
+            if (flashlightInstance == null) return;
+
+            // Fener prefab'ındaki tüm Light2D componentlerini bul ve aç/kapat
+            var lights = flashlightInstance.GetComponentsInChildren<UnityEngine.Rendering.Universal.Light2D>(true);
+            foreach (var light in lights)
+            {
+                light.enabled = enable;
             }
         }
 
