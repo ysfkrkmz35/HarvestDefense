@@ -44,6 +44,13 @@ namespace HappyHarvest
         //This is called by animation event on the walking animation of the character.
         public void PlayStepSound()
         {
+            // FIX: Added safety check. If GameManager or the Tilemap is missing, fall back to default sound.
+            if (GameManager.Instance == null || GameManager.Instance.WalkSurfaceTilemap == null)
+            {
+                PlayDefaultSound();
+                return;
+            }
+
             var underCell = GameManager.Instance.WalkSurfaceTilemap.WorldToCell(transform.position);
             var tile = GameManager.Instance.WalkSurfaceTilemap.GetTile(underCell);
 
@@ -53,8 +60,18 @@ namespace HappyHarvest
                     : GetRandomEntry(DefaultStepSounds), false);
         }
 
+        // Helper function to keep code clean
+        void PlayDefaultSound()
+        {
+            if (DefaultStepSounds != null && DefaultStepSounds.Length > 0 && SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFXAt(transform.position, GetRandomEntry(DefaultStepSounds), false);
+            }
+        }
+
         AudioClip GetRandomEntry(AudioClip[] clips)
         {
+            if (clips == null || clips.Length == 0) return null;
             return clips[Random.Range(0, clips.Length)];
         }
     }
