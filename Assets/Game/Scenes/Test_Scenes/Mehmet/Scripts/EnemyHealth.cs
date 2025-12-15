@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Düşman Can Sistemi (Mehmet)
 /// - IDamageable interface'ini implement eder
-/// - Can 0 olunca EnemyAI'nin Die() fonksiyonunu çağırır
+/// - Can 0 olunca SimpleEnemyAI'nin Die() fonksiyonunu çağırır
 /// </summary>
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
@@ -12,17 +12,17 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     private int currentHealth;
 
     [Header("== REFERENCES ==")]
-    private EnemyAI enemyAI;
+    private SimpleEnemyAI enemyAI;
 
     [Header("== DEBUG ==")]
     [SerializeField] private bool showDebugLogs = true;
 
     private void Awake()
     {
-        enemyAI = GetComponent<EnemyAI>();
+        enemyAI = GetComponent<SimpleEnemyAI>();
         if (enemyAI == null)
         {
-            Debug.LogWarning("[EnemyHealth] EnemyAI bulunamadı!");
+            Debug.LogWarning("[EnemyHealth] SimpleEnemyAI bulunamadı!");
         }
     }
 

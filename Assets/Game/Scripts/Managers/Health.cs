@@ -67,8 +67,8 @@ public class Health : MonoBehaviour, IDamageable
         // Ölüm eventi
         OnDeath?.Invoke(gameObject);
 
-        // EnemyAI varsa die fonksiyonunu çağır
-        EnemyAI enemyAI = GetComponent<EnemyAI>();
+        // SimpleEnemyAI varsa die fonksiyonunu çağır
+        SimpleEnemyAI enemyAI = GetComponent<SimpleEnemyAI>();
         if (enemyAI != null)
         {
             enemyAI.Die();
