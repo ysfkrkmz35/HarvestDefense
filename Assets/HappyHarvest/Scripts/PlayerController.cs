@@ -104,7 +104,6 @@ namespace HappyHarvest
             {
                 ToggleToolVisual(false);
                 m_Inventory.EquipNext();
-                Debug.Log($"Equipped item index: {m_Inventory.EquippedItemIdx}, Item: {(m_Inventory.EquippedItem != null ? m_Inventory.EquippedItem.DisplayName : "None")}");
                 ToggleToolVisual(true);
             };
 
@@ -113,7 +112,6 @@ namespace HappyHarvest
             {
                 ToggleToolVisual(false);
                 m_Inventory.EquipPrev();
-                Debug.Log($"Equipped item index: {m_Inventory.EquippedItemIdx}, Item: {(m_Inventory.EquippedItem != null ? m_Inventory.EquippedItem.DisplayName : "None")}");
                 ToggleToolVisual(true);
             };
 
@@ -132,13 +130,6 @@ namespace HappyHarvest
                     CreateItemVisual(entry.Item);
             }
 
-            Debug.Log($"Initial equipped index: {m_Inventory.EquippedItemIdx}");
-            Debug.Log($"Total item visuals created: {m_ItemVisualInstance.Count}");
-            foreach (var kvp in m_ItemVisualInstance)
-            {
-                Debug.Log($"Visual exists for: {kvp.Key.DisplayName}, GameObject: {kvp.Value.Instance.name}");
-            }
-
             ToggleToolVisual(true);
             
             UIHandler.UpdateInventory(m_Inventory);
@@ -147,16 +138,17 @@ namespace HappyHarvest
 
         private void Update()
         {
-            // Rakam tuşları ile item seçme (1-9)
-            if (Keyboard.current.digit1Key.wasPressedThisFrame) ChangeEquipItem(0);
-            if (Keyboard.current.digit2Key.wasPressedThisFrame) ChangeEquipItem(1);
-            if (Keyboard.current.digit3Key.wasPressedThisFrame) ChangeEquipItem(2);
-            if (Keyboard.current.digit4Key.wasPressedThisFrame) ChangeEquipItem(3);
-            if (Keyboard.current.digit5Key.wasPressedThisFrame) ChangeEquipItem(4);
-            if (Keyboard.current.digit6Key.wasPressedThisFrame) ChangeEquipItem(5);
-            if (Keyboard.current.digit7Key.wasPressedThisFrame) ChangeEquipItem(6);
-            if (Keyboard.current.digit8Key.wasPressedThisFrame) ChangeEquipItem(7);
-            if (Keyboard.current.digit9Key.wasPressedThisFrame) ChangeEquipItem(8);
+            // Rakam tuşları ile slot seçme (1-9)
+            // Tuş 1 = Slot 1 (array index 0), Tuş 2 = Slot 2 (array index 1), vb.
+            if ((Keyboard.current != null && Keyboard.current.digit1Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha1)) ChangeEquipItem(0);
+            if ((Keyboard.current != null && Keyboard.current.digit2Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha2)) ChangeEquipItem(1);
+            if ((Keyboard.current != null && Keyboard.current.digit3Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha3)) ChangeEquipItem(2);
+            if ((Keyboard.current != null && Keyboard.current.digit4Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha4)) ChangeEquipItem(3);
+            if ((Keyboard.current != null && Keyboard.current.digit5Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha5)) ChangeEquipItem(4);
+            if ((Keyboard.current != null && Keyboard.current.digit6Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha6)) ChangeEquipItem(5);
+            if ((Keyboard.current != null && Keyboard.current.digit7Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha7)) ChangeEquipItem(6);
+            if ((Keyboard.current != null && Keyboard.current.digit8Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha8)) ChangeEquipItem(7);
+            if ((Keyboard.current != null && Keyboard.current.digit9Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha9)) ChangeEquipItem(8);
 
             m_IsOverUI = EventSystem.current.IsPointerOverGameObject();
             m_CurrentInteractiveTarget = null;
@@ -347,6 +339,13 @@ namespace HappyHarvest
         {
             Debug.Log($"ChangeEquipItem called with index: {index}");
 
+            // Eğer seçilmeye çalışılan slot boşsa, işlemi yapma
+            if (index < 0 || index >= m_Inventory.Entries.Length || m_Inventory.Entries[index].Item == null)
+            {
+                Debug.Log($"Cannot equip index {index}: slot is empty or invalid");
+                return;
+            }
+
             //Disable the current item if there is one
             ToggleToolVisual(false);
 
@@ -356,6 +355,7 @@ namespace HappyHarvest
 
             ToggleToolVisual(true);
         }
+
 
         public void ToggleControl(bool canControl)
         {
@@ -445,27 +445,18 @@ namespace HappyHarvest
 
         void ToggleToolVisual(bool enable)
         {
-            Debug.Log($"ToggleToolVisual called: enable={enable}, EquippedItem={m_Inventory.EquippedItem?.DisplayName ?? "null"}");
-
             if (m_Inventory.EquippedItem != null && m_ItemVisualInstance.TryGetValue(m_Inventory.EquippedItem, out var itemVisual))
             {
-                Debug.Log($"Setting {m_Inventory.EquippedItem.DisplayName} visual active: {enable}");
                 itemVisual.Instance.SetActive(enable);
 
                 // Fener ise ışığı aç/kapat
                 if (m_Inventory.EquippedItem is Flashlight)
                 {
-                    Debug.Log($"Flashlight equipped: {enable}");
                     ToggleFlashlightLights(itemVisual.Instance, enable);
                 }
             }
-            else if (enable && m_Inventory.EquippedItem != null)
-            {
-                Debug.LogWarning($"Item visual not found for: {m_Inventory.EquippedItem.DisplayName}");
-            }
             else if (!enable)
             {
-                Debug.Log("Disabling all item visuals");
                 // Tüm fener ışıklarını kapat
                 foreach (var kvp in m_ItemVisualInstance)
                 {
@@ -505,24 +496,13 @@ namespace HappyHarvest
 
         void CreateItemVisual(Item item)
         {
-            if (item == null)
-            {
-                Debug.LogWarning("CreateItemVisual: item is null");
+            if (item == null || ItemAttachBone == null || item.VisualPrefab == null)
                 return;
-            }
 
-            if (ItemAttachBone == null)
+            if (!m_ItemVisualInstance.ContainsKey(item))
             {
-                Debug.LogError("CreateItemVisual: ItemAttachBone is not assigned in PlayerController!");
-                return;
-            }
-
-            if (item.VisualPrefab != null && !m_ItemVisualInstance.ContainsKey(item))
-            {
-                Debug.Log($"ItemAttachBone: {ItemAttachBone.name}, Full Path: {GetFullPath(ItemAttachBone)}");
                 var newVisual = Instantiate(item.VisualPrefab, ItemAttachBone, false);
                 newVisual.SetActive(false);
-                Debug.Log($"Instantiated {item.DisplayName} at parent: {newVisual.transform.parent.name}, Position: {newVisual.transform.localPosition}, Scale: {newVisual.transform.localScale}");
 
                 m_ItemVisualInstance[item] = new ItemInstance()
                 {
@@ -530,12 +510,6 @@ namespace HappyHarvest
                     Animator = newVisual.GetComponentInChildren<Animator>(),
                     AnimatorHash = Animator.StringToHash(item.PlayerAnimatorTriggerUse)
                 };
-
-                Debug.Log($"Created visual for item: {item.DisplayName}");
-            }
-            else if (item.VisualPrefab == null)
-            {
-                Debug.LogWarning($"Item {item.DisplayName} has no VisualPrefab assigned");
             }
         }
 
