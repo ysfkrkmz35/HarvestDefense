@@ -170,13 +170,13 @@ Interpolation: Interpolate
 ```
 CircleCollider2D
 ├── Radius: 0.4
-└── Is Trigger: true    ⚠️ MUTLAKA Trigger!
+└── Is Trigger: false    ⚠️ NORMAL Collider!
 ```
 
-> **❗ NEDEN Trigger?**
-> - Trigger olmazsa fiziksel çarpışma olur
-> - Player'a binemez, hasar veremez
-> - Trigger = sadece mesafe kontrolü
+> **❗ NEDEN Trigger DEĞİL (Normal Collider)?**
+> - Normal collider = duvarlarla çarpışır ✅
+> - Player ile çarpışma Physics2D Matrix'te kapatılmış (aşağıda)
+> - Attack range mesafe ile kontrol ediliyor (kod içinde)
 
 #### SimpleEnemyAI Component
 ```
@@ -245,6 +245,7 @@ Spawn Safe Radius: 1
 
 ### Layer Tanımları (Project Settings → Tags and Layers)
 
+#### Gerekli Layerlar:
 ```
 Layer 6: Ground
 Layer 7: Wall
@@ -253,27 +254,79 @@ Layer 9: Enemy       ⚠️ ZORUNLU
 Layer 10: Projectile
 ```
 
-### Physics2D Collision Matrix (Project Settings → Physics 2D)
+**Nasıl Ayarlanır?**
+1. Unity'de: **Edit → Project Settings**
+2. **Tags and Layers** sekmesi
+3. Layers kısmında yukarıdaki layer isimlerini tanımla
 
+---
+
+### Physics2D Collision Matrix ⚠️ ÇOK ÖNEMLİ
+
+#### 📍 Nerede Ayarlanır?
 ```
-           Ground  Wall  Player  Enemy
-Ground       ✅     ✅     ✅      ✅
-Wall         ✅     ✅     ✅      ✅
-Player       ✅     ✅     ❌      ❌   ⚠️
-Enemy        ✅     ✅     ❌      ❌   ⚠️
+Unity'de:
+Edit → Project Settings → Physics 2D
+↓
+En alta scroll et
+↓
+"Layer Collision Matrix" tablosu
 ```
 
-> **❗ ÇOK ÖNEMLİ:**
-> - Player-Enemy collision KAPALI (❌)
-> - Enemy-Enemy collision KAPALI (❌)
-> - Trigger kullandığımız için fiziksel collision istemiyoruz
-> - Düşmanlar birbirlerini itmesin
+#### 🎯 Hangi Kutular İşaretli Olmalı?
 
-**Nasıl Kapatılır?**
-1. Edit → Project Settings → Physics 2D
-2. Layer Collision Matrix'e git
-3. Player-Enemy kesişimindeki kutuyu KALDIR
-4. Enemy-Enemy kesişimindeki kutuyu KALDIR
+**Collision Matrix Tablosu:**
+```
+              Ground  Wall  Player  Enemy  Projectile
+Ground          ✅     ✅     ✅      ✅        ✅
+Wall            ✅     ✅     ✅      ✅        ✅
+Player          ✅     ✅     ❌      ❌        ❌
+Enemy           ✅     ✅     ❌      ❌        ❌
+Projectile      ✅     ✅     ❌      ❌        ❌
+```
+
+#### ⚙️ Yapılacak Ayarlar:
+
+**Bu kutucukları KALDIR (unchecked):**
+1. ❌ **Player - Player** kesişimi
+2. ❌ **Player - Enemy** kesişimi → **ÇOK ÖNEMLİ!**
+3. ❌ **Enemy - Enemy** kesişimi → **ÇOK ÖNEMLİ!**
+
+**Bu kutucuklar İŞARETLİ kalsın:**
+1. ✅ **Enemy - Ground** kesişimi
+2. ✅ **Enemy - Wall** kesişimi
+3. ✅ **Player - Ground** kesişimi
+4. ✅ **Player - Wall** kesişimi
+
+---
+
+#### 🤔 Neden Bu Ayarlar?
+
+**Enemy Collider Normal (isTrigger = false):**
+```csharp
+CircleCollider2D col = enemy.AddComponent<CircleCollider2D>();
+col.isTrigger = false; // NORMAL collider
+```
+
+**Ama Physics Matrix ile "Player'a Trigger Gibi Davran":**
+
+| Collision | Matrix Ayarı | Sonuç | Açıklama |
+|-----------|-------------|-------|----------|
+| **Enemy ↔ Wall** | ✅ Açık | Çarpışır | Duvarlardan geçemez ✅ |
+| **Enemy ↔ Ground** | ✅ Açık | Çarpışır | Zeminde kalır ✅ |
+| **Enemy ↔ Player** | ❌ Kapalı | Çarpışmaz | Player'a binebilir (trigger gibi) ✅ |
+| **Enemy ↔ Enemy** | ❌ Kapalı | Çarpışmaz | Birbirlerini itmiyor ✅ |
+
+**Sonuç:**
+- ✅ Normal collider kullanıyoruz (duvarlarla çarpışmak için)
+- ✅ Player ile collision kapalı (trigger gibi davranır)
+- ✅ Attack range kod ile kontrol ediliyor (`Vector2.Distance`)
+
+> **💡 Özet:**
+> - Enemy collider **fiziksel** (trigger değil)
+> - Duvarlarla çarpışıyor (Physics Matrix'te açık)
+> - Ama Player layer'ı ile collision **kapalı**
+> - Sonuç: Player'a trigger gibi davranır, duvarlara normal çarpışır!
 
 ---
 
@@ -326,7 +379,7 @@ GameManager: Day state
 | `[SimpleEnemyAI] ❌ Player'da IDamageable component yok!` | Health.cs yok | Player'a `Health.cs` component ekle |
 | Düşmanlar spawn olmuyor | Event bağlantısı kopuk | Spawner'ın OnEnable/OnDisable kontrol et |
 | Player itiliyor | Rigidbody Dynamic | Player Rigidbody → **Kinematic** yap |
-| Düşmanlar saldırmıyor | Collider trigger değil | Enemy Collider → **Is Trigger: true** |
+| **Düşmanlar duvardan geçiyor** ⚠️ | **Collider trigger** | **Enemy Collider → Is Trigger: false** |
 | Düşmanlar birbirine çarpıyor | Physics collision açık | Physics 2D → Enemy-Enemy collision **KAPAT** |
 | Gece başlamıyor | GameManager yok | Managers objesine GameManager.cs ekle |
 | Düşmanlar hareket etmiyor | Linear Damping > 0 | Enemy Rigidbody → **Linear Damping: 0** |
@@ -343,7 +396,7 @@ GameManager: Day state
    - [ ] Tag: Enemy
    - [ ] Layer: Enemy
    - [ ] Rigidbody2D: Dynamic
-   - [ ] Collider: Is Trigger = true
+   - [ ] Collider: Is Trigger = **false** ⚠️ (Duvarlarla çarpışsın)
    - [ ] SimpleEnemyAI.cs var
    - [ ] EnemyHealth.cs var
 
