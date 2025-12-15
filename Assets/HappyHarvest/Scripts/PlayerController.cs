@@ -104,14 +104,16 @@ namespace HappyHarvest
             {
                 ToggleToolVisual(false);
                 m_Inventory.EquipNext();
+                Debug.Log($"Equipped item index: {m_Inventory.EquippedItemIdx}, Item: {(m_Inventory.EquippedItem != null ? m_Inventory.EquippedItem.DisplayName : "None")}");
                 ToggleToolVisual(true);
             };
-            
+
             m_PrevItemAction.Enable();
             m_PrevItemAction.performed += context =>
             {
                 ToggleToolVisual(false);
                 m_Inventory.EquipPrev();
+                Debug.Log($"Equipped item index: {m_Inventory.EquippedItemIdx}, Item: {(m_Inventory.EquippedItem != null ? m_Inventory.EquippedItem.DisplayName : "None")}");
                 ToggleToolVisual(true);
             };
 
@@ -129,6 +131,14 @@ namespace HappyHarvest
                 if (entry.Item != null)
                     CreateItemVisual(entry.Item);
             }
+
+            Debug.Log($"Initial equipped index: {m_Inventory.EquippedItemIdx}");
+            Debug.Log($"Total item visuals created: {m_ItemVisualInstance.Count}");
+            foreach (var kvp in m_ItemVisualInstance)
+            {
+                Debug.Log($"Visual exists for: {kvp.Key.DisplayName}, GameObject: {kvp.Value.Instance.name}");
+            }
+
             ToggleToolVisual(true);
             
             UIHandler.UpdateInventory(m_Inventory);
@@ -137,6 +147,17 @@ namespace HappyHarvest
 
         private void Update()
         {
+            // Rakam tuşları ile item seçme (1-9)
+            if (Keyboard.current.digit1Key.wasPressedThisFrame) ChangeEquipItem(0);
+            if (Keyboard.current.digit2Key.wasPressedThisFrame) ChangeEquipItem(1);
+            if (Keyboard.current.digit3Key.wasPressedThisFrame) ChangeEquipItem(2);
+            if (Keyboard.current.digit4Key.wasPressedThisFrame) ChangeEquipItem(3);
+            if (Keyboard.current.digit5Key.wasPressedThisFrame) ChangeEquipItem(4);
+            if (Keyboard.current.digit6Key.wasPressedThisFrame) ChangeEquipItem(5);
+            if (Keyboard.current.digit7Key.wasPressedThisFrame) ChangeEquipItem(6);
+            if (Keyboard.current.digit8Key.wasPressedThisFrame) ChangeEquipItem(7);
+            if (Keyboard.current.digit9Key.wasPressedThisFrame) ChangeEquipItem(8);
+
             m_IsOverUI = EventSystem.current.IsPointerOverGameObject();
             m_CurrentInteractiveTarget = null;
             m_HasTarget = false;
@@ -324,10 +345,14 @@ namespace HappyHarvest
 
         public void ChangeEquipItem(int index)
         {
-            //Disable the current item if there is one 
+            Debug.Log($"ChangeEquipItem called with index: {index}");
+
+            //Disable the current item if there is one
             ToggleToolVisual(false);
-            
+
             m_Inventory.EquipItem(index);
+
+            Debug.Log($"After EquipItem - Index: {m_Inventory.EquippedItemIdx}, Item: {(m_Inventory.EquippedItem != null ? m_Inventory.EquippedItem.DisplayName : "None")}");
 
             ToggleToolVisual(true);
         }
@@ -420,18 +445,27 @@ namespace HappyHarvest
 
         void ToggleToolVisual(bool enable)
         {
+            Debug.Log($"ToggleToolVisual called: enable={enable}, EquippedItem={m_Inventory.EquippedItem?.DisplayName ?? "null"}");
+
             if (m_Inventory.EquippedItem != null && m_ItemVisualInstance.TryGetValue(m_Inventory.EquippedItem, out var itemVisual))
             {
+                Debug.Log($"Setting {m_Inventory.EquippedItem.DisplayName} visual active: {enable}");
                 itemVisual.Instance.SetActive(enable);
 
                 // Fener ise ışığı aç/kapat
                 if (m_Inventory.EquippedItem is Flashlight)
                 {
+                    Debug.Log($"Flashlight equipped: {enable}");
                     ToggleFlashlightLights(itemVisual.Instance, enable);
                 }
             }
+            else if (enable && m_Inventory.EquippedItem != null)
+            {
+                Debug.LogWarning($"Item visual not found for: {m_Inventory.EquippedItem.DisplayName}");
+            }
             else if (!enable)
             {
+                Debug.Log("Disabling all item visuals");
                 // Tüm fener ışıklarını kapat
                 foreach (var kvp in m_ItemVisualInstance)
                 {
@@ -471,18 +505,49 @@ namespace HappyHarvest
 
         void CreateItemVisual(Item item)
         {
+            if (item == null)
+            {
+                Debug.LogWarning("CreateItemVisual: item is null");
+                return;
+            }
+
+            if (ItemAttachBone == null)
+            {
+                Debug.LogError("CreateItemVisual: ItemAttachBone is not assigned in PlayerController!");
+                return;
+            }
+
             if (item.VisualPrefab != null && !m_ItemVisualInstance.ContainsKey(item))
             {
+                Debug.Log($"ItemAttachBone: {ItemAttachBone.name}, Full Path: {GetFullPath(ItemAttachBone)}");
                 var newVisual = Instantiate(item.VisualPrefab, ItemAttachBone, false);
                 newVisual.SetActive(false);
-                
+                Debug.Log($"Instantiated {item.DisplayName} at parent: {newVisual.transform.parent.name}, Position: {newVisual.transform.localPosition}, Scale: {newVisual.transform.localScale}");
+
                 m_ItemVisualInstance[item] = new ItemInstance()
                 {
                     Instance = newVisual,
                     Animator = newVisual.GetComponentInChildren<Animator>(),
                     AnimatorHash = Animator.StringToHash(item.PlayerAnimatorTriggerUse)
                 };
+
+                Debug.Log($"Created visual for item: {item.DisplayName}");
             }
+            else if (item.VisualPrefab == null)
+            {
+                Debug.LogWarning($"Item {item.DisplayName} has no VisualPrefab assigned");
+            }
+        }
+
+        string GetFullPath(Transform transform)
+        {
+            string path = transform.name;
+            while (transform.parent != null)
+            {
+                transform = transform.parent;
+                path = transform.name + "/" + path;
+            }
+            return path;
         }
     }
 

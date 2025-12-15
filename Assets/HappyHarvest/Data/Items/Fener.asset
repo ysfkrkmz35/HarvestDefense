@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3f8c9be1c8d170c458c6b895b551000b, type: 3}
-  m_Name: Flashlight
+  m_Name: Fener
   m_EditorClassIdentifier: Assembly-CSharp::HappyHarvest.Flashlight
-  UniqueID: flashLightID
+  UniqueID: fenerID
   DisplayName: Fener
-  ItemSprite: {fileID: 21300000, guid: 13baec530bb89bf45a6f175a1375ea83, type: 3}
+  ItemSprite: {fileID: 21300000, guid: 81f594ac68469784784aa5e0c5f111a9, type: 3}
   MaxStackSize: 1
   Consumable: 0
   BuyPrice: -1
-  VisualPrefab: {fileID: 2884989237138759407, guid: 357904d7626f2e443a48baad6d3de4a1, type: 3}
+  VisualPrefab: {fileID: 8477856347931849661, guid: f38006d977ac7c242a053bd442a04184, type: 3}
   PlayerAnimatorTriggerUse: GenericToolSwing
   UseSound: []
   LightComponent: {fileID: 0}

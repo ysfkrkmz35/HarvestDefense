@@ -44,6 +44,9 @@ namespace HappyHarvest
         //This is called by animation event on the walking animation of the character.
         public void PlayStepSound()
         {
+            if (GameManager.Instance?.WalkSurfaceTilemap == null || SoundManager.Instance == null)
+                return;
+
             var underCell = GameManager.Instance.WalkSurfaceTilemap.WorldToCell(transform.position);
             var tile = GameManager.Instance.WalkSurfaceTilemap.GetTile(underCell);
 
