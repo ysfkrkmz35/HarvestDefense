@@ -106,7 +106,7 @@ namespace HappyHarvest
                 m_Inventory.EquipNext();
                 ToggleToolVisual(true);
             };
-            
+
             m_PrevItemAction.Enable();
             m_PrevItemAction.performed += context =>
             {
@@ -129,6 +129,7 @@ namespace HappyHarvest
                 if (entry.Item != null)
                     CreateItemVisual(entry.Item);
             }
+
             ToggleToolVisual(true);
             
             UIHandler.UpdateInventory(m_Inventory);
@@ -137,6 +138,18 @@ namespace HappyHarvest
 
         private void Update()
         {
+            // Rakam tuşları ile slot seçme (1-9)
+            // Tuş 1 = Slot 1 (array index 0), Tuş 2 = Slot 2 (array index 1), vb.
+            if ((Keyboard.current != null && Keyboard.current.digit1Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha1)) ChangeEquipItem(0);
+            if ((Keyboard.current != null && Keyboard.current.digit2Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha2)) ChangeEquipItem(1);
+            if ((Keyboard.current != null && Keyboard.current.digit3Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha3)) ChangeEquipItem(2);
+            if ((Keyboard.current != null && Keyboard.current.digit4Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha4)) ChangeEquipItem(3);
+            if ((Keyboard.current != null && Keyboard.current.digit5Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha5)) ChangeEquipItem(4);
+            if ((Keyboard.current != null && Keyboard.current.digit6Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha6)) ChangeEquipItem(5);
+            if ((Keyboard.current != null && Keyboard.current.digit7Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha7)) ChangeEquipItem(6);
+            if ((Keyboard.current != null && Keyboard.current.digit8Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha8)) ChangeEquipItem(7);
+            if ((Keyboard.current != null && Keyboard.current.digit9Key.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Alpha9)) ChangeEquipItem(8);
+
             m_IsOverUI = EventSystem.current.IsPointerOverGameObject();
             m_CurrentInteractiveTarget = null;
             m_HasTarget = false;
@@ -324,13 +337,25 @@ namespace HappyHarvest
 
         public void ChangeEquipItem(int index)
         {
-            //Disable the current item if there is one 
+            Debug.Log($"ChangeEquipItem called with index: {index}");
+
+            // Eğer seçilmeye çalışılan slot boşsa, işlemi yapma
+            if (index < 0 || index >= m_Inventory.Entries.Length || m_Inventory.Entries[index].Item == null)
+            {
+                Debug.Log($"Cannot equip index {index}: slot is empty or invalid");
+                return;
+            }
+
+            //Disable the current item if there is one
             ToggleToolVisual(false);
-            
+
             m_Inventory.EquipItem(index);
+
+            Debug.Log($"After EquipItem - Index: {m_Inventory.EquippedItemIdx}, Item: {(m_Inventory.EquippedItem != null ? m_Inventory.EquippedItem.DisplayName : "None")}");
 
             ToggleToolVisual(true);
         }
+
 
         public void ToggleControl(bool canControl)
         {
@@ -471,11 +496,14 @@ namespace HappyHarvest
 
         void CreateItemVisual(Item item)
         {
-            if (item.VisualPrefab != null && !m_ItemVisualInstance.ContainsKey(item))
+            if (item == null || ItemAttachBone == null || item.VisualPrefab == null)
+                return;
+
+            if (!m_ItemVisualInstance.ContainsKey(item))
             {
                 var newVisual = Instantiate(item.VisualPrefab, ItemAttachBone, false);
                 newVisual.SetActive(false);
-                
+
                 m_ItemVisualInstance[item] = new ItemInstance()
                 {
                     Instance = newVisual,
@@ -483,6 +511,17 @@ namespace HappyHarvest
                     AnimatorHash = Animator.StringToHash(item.PlayerAnimatorTriggerUse)
                 };
             }
+        }
+
+        string GetFullPath(Transform transform)
+        {
+            string path = transform.name;
+            while (transform.parent != null)
+            {
+                transform = transform.parent;
+                path = transform.name + "/" + path;
+            }
+            return path;
         }
     }
 

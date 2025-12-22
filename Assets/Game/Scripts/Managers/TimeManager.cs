@@ -1,42 +1,103 @@
 using UnityEngine;
 
+/// <summary>
+/// Day/Night döngüsünü yöneten timer sistemi
+/// Gündüz → Gece → Gündüz sonsuz döngü
+/// </summary>
 public class TimeManager : MonoBehaviour
 {
-    public float dayDuration = 5f; // Test için 5 saniye
+    [Header("Duration Settings")]
+    [SerializeField] private float dayDuration = 60f;   // Gündüz süresi (saniye)
+    [SerializeField] private float nightDuration = 45f; // Gece süresi (saniye)
+
     private float currentTimer;
     private bool isTimerRunning = false;
 
     private void Start()
     {
-        // Kimseden haber bekleme, direkt sayacı başlat
-        Debug.Log("TimeManager: Sayaç zorla başlatıldı.");
-        currentTimer = dayDuration;
-        isTimerRunning = true;
+        // Gündüz ile başla
+        StartDay();
     }
 
     void Update()
     {
-        if (isTimerRunning)
-        {
-            currentTimer -= Time.deltaTime;
+        if (!isTimerRunning) return;
 
-            if (currentTimer <= 0)
+        currentTimer -= Time.deltaTime;
+
+        if (currentTimer <= 0)
+        {
+            // Süre bitti, state'e göre geçiş yap
+            if (GameManager.Instance == null)
             {
-                currentTimer = 0;
-                isTimerRunning = false;
-                
-                Debug.Log("TimeManager: Süre bitti! Gece çağrılıyor...");
-                
-                // GameManager varsa geceyi başlat
-                if (GameManager.Instance != null)
-                {
-                    GameManager.Instance.ChangeState(GameManager.GameState.Night);
-                }
-                else
-                {
-                    Debug.LogError("HATA: GameManager sahnede bulunamadı!");
-                }
+                Debug.LogError("[TimeManager] GameManager bulunamadı!");
+                return;
+            }
+
+            // Gündüz bitti → Gece başlat
+            if (GameManager.Instance.CurrentState == GameManager.GameState.Day)
+            {
+                StartNight();
+            }
+            // Gece bitti → Gündüz başlat
+            else if (GameManager.Instance.CurrentState == GameManager.GameState.Night)
+            {
+                StartDay();
             }
         }
+    }
+
+    /// <summary>
+    /// Gündüzü başlat
+    /// </summary>
+    void StartDay()
+    {
+        Debug.Log($"[TimeManager] ☀️ GÜNDÜZ BAŞLADI ({dayDuration}s)");
+
+        currentTimer = dayDuration;
+        isTimerRunning = true;
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ChangeState(GameManager.GameState.Day);
+        }
+    }
+
+    /// <summary>
+    /// Geceyi başlat
+    /// </summary>
+    void StartNight()
+    {
+        Debug.Log($"[TimeManager] 🌙 GECE BAŞLADI ({nightDuration}s)");
+
+        currentTimer = nightDuration;
+        isTimerRunning = true;
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ChangeState(GameManager.GameState.Night);
+        }
+    }
+
+    /// <summary>
+    /// Kalan süreyi al (UI için kullanılabilir)
+    /// </summary>
+    public float GetRemainingTime()
+    {
+        return Mathf.Max(0, currentTimer);
+    }
+
+    /// <summary>
+    /// Süre yüzdesi (UI için kullanılabilir)
+    /// </summary>
+    public float GetTimePercentage()
+    {
+        if (GameManager.Instance == null) return 0;
+
+        float totalDuration = GameManager.Instance.CurrentState == GameManager.GameState.Day
+            ? dayDuration
+            : nightDuration;
+
+        return currentTimer / totalDuration;
     }
 }
