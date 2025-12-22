@@ -195,53 +195,17 @@ namespace HappyHarvest
 
         public void EquipNext()
         {
-            int startIndex = EquippedItemIdx;
-            int attempts = 0;
+            EquippedItemIdx += 1;
+            if (EquippedItemIdx >= InventorySize) EquippedItemIdx = 0;
 
-            do
-            {
-                EquippedItemIdx += 1;
-                if (EquippedItemIdx >= InventorySize) EquippedItemIdx = 0;
-
-                attempts++;
-
-                // Eğer item varsa, bunu seç
-                if (Entries[EquippedItemIdx].Item != null)
-                {
-                    UIHandler.UpdateInventory(this);
-                    return;
-                }
-
-            } while (attempts < InventorySize); // Tüm slotları kontrol et
-
-            // Eğer hiçbir item yoksa, başlangıç pozisyonuna geri dön
-            EquippedItemIdx = startIndex;
             UIHandler.UpdateInventory(this);
         }
 
         public void EquipPrev()
         {
-            int startIndex = EquippedItemIdx;
-            int attempts = 0;
+            EquippedItemIdx -= 1;
+            if (EquippedItemIdx < 0) EquippedItemIdx = InventorySize - 1;
 
-            do
-            {
-                EquippedItemIdx -= 1;
-                if (EquippedItemIdx < 0) EquippedItemIdx = InventorySize - 1;
-
-                attempts++;
-
-                // Eğer item varsa, bunu seç
-                if (Entries[EquippedItemIdx].Item != null)
-                {
-                    UIHandler.UpdateInventory(this);
-                    return;
-                }
-
-            } while (attempts < InventorySize); // Tüm slotları kontrol et
-
-            // Eğer hiçbir item yoksa, başlangıç pozisyonuna geri dön
-            EquippedItemIdx = startIndex;
             UIHandler.UpdateInventory(this);
         }
 

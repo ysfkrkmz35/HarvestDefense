@@ -10,7 +10,7 @@ namespace HappyHarvest
     /// Add this to the CinemachineVirtualCamera in your scene that is the main gameplay camera. When a scene load, the
     /// player will set itself as target of the camera with that script 
     /// </summary>
-    [DefaultExecutionOrder(100)]
+    [DefaultExecutionOrder(150)]
     public class CameraSetter : MonoBehaviour
     {
         private void Awake()
