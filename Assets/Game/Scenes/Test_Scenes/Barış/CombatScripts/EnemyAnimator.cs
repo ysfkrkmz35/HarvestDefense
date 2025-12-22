@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(Animator), typeof(Rigidbody2D))]
@@ -16,27 +16,39 @@ public class EnemyAnimator : MonoBehaviour
 
     private Rigidbody2D rb;
     private string currentAnimState = "";
+    private SpriteRenderer spriteRenderer;
+    private Sprite lastValidSprite;
 
-    private void Awake()
+    private void Start()
+    {
+        // Initialize with current sprite to prevent null issues
+        if (spriteRenderer != null && spriteRenderer.sprite != null)
+            lastValidSprite = spriteRenderer.sprite;
+    }
+
+private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         if (animator == null) animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    private void LateUpdate()
+private void LateUpdate()
     {
-        // Düşman hareket ediyor mu?
         Vector2 velocity = rb.linearVelocity;
 
         if (velocity.magnitude > 0.1f)
         {
+            animator.enabled = true;
             PlayDirectionalAnimation(velocity);
+            if (spriteRenderer != null && spriteRenderer.sprite != null)
+                lastValidSprite = spriteRenderer.sprite;
         }
         else
         {
-            // Duruyorsa animasyonu durdurabilir veya Idle oynatabilirsin.
-            // Şimdilik yürümeye devam etsin veya hızı 0 yaparsan son karede donar.
-            animator.speed = 0;
+            animator.enabled = false;
+            if (spriteRenderer != null && lastValidSprite != null)
+                spriteRenderer.sprite = lastValidSprite;
         }
     }
 

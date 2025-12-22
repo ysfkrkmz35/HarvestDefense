@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 
 public class HealthB : MonoBehaviour, IDamageableB
@@ -6,6 +6,7 @@ public class HealthB : MonoBehaviour, IDamageableB
     [Header("Settings")]
     [SerializeField] private int maxHealth = 50;
     private int currentHealth;
+    private bool isDead;
 
     // Observer Pattern: Ölüm gerçekleştiğinde dinleyenlere haber verir.
     public event Action OnDeath;
@@ -15,10 +16,12 @@ public class HealthB : MonoBehaviour, IDamageableB
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage(int amount)
+public void TakeDamage(int amount)
     {
+        if (isDead) return;
+        
         currentHealth -= amount;
-        // Debug.Log($"{gameObject.name} hasar aldı. Kalan Can: {currentHealth}");
+        Debug.Log($"[HealthB] {gameObject.name} took {amount} damage. HP: {currentHealth}/{maxHealth}");
 
         if (currentHealth <= 0)
         {
@@ -26,12 +29,40 @@ public class HealthB : MonoBehaviour, IDamageableB
         }
     }
 
-    private void Die()
+        /// <summary>
+    /// Returns current health as a percentage (0-1)
+    /// </summary>
+    public float GetHealthPercent()
     {
-        // Event'i dinleyen (örn: Puan sistemi, Spawner) varsa tetikle
-        OnDeath?.Invoke();
+        return (float)currentHealth / maxHealth;
+    }
 
-        // Şimdilik test için objeyi yok ediyoruz. İleride ObjectPool kullanacağız.
+    /// <summary>
+    /// Returns current health value
+    /// </summary>
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
+    /// <summary>
+    /// Returns max health value
+    /// </summary>
+    public int GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+private void Die()
+    {
+        if (isDead) return;
+        isDead = true;
+        
+        Debug.Log($"[HealthB] {gameObject.name} DIE called! Destroying...");
+        OnDeath?.Invoke();
+        
+        // Immediately deactivate to stop all behavior
+        gameObject.SetActive(false);
         Destroy(gameObject);
     }
 }
