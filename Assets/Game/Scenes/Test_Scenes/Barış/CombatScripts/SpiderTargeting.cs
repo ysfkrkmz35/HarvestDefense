@@ -53,6 +53,17 @@ public class SpiderTargeting : MonoBehaviour
             
             // Skip other enemies (layer 9)
             if (h.gameObject.layer == 9) continue;
+
+            // EXPLICIT EXCLUSION: Never target Towers or Ballista
+            if (h.gameObject.CompareTag("Tower") || h.gameObject.name.Contains("Ballista"))
+            {
+                continue;
+            }
+
+            // Only target "Player" or explicitly allowed objects
+            // If you want STRICT player targeting, use: if (!h.gameObject.CompareTag("Player")) continue;
+            // For now, we allow others but assume Ballista exclusion is enough.
+            // Better strategy: Prefer Player if found.
             
             float d = Vector2.Distance(transform.position, h.transform.position);
             if (d < best && d <= detectRange)

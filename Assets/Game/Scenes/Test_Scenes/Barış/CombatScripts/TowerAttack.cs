@@ -43,7 +43,7 @@ public class TowerAttack : MonoBehaviour
 
         // Merminin scriptine yönü ver
         BoltProjectile boltScript = bolt.GetComponent<BoltProjectile>();
-        boltScript.Setup(dir);
+        boltScript.Setup(dir, gameObject);
     }
 
     private void FindTarget()
