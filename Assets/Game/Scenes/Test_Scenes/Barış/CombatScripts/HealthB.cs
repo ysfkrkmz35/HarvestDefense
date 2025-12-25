@@ -5,6 +5,7 @@ public class HealthB : MonoBehaviour, IDamageableB
 {
     [Header("Settings")]
     [SerializeField] private int maxHealth = 50;
+    [SerializeField] private bool debugLogs = true;
     private int currentHealth;
     private bool isDead;
 
@@ -21,7 +22,7 @@ public void TakeDamage(int amount)
         if (isDead) return;
         
         currentHealth -= amount;
-        Debug.Log($"[HealthB] {gameObject.name} took {amount} damage. HP: {currentHealth}/{maxHealth}");
+        if(debugLogs) Debug.Log($"[HealthB] {gameObject.name} took {amount} damage. HP: {currentHealth}/{maxHealth}");
 
         if (currentHealth <= 0)
         {
@@ -58,7 +59,7 @@ private void Die()
         if (isDead) return;
         isDead = true;
         
-        Debug.Log($"[HealthB] {gameObject.name} DIE called! Destroying...");
+        if(debugLogs) Debug.Log($"[HealthB] {gameObject.name} DIE called! Destroying...");
         OnDeath?.Invoke();
         
         // Immediately deactivate to stop all behavior

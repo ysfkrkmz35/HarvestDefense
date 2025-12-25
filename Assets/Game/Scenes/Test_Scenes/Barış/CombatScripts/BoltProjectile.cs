@@ -11,14 +11,17 @@ public class BoltProjectile : MonoBehaviour
     [SerializeField] private IsoSpriteRenderer isoRenderer; // Mermideki görsel script
 
     private Rigidbody2D rb;
+    private GameObject source;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    public void Setup(Vector2 direction)
+    public void Setup(Vector2 direction, GameObject shootingSource)
     {
+        source = shootingSource;
+
         // 1. Merminin görselini ayarla (Doğru açılı sprite'ı seç)
         isoRenderer.SetDirection(direction);
 
@@ -31,6 +34,9 @@ public class BoltProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // Prevent self-damage
+        if (source != null && other.gameObject == source) return;
+
         // HATA BURADA: IDamageable yerine IDamageableB yazmalısın
         // Eski hali: if (other.TryGetComponent(out IDamageable target)) 
 
