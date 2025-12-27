@@ -15,7 +15,7 @@ namespace YusufTest
     /// - Sürü davranışı (üst üste binmeme)
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
-    public class AdvancedEnemyAI : MonoBehaviour
+    public class SimpleEnemyAI : MonoBehaviour
     {
         #region === ENUMS ===
         public enum AIState
@@ -115,7 +115,7 @@ namespace YusufTest
         private Vector2 lastMovementDirection = Vector2.zero;
         
         // Cache
-        private static List<AdvancedEnemyAI> allEnemies = new List<AdvancedEnemyAI>();
+        private static List<SimpleEnemyAI> allEnemies = new List<SimpleEnemyAI>();
         #endregion
 
         #region === UNITY CALLBACKS ===
@@ -190,13 +190,13 @@ namespace YusufTest
             if (!isPlayerDetected && distanceToPlayer <= detectionRange)
             {
                 isPlayerDetected = true;
-                Debug.Log($"[AdvancedEnemyAI] 👁️ Player algılandı! Mesafe: {distanceToPlayer:F1}");
+                Debug.Log($"[SimpleEnemyAI] 👁️ Player algılandı! Mesafe: {distanceToPlayer:F1}");
             }
             // Player'ı kaybet
             else if (isPlayerDetected && distanceToPlayer > loseTargetRange)
             {
                 isPlayerDetected = false;
-                Debug.Log($"[AdvancedEnemyAI] ❌ Player kaybedildi! Mesafe: {distanceToPlayer:F1}");
+                Debug.Log($"[SimpleEnemyAI] ❌ Player kaybedildi! Mesafe: {distanceToPlayer:F1}");
             }
         }
 
@@ -372,7 +372,7 @@ namespace YusufTest
             // Yeni state'e giriş
             OnEnterState(newState);
 
-            Debug.Log($"[AdvancedEnemyAI] State: {newState}");
+            Debug.Log($"[SimpleEnemyAI] State: {newState}");
         }
 
         void OnEnterState(AIState state)
@@ -515,7 +515,7 @@ namespace YusufTest
             // Player hala menzilde mi?
             if (!isPlayerDetected || distanceToPlayer > attackRange * 1.5f)
             {
-                Debug.Log($"[AdvancedEnemyAI] ⚠️ Saldırı iptal - Player menzil dışı! Mesafe: {distanceToPlayer:F1}");
+                Debug.Log($"[SimpleEnemyAI] ⚠️ Saldırı iptal - Player menzil dışı! Mesafe: {distanceToPlayer:F1}");
                 SetState(AIState.Chase);
                 return;
             }
@@ -560,12 +560,12 @@ namespace YusufTest
                     if (damageable != null)
                     {
                         damageable.TakeDamage(attackDamage);
-                        Debug.Log($"[AdvancedEnemyAI] ⚔️ {attackDamage} hasar verildi! Mesafe: {dist:F1}");
+                        Debug.Log($"[SimpleEnemyAI] ⚔️ {attackDamage} hasar verildi! Mesafe: {dist:F1}");
                     }
                 }
                 else
                 {
-                    Debug.Log($"[AdvancedEnemyAI] ❌ Saldırı ıskaladı! Mesafe: {dist:F1}, Yön doğru: {IsFacingPlayer()}");
+                    Debug.Log($"[SimpleEnemyAI] ❌ Saldırı ıskaladı! Mesafe: {dist:F1}, Yön doğru: {IsFacingPlayer()}");
                 }
             }
 

@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
@@ -277,3 +278,4 @@ public class HealthBarCreator : Editor
     
     #endregion
 }
+#endif
