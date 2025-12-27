@@ -33,9 +33,37 @@ namespace YusufTest
     [SerializeField] private LayerMask obstacleLayer; // Wall layer
     [SerializeField] private float spawnSafeRadius = 1f;
 
+    [Header("Ground Check")]
+    [Tooltip("Zemin layer'ı (Ground, Grass vb.)")]
+    [SerializeField] private LayerMask groundLayer;
+    [Tooltip("Zeminden yukarı raycast mesafesi")]
+    [SerializeField] private float groundCheckDistance = 5f;
+    [Tooltip("Raycast'in başlangıç yüksekliği")]
+    [SerializeField] private float raycastStartHeight = 10f;
+
+    [Header("Variety Settings")]
+    [Tooltip("Spawn çeşitliliğini artır (shuffle listesi kullanır)")]
+    [SerializeField] private bool useShuffleForVariety = true;
+    [Tooltip("Son spawn edilen düşmanın hemen sonra tekrar gelmesini engelle")]
+    [SerializeField] private bool preventConsecutiveSame = true;
+
+    [Header("Spawn Position Spread")]
+    [Tooltip("Spawn pozisyonlarını dağıt (her spawn farklı açıda)")]
+    [SerializeField] private bool spreadSpawnPositions = true;
+    [Tooltip("Minimum açı farkı (derece)")]
+    [SerializeField] private float minAngleDifference = 45f;
+
     private List<GameObject> enemyPool = new List<GameObject>();
     private Transform player;
     private bool isSpawning = false;
+
+    // Shuffle sistemi için
+    private List<int> shuffledPrefabIndices = new List<int>();
+    private int currentShuffleIndex = 0;
+    private int lastSpawnedPrefabIndex = -1;
+
+    // Spawn pozisyon dağılımı için
+    private float lastSpawnAngle = 0f;
 
     void Awake()
     {
@@ -49,8 +77,9 @@ namespace YusufTest
         Debug.Log("[SimpleEnemySpawner] 🚀 Start çağrıldı");
         FindPlayer();
 
-        // Layer mask
+        // Layer masks
         obstacleLayer = LayerMask.GetMask("Wall");
+        groundLayer = LayerMask.GetMask("Ground", "Grass", "Terrain");
 
         // GameManager kontrolü
         if (GameManager.Instance == null)
@@ -219,12 +248,23 @@ namespace YusufTest
     }
 
     /// <summary>
-    /// Havuzdan pasif düşman al (rastgele TİP seç)
+    /// Havuzdan pasif düşman al (rastgele TİP seç - çeşitlilik artırılmış)
     /// </summary>
     GameObject GetPooledEnemy()
     {
-        // Önce rastgele bir prefab tipi seç
-        GameObject targetPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+        GameObject targetPrefab;
+
+        if (useShuffleForVariety)
+        {
+            // Shuffle listesi ile dengeli dağılım
+            targetPrefab = GetNextShuffledPrefab();
+        }
+        else
+        {
+            // Tamamen rastgele (eski yöntem)
+            targetPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+        }
+
         string targetPrefabName = targetPrefab.name;
 
         // O prefab tipinden pasif olanları bul
@@ -254,7 +294,99 @@ namespace YusufTest
     }
 
     /// <summary>
-    /// Rastgele spawn pozisyonu al (player'dan uzak, duvardan uzak)
+    /// Shuffle listesinden sıradaki prefab'ı al (dengeli dağılım için)
+    /// </summary>
+    GameObject GetNextShuffledPrefab()
+    {
+        // Liste boşsa veya sona geldiyse yeniden karıştır
+        if (shuffledPrefabIndices.Count == 0 || currentShuffleIndex >= shuffledPrefabIndices.Count)
+        {
+            RefreshShuffledList();
+        }
+
+        int prefabIndex = shuffledPrefabIndices[currentShuffleIndex];
+
+        // Ardışık aynı düşman engelleme
+        if (preventConsecutiveSame && prefabIndex == lastSpawnedPrefabIndex && shuffledPrefabIndices.Count > 1)
+        {
+            // Sonraki farklı olanı bul
+            int searchIndex = currentShuffleIndex + 1;
+            bool foundDifferent = false;
+
+            // Listenin kalanını tara
+            for (int i = searchIndex; i < shuffledPrefabIndices.Count; i++)
+            {
+                if (shuffledPrefabIndices[i] != lastSpawnedPrefabIndex)
+                {
+                    // Swap ile yer değiştir
+                    int temp = shuffledPrefabIndices[currentShuffleIndex];
+                    shuffledPrefabIndices[currentShuffleIndex] = shuffledPrefabIndices[i];
+                    shuffledPrefabIndices[i] = temp;
+                    prefabIndex = shuffledPrefabIndices[currentShuffleIndex];
+                    foundDifferent = true;
+                    Debug.Log($"[SimpleEnemySpawner] 🔄 Ardışık aynı engellendi: {enemyPrefabs[lastSpawnedPrefabIndex].name} → {enemyPrefabs[prefabIndex].name}");
+                    break;
+                }
+            }
+
+            // Bulamazsa liste yenile
+            if (!foundDifferent)
+            {
+                RefreshShuffledList();
+                prefabIndex = shuffledPrefabIndices[currentShuffleIndex];
+            }
+        }
+
+        currentShuffleIndex++;
+        lastSpawnedPrefabIndex = prefabIndex;
+
+        return enemyPrefabs[prefabIndex];
+    }
+
+    /// <summary>
+    /// Shuffle listesini yeniden oluştur ve karıştır
+    /// </summary>
+    void RefreshShuffledList()
+    {
+        shuffledPrefabIndices.Clear();
+
+        // Her prefab tipinden eşit sayıda index ekle
+        // Örnek: 3 prefab varsa, her birinden 3'er tane -> [0,0,0,1,1,1,2,2,2]
+        int repeatCount = Mathf.Max(1, enemyPrefabs.Count);
+
+        for (int i = 0; i < enemyPrefabs.Count; i++)
+        {
+            for (int j = 0; j < repeatCount; j++)
+            {
+                shuffledPrefabIndices.Add(i);
+            }
+        }
+
+        // Listeyi karıştır (Fisher-Yates shuffle)
+        ShuffleList(shuffledPrefabIndices);
+
+        currentShuffleIndex = 0;
+
+        Debug.Log($"[SimpleEnemySpawner] 🔀 Shuffle listesi yenilendi: {shuffledPrefabIndices.Count} eleman (Prefab sayısı: {enemyPrefabs.Count})");
+    }
+
+    /// <summary>
+    /// Fisher-Yates shuffle algoritması
+    /// </summary>
+    void ShuffleList<T>(List<T> list)
+    {
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int randomIndex = Random.Range(0, i + 1);
+            T temp = list[i];
+            list[i] = list[randomIndex];
+            list[randomIndex] = temp;
+        }
+    }
+
+    /// <summary>
+    /// Rastgele spawn pozisyonu al (player'dan uzak, zemin üzerinde, dağınık)
+    /// YENİ VERSİYON: Zemin kontrolü ile
     /// </summary>
     Vector3 GetRandomSpawnPosition()
     {
@@ -268,29 +400,97 @@ namespace YusufTest
             }
         }
 
-        // 10 deneme yap
-        for (int attempt = 0; attempt < 10; attempt++)
+        // ANA SPAWN DÖNGÜSÜ - Zemin üzerinde yer bulana kadar dene
+        int totalAttempts = 0;
+        const int MAX_TOTAL_ATTEMPTS = 50;
+
+        while (totalAttempts < MAX_TOTAL_ATTEMPTS)
         {
-            // Rastgele açı ve mesafe
-            float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+            totalAttempts++;
+
+            // 1. Player'ın MEVCUT pozisyonunu al
+            Vector2 currentPlayerPos = new Vector2(player.position.x, player.position.y);
+
+            // 2. Açı hesapla (DERECE cinsinden)
+            float angleDegrees;
+
+            if (spreadSpawnPositions && totalAttempts <= 10)
+            {
+                // İlk 10 denemede spread kullan
+                float nextAngle = lastSpawnAngle + Random.Range(minAngleDifference, 360f - minAngleDifference);
+                while (nextAngle >= 360f) nextAngle -= 360f;
+                angleDegrees = nextAngle;
+            }
+            else
+            {
+                // Sonraki denemelerde tamamen rastgele
+                angleDegrees = Random.Range(0f, 360f);
+            }
+
+            // 3. Rastgele mesafe
             float distance = Random.Range(minDistanceFromPlayer, maxDistanceFromPlayer);
 
-            Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance;
-            Vector2 candidatePos = (Vector2)player.position + offset;
+            // 4. Pozisyon hesapla
+            float angleRadians = angleDegrees * Mathf.Deg2Rad;
+            Vector2 direction = new Vector2(Mathf.Cos(angleRadians), Mathf.Sin(angleRadians));
+            Vector2 targetPosition = currentPlayerPos + (direction * distance);
 
-            // Duvara yakın mı kontrol et
-            if (!IsPositionBlocked(candidatePos))
+            // 5. ZEMİN KONTROLÜ - En önemli kısım!
+            Vector3 groundPosition;
+            if (FindGroundPosition(targetPosition, out groundPosition))
             {
-                // ÖNEMLİ: Z pozisyonunu 0 yap (2D oyun için)
-                return new Vector3(candidatePos.x, candidatePos.y, 0f);
+                // 6. Duvar kontrolü
+                if (!IsPositionBlocked(groundPosition))
+                {
+                    // BAŞARILI! Geçerli spawn pozisyonu bulundu
+                    lastSpawnAngle = angleDegrees; // Spread için kaydet
+                    Debug.Log($"[SimpleEnemySpawner] ✅ Spawn: Açı={angleDegrees:F0}°, Mesafe={distance:F1}, Zemin Y={groundPosition.y:F1}");
+                    return groundPosition;
+                }
+                else
+                {
+                    Debug.Log($"[SimpleEnemySpawner] ⚠️ Deneme {totalAttempts}: Zemin bulundu ama duvar var");
+                }
+            }
+            else
+            {
+                Debug.Log($"[SimpleEnemySpawner] ⚠️ Deneme {totalAttempts}: Açı {angleDegrees:F0}°, Mesafe {distance:F1} - ZEMİN YOK!");
             }
         }
 
-        // Bulamazsa fallback
-        Debug.LogWarning("[SimpleEnemySpawner] Uygun pozisyon bulunamadı, fallback kullanılıyor");
-        Vector2 fallbackPos = (Vector2)player.position + Random.insideUnitCircle * maxDistanceFromPlayer;
-        // ÖNEMLİ: Z pozisyonunu 0 yap
-        return new Vector3(fallbackPos.x, fallbackPos.y, 0f);
+        // SON ÇARE: Player'ın yanına spawn et
+        Debug.LogError("[SimpleEnemySpawner] ❌ 50 denemede uygun yer bulunamadı! Player yanına spawn ediliyor.");
+        Vector3 playerGroundPos;
+        if (FindGroundPosition(player.position, out playerGroundPos))
+        {
+            // Player'dan biraz uzaklaştır
+            Vector2 randomOffset = Random.insideUnitCircle.normalized * 3f;
+            return playerGroundPos + new Vector3(randomOffset.x, 0f, randomOffset.y);
+        }
+
+        return player.position;
+    }
+
+    /// <summary>
+    /// Verilen XZ pozisyonunda zemin var mı, varsa Y pozisyonunu bul
+    /// </summary>
+    bool FindGroundPosition(Vector2 xzPosition, out Vector3 groundPosition)
+    {
+        // Yukarıdan aşağı raycast at
+        Vector3 rayStart = new Vector3(xzPosition.x, raycastStartHeight, 0f);
+
+        RaycastHit2D hit = Physics2D.Raycast(rayStart, Vector2.down, groundCheckDistance, groundLayer);
+
+        if (hit.collider != null)
+        {
+            // Zemin bulundu!
+            groundPosition = new Vector3(xzPosition.x, hit.point.y, 0f);
+            return true;
+        }
+
+        // Zemin bulunamadı (deniz, boşluk vb.)
+        groundPosition = Vector3.zero;
+        return false;
     }
 
     /// <summary>
