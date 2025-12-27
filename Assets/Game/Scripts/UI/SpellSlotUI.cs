@@ -348,5 +348,27 @@ public class SpellSlotUI : MonoBehaviour
         UpdateSelection(currentSelectedSlot);
     }
 
+    /// <summary>
+    /// Runtime setup for programmatic UI creation
+    /// Called by SpellBarUICreator
+    /// </summary>
+    public void RuntimeSetup(SlotUI s1, SlotUI s2, SlotUI s3, SlotUI s4)
+    {
+        slot1 = s1;
+        slot2 = s2;
+        slot3 = s3;
+        slot4 = s4;
+
+        // Reinitialize
+        slots = new SlotUI[4] { slot1, slot2, slot3, slot4 };
+
+        // Setup
+        SetupButtonListeners();
+        UpdateAllSlots();
+        UpdateSelection(0);
+
+        Debug.Log("[SpellSlotUI] ✅ Runtime setup complete");
+    }
+
     #endregion
 }

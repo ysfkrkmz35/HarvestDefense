@@ -20,6 +20,9 @@ public abstract class SpellBase : MonoBehaviour
     [Tooltip("Reference to player's ProHealthManaUI for mana consumption")]
     [SerializeField] protected ProHealthManaUI manaUI;
 
+    [Tooltip("Reference to player animator (auto-found if not set)")]
+    [SerializeField] protected Animator playerAnimator;
+
     [Header("═══ DEBUG ═══")]
     [SerializeField] protected bool showDebugLogs = true;
 
@@ -30,6 +33,7 @@ public abstract class SpellBase : MonoBehaviour
     protected float lastCastTime = -999f;
     protected Camera mainCamera;
     protected AudioSource audioSource;
+    protected Transform playerTransform; // The actual player for position reference
 
     #endregion
 
@@ -103,6 +107,32 @@ public abstract class SpellBase : MonoBehaviour
         if (manaUI == null)
         {
             manaUI = FindFirstObjectByType<ProHealthManaUI>();
+        }
+
+        // Find the player for position reference
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            playerTransform = player.transform;
+
+            // Auto-find player animator if not assigned
+            if (playerAnimator == null)
+            {
+                playerAnimator = player.GetComponent<Animator>();
+                if (playerAnimator == null)
+                {
+                    playerAnimator = player.GetComponentInChildren<Animator>();
+                }
+            }
+
+            if (showDebugLogs)
+            {
+                Debug.Log($"[SpellBase] ✅ Found player: {player.name}");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[SpellBase] ⚠️ No GameObject with 'Player' tag found! Spell position may be wrong.");
         }
     }
 
@@ -183,13 +213,20 @@ public abstract class SpellBase : MonoBehaviour
 
     protected virtual void ExecuteCast(Vector2 targetPosition)
     {
-        // Clamp to max range
-        Vector2 playerPos = transform.position;
+        // Get player position (use player transform, fallback to this transform)
+        Vector2 playerPos = playerTransform != null ? (Vector2)playerTransform.position : (Vector2)transform.position;
+        
+        // Clamp to max range from player
         float distance = Vector2.Distance(playerPos, targetPosition);
         if (distance > spellData.maxRange)
         {
             Vector2 direction = (targetPosition - playerPos).normalized;
             targetPosition = playerPos + direction * spellData.maxRange;
+        }
+
+        if (showDebugLogs)
+        {
+            Debug.Log($"[{spellData.spellName}] 🎯 Player at {playerPos}, Target at {targetPosition}");
         }
 
         // Start cooldown
@@ -204,6 +241,9 @@ public abstract class SpellBase : MonoBehaviour
         // Play cast sound
         PlaySound(spellData.castSound);
 
+        // Trigger player cast animation
+        TriggerCastAnimation();
+
         // Trigger event
         OnSpellCast?.Invoke();
 
@@ -212,14 +252,47 @@ public abstract class SpellBase : MonoBehaviour
             Debug.Log($"[{spellData.spellName}] 🔥 Casting at {targetPosition}");
         }
 
-        // Call abstract implementation
-        Cast(targetPosition);
+        // If there's an animation delay, wait before casting
+        if (spellData.castAnimationDelay > 0)
+        {
+            StartCoroutine(DelayedCast(targetPosition));
+        }
+        else
+        {
+            // Call abstract implementation immediately
+            Cast(targetPosition);
+        }
 
         // Screen shake
         if (spellData.enableScreenShake)
         {
             StartCoroutine(ScreenShake());
         }
+    }
+
+    /// <summary>
+    /// Trigger the player's cast animation for this spell
+    /// </summary>
+    protected virtual void TriggerCastAnimation()
+    {
+        if (playerAnimator == null) return;
+        if (spellData == null || string.IsNullOrEmpty(spellData.castAnimationTrigger)) return;
+
+        playerAnimator.SetTrigger(spellData.castAnimationTrigger);
+
+        if (showDebugLogs)
+        {
+            Debug.Log($"[{spellData.spellName}] 🎬 Triggered animation: {spellData.castAnimationTrigger}");
+        }
+    }
+
+    /// <summary>
+    /// Delayed cast for animation sync
+    /// </summary>
+    protected IEnumerator DelayedCast(Vector2 targetPosition)
+    {
+        yield return new WaitForSeconds(spellData.castAnimationDelay);
+        Cast(targetPosition);
     }
 
     /// <summary>
@@ -231,41 +304,64 @@ public abstract class SpellBase : MonoBehaviour
 
     #region ═══════ DAMAGE HELPERS ═══════
 
+    [Header("═══ ENEMY TARGETING ═══")]
+    [Tooltip("Tag used to identify enemies")]
+    [SerializeField] protected string enemyTag = "Enemy";
+
     /// <summary>
-    /// Deal damage to all IDamageable in radius
+    /// Deal damage to all enemies in radius (tag-based detection like SwordCombat)
     /// </summary>
     protected int DealDamageInRadius(Vector2 center, float radius, float damage, LayerMask layers, bool damageDropoff = true)
     {
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, radius, layers);
+        // Get ALL colliders in radius (ignore layer mask for detection, use tag instead)
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, radius);
         int hitCount = 0;
+
+        if (showDebugLogs)
+        {
+            Debug.Log($"[SpellBase] 🔍 Found {hitColliders.Length} colliders in radius {radius}");
+        }
 
         foreach (Collider2D col in hitColliders)
         {
-            float finalDamage = damage;
+            // Skip player
+            if (playerTransform != null && (col.transform == playerTransform || col.transform.IsChildOf(playerTransform)))
+                continue;
 
-            // Distance-based damage falloff
+            // Check for Enemy tag in hierarchy (like SwordCombat does)
+            Transform targetTransform = col.transform;
+            bool hasEnemyTag = CheckEnemyTag(col.transform, ref targetTransform);
+
+            if (!hasEnemyTag)
+            {
+                continue;
+            }
+
+            // Find IDamageable in hierarchy
+            IDamageable damageable = FindIDamageable(col.transform);
+            if (damageable == null)
+            {
+                if (showDebugLogs)
+                    Debug.LogWarning($"[SpellBase] ⚠️ {targetTransform.name} has Enemy tag but no IDamageable!");
+                continue;
+            }
+
+            // Calculate damage
+            float finalDamage = damage;
             if (damageDropoff)
             {
-                float dist = Vector2.Distance(center, col.transform.position);
+                float dist = Vector2.Distance(center, targetTransform.position);
                 float multiplier = 1f - (dist / radius);
                 finalDamage = damage * Mathf.Clamp01(multiplier);
             }
 
-            // Try IDamageable first
-            IDamageable damageable = col.GetComponent<IDamageable>();
-            if (damageable != null)
-            {
-                damageable.TakeDamage(Mathf.RoundToInt(finalDamage));
-                hitCount++;
-                continue;
-            }
+            // Deal damage
+            damageable.TakeDamage(Mathf.RoundToInt(finalDamage));
+            hitCount++;
 
-            // Fallback to Health component
-            Health health = col.GetComponent<Health>();
-            if (health != null)
+            if (showDebugLogs)
             {
-                health.TakeDamage(Mathf.RoundToInt(finalDamage));
-                hitCount++;
+                Debug.Log($"[SpellBase] ⚔️ HIT {targetTransform.name} for {Mathf.RoundToInt(finalDamage)} damage!");
             }
         }
 
@@ -275,6 +371,72 @@ public abstract class SpellBase : MonoBehaviour
         }
 
         return hitCount;
+    }
+
+    /// <summary>
+    /// Check if collider or any parent has Enemy tag
+    /// </summary>
+    private bool CheckEnemyTag(Transform startTransform, ref Transform targetTransform)
+    {
+        // Check self
+        if (startTransform.CompareTag(enemyTag))
+        {
+            targetTransform = startTransform;
+            return true;
+        }
+
+        // Check parents
+        Transform parent = startTransform.parent;
+        while (parent != null)
+        {
+            if (parent.CompareTag(enemyTag))
+            {
+                targetTransform = parent;
+                return true;
+            }
+            parent = parent.parent;
+        }
+
+        // Check root
+        Transform root = startTransform.root;
+        if (root != startTransform && root.CompareTag(enemyTag))
+        {
+            targetTransform = root;
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Find IDamageable in entire hierarchy
+    /// </summary>
+    private IDamageable FindIDamageable(Transform startTransform)
+    {
+        // Self
+        IDamageable damageable = startTransform.GetComponent<IDamageable>();
+        if (damageable != null) return damageable;
+
+        // Parents
+        damageable = startTransform.GetComponentInParent<IDamageable>();
+        if (damageable != null) return damageable;
+
+        // Children
+        damageable = startTransform.GetComponentInChildren<IDamageable>();
+        if (damageable != null) return damageable;
+
+        // Root and its children
+        Transform root = startTransform.root;
+        if (root != startTransform)
+        {
+            damageable = root.GetComponent<IDamageable>();
+            if (damageable != null) return damageable;
+
+            damageable = root.GetComponentInChildren<IDamageable>();
+            if (damageable != null) return damageable;
+        }
+
+        return null;
     }
 
     /// <summary>

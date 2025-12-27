@@ -141,46 +141,37 @@ public class SpellManager : MonoBehaviour
     {
         if (enableKeyboardInput)
         {
-            // Number keys for slot selection and casting
+            // Number keys for slot SELECTION only (not casting)
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                SelectSlotAndCast(0);
+                SelectSlot(0);
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                SelectSlotAndCast(1);
+                SelectSlot(1);
             }
             else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                SelectSlotAndCast(2);
+                SelectSlot(2);
             }
             else if (Input.GetKeyDown(KeyCode.Alpha4))
             {
-                SelectSlotAndCast(3);
+                SelectSlot(3);
             }
         }
 
-        // Mouse cast for selected spell
+        // Right-click casts selected spell
         if (enableMouseCast && Input.GetMouseButtonDown(castMouseButton))
         {
             CastSelectedSpell();
         }
     }
 
+    // SelectSlotAndCast kept for backwards compatibility with UI clicks
     private void SelectSlotAndCast(int slotIndex)
     {
-        // If same slot, just cast
-        if (selectedSlot == slotIndex)
-        {
-            CastSelectedSpell();
-        }
-        else
-        {
-            // Select new slot
-            SelectSlot(slotIndex);
-            // Also cast immediately
-            CastSelectedSpell();
-        }
+        SelectSlot(slotIndex);
+        CastSelectedSpell();
     }
 
     #endregion

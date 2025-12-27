@@ -109,6 +109,14 @@ public class SpellData : ScriptableObject
     [Min(0.05f)]
     public float shakeDuration = 0.2f;
 
+    [Header("═══ PLAYER ANIMATION ═══")]
+    [Tooltip("Animator trigger name for this spell's cast animation")]
+    public string castAnimationTrigger = "Cast";
+
+    [Tooltip("Duration to wait before spell effect (for animation sync)")]
+    [Min(0f)]
+    public float castAnimationDelay = 0f;
+
     #region ═══════ HELPER METHODS ═══════
 
     /// <summary>

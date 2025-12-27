@@ -11,11 +11,11 @@ using System.Collections;
 public class AreaSpell : SpellBase
 {
     [Header("═══ AREA SPELL SETTINGS ═══")]
-    [Tooltip("Layer mask for damageable objects")]
+    [Tooltip("Layer mask for damageable objects (not used - uses Enemy tag instead)")]
     [SerializeField] private LayerMask damageableLayers;
 
-    [Tooltip("Apply distance-based damage falloff")]
-    [SerializeField] private bool useDamageDropoff = true;
+    [Tooltip("Apply distance-based damage falloff (false = uniform damage in entire area)")]
+    [SerializeField] private bool useDamageDropoff = false; // Uniform damage by default
 
     /// <summary>
     /// Cast the area spell at target position
@@ -48,10 +48,20 @@ public class AreaSpell : SpellBase
     /// </summary>
     private void SpawnExplosionEffect(Vector2 position)
     {
+        if (showDebugLogs)
+        {
+            Debug.Log($"[AreaSpell] 🎆 Spawning effect at {position}");
+        }
+
         if (spellData.effectPrefab != null)
         {
             Vector3 spawnPos = new Vector3(position.x, position.y, 0f);
             GameObject effect = Instantiate(spellData.effectPrefab, spawnPos, Quaternion.identity);
+
+            if (showDebugLogs)
+            {
+                Debug.Log($"[AreaSpell] ✅ Spawned prefab: {spellData.effectPrefab.name} at {spawnPos}");
+            }
 
             // Start particle systems if present
             ParticleSystem ps = effect.GetComponent<ParticleSystem>();
@@ -67,6 +77,10 @@ public class AreaSpell : SpellBase
         }
         else
         {
+            if (showDebugLogs)
+            {
+                Debug.Log($"[AreaSpell] ⚠️ No effect prefab assigned, creating procedural effect");
+            }
             // Create simple procedural effect if no prefab
             StartCoroutine(CreateSimpleExplosionEffect(position));
         }
