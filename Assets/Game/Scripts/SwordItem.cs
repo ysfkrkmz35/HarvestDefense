@@ -36,13 +36,12 @@ namespace HappyHarvest
         }
         
         /// <summary>
-        /// Sword can always be used if cooldown has passed
+        /// Sword can always be used - no tile target needed
         /// </summary>
         public override bool CanUse(Vector3Int target)
         {
-            // Return false to prevent PlayerController from showing the tile selection highlighter.
-            // Since NeedTarget() is false, Use() will still be called by standard input.
-            return false;
+            // DÜZELTME: true döndür ki Use() çağrılabilsin
+            return true;
         }
 
         
@@ -53,7 +52,7 @@ namespace HappyHarvest
         /// </summary>
         public override bool Use(Vector3Int target)
         {
-            Debug.Log($"[SwordItem] Use() called! Setting animation trigger: {PlayerAnimatorTriggerUse}");
+            Debug.Log($"[SwordItem] ⚔️ Use() called! Animation trigger: {PlayerAnimatorTriggerUse}");
             lastUseTime = Time.time;
             
             // Find the SwordCombat component and trigger the attack damage
@@ -65,11 +64,16 @@ namespace HappyHarvest
                 {
                     // Trigger the actual attack (hit detection + damage)
                     swordCombat.PerformAttackDamage();
+                    Debug.Log("[SwordItem] ✅ SwordCombat.PerformAttackDamage() called!");
                 }
                 else
                 {
-                    Debug.LogWarning("[SwordItem] SwordCombat component not found on player! Add it for hit detection.");
+                    Debug.LogError("[SwordItem] ❌ SwordCombat component not found on player! Add it for hit detection.");
                 }
+            }
+            else
+            {
+                Debug.LogError("[SwordItem] ❌ GameManager.Instance.Player is null!");
             }
             
             return true; // Return true to trigger the animation

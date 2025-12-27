@@ -36,6 +36,13 @@ public class SwordCombat : MonoBehaviour
     [Tooltip("Item name to check for in equipped slot (case-insensitive contains)")]
     [SerializeField] private string swordItemName = "sword";
 
+    [Header("═══ DIRECT INPUT (Backup) ═══")]
+    [Tooltip("Enable direct mouse input as backup if inventory system doesn't work")]
+    [SerializeField] private bool enableDirectInput = true;
+    
+    [Tooltip("Mouse button for attack (0=Left, 1=Right)")]
+    [SerializeField] private int attackMouseButton = 0;
+
     [Header("═══ DEBUG ═══")]
     [SerializeField] private bool showDebugLogs = true;
     [SerializeField] private bool showGizmos = true;
@@ -54,6 +61,9 @@ public class SwordCombat : MonoBehaviour
         playerAnimator = GetComponentInChildren<Animator>();
         dirXHash = Animator.StringToHash("DirX");
         dirYHash = Animator.StringToHash("DirY");
+        
+        if (showDebugLogs)
+            Debug.Log("[SwordCombat] ✅ Initialized on " + gameObject.name);
     }
 
     private void Update()
@@ -61,9 +71,14 @@ public class SwordCombat : MonoBehaviour
         // Update look direction from animator
         UpdateLookDirection();
 
-        // NOTE: Mouse input is handled by HappyHarvest PlayerController/InventorySystem
-        // When player clicks with sword equipped, SwordItem.Use() is called which then
-        // calls our PerformAttackDamage() method. We don't handle input here anymore.
+        // Direkt mouse input - backup olarak
+        if (enableDirectInput && Input.GetMouseButtonDown(attackMouseButton))
+        {
+            if (showDebugLogs)
+                Debug.Log("[SwordCombat] 🖱️ Mouse click detected!");
+            
+            TryPerformAttack();
+        }
     }
 
     /// <summary>
@@ -71,11 +86,14 @@ public class SwordCombat : MonoBehaviour
     /// </summary>
     public void TryPerformAttack()
     {
+        if (showDebugLogs)
+            Debug.Log("[SwordCombat] 🗡️ TryPerformAttack() called");
+
         // Check if sword is equipped (if required)
         if (requireSwordEquipped && !IsSwordEquipped())
         {
             if (showDebugLogs)
-                Debug.Log("[SwordCombat] ⚠️ Sword not equipped, skipping attack damage!");
+                Debug.Log("[SwordCombat] ⚠️ Sword not equipped, skipping attack!");
             return;
         }
 
@@ -99,14 +117,18 @@ public class SwordCombat : MonoBehaviour
     {
         lastAttackTime = Time.time;
 
-        // NOTE: Animation is NOT triggered here - it's triggered by the HappyHarvest inventory system
-        // when SwordItem.Use() returns true. This method ONLY handles hit detection and damage.
-
         // Get player position
         Vector2 playerPos = transform.position;
 
+        if (showDebugLogs)
+            Debug.Log($"[SwordCombat] ⚔️ Attack started! Position: {playerPos}, Range: {attackRange}, Direction: {currentLookDirection}");
+
         // Find ALL colliders in range (no layer filtering)
         Collider2D[] hits = Physics2D.OverlapCircleAll(playerPos, attackRange);
+        
+        if (showDebugLogs)
+            Debug.Log($"[SwordCombat] 🔍 Found {hits.Length} colliders in range");
+
         int hitCount = 0;
 
         foreach (var hit in hits)
@@ -114,42 +136,153 @@ public class SwordCombat : MonoBehaviour
             // Skip self
             if (hit.transform == transform || hit.transform.IsChildOf(transform))
                 continue;
-                
-            // Check if this object has the Enemy tag
-            if (!hit.CompareTag(enemyTag))
+
+            // DÜZELTME: Hem collider'ın objesinde hem de root/parent'ta tag kontrolü yap
+            Transform targetTransform = hit.transform;
+            bool hasEnemyTag = false;
+            
+            // Önce collider'ın objesini kontrol et
+            if (hit.CompareTag(enemyTag))
+            {
+                hasEnemyTag = true;
+            }
+            // Sonra parent'ları kontrol et (root'a kadar)
+            else
+            {
+                Transform parent = hit.transform.parent;
+                while (parent != null)
+                {
+                    if (parent.CompareTag(enemyTag))
+                    {
+                        hasEnemyTag = true;
+                        targetTransform = parent;
+                        break;
+                    }
+                    parent = parent.parent;
+                }
+            }
+            
+            // Ayrıca root objeyi de kontrol et
+            if (!hasEnemyTag)
+            {
+                Transform root = hit.transform.root;
+                if (root != hit.transform && root.CompareTag(enemyTag))
+                {
+                    hasEnemyTag = true;
+                    targetTransform = root;
+                }
+            }
+
+            if (!hasEnemyTag)
+            {
+                if (showDebugLogs && hit.tag != "Untagged" && hit.tag != "Player")
+                    Debug.Log($"[SwordCombat] ❌ {hit.gameObject.name} tag '{hit.tag}' != '{enemyTag}'");
                 continue;
+            }
+
+            if (showDebugLogs)
+                Debug.Log($"[SwordCombat] 👀 Enemy found: {targetTransform.name} (collider on: {hit.gameObject.name})");
 
             // Check if enemy is in attack arc (in front of player)
-            Vector2 toEnemy = ((Vector2)hit.transform.position - playerPos).normalized;
+            Vector2 toEnemy = ((Vector2)targetTransform.position - playerPos).normalized;
             float angle = Vector2.Angle(currentLookDirection, toEnemy);
 
-            if (angle <= attackArc / 2f)
+            if (showDebugLogs)
+                Debug.Log($"[SwordCombat] 📐 Angle: {angle:F1}° (max allowed: {attackArc / 2f}°)");
+
+            if (angle > attackArc / 2f)
             {
-                // Try to damage the enemy using IDamageable interface
-                IDamageable damageable = hit.GetComponent<IDamageable>();
-                if (damageable != null)
-                {
-                    damageable.TakeDamage(damage);
-                    hitCount++;
-                    
-                    if (showDebugLogs)
-                        Debug.Log($"[SwordCombat] ⚔️ Hit {hit.gameObject.name} (tag: {enemyTag}) for {damage} damage!");
-                }
-                else
-                {
-                    if (showDebugLogs)
-                        Debug.LogWarning($"[SwordCombat] ⚠️ {hit.gameObject.name} has '{enemyTag}' tag but no IDamageable component!");
-                }
+                if (showDebugLogs)
+                    Debug.Log($"[SwordCombat] 📐 {targetTransform.name} outside attack arc, skipping");
+                continue;
+            }
+
+            // DÜZELTME: IDamageable'ı her yerde ara!
+            IDamageable damageable = FindIDamageable(hit.transform);
+
+            if (damageable != null)
+            {
+                damageable.TakeDamage(damage);
+                hitCount++;
+                
+                if (showDebugLogs)
+                    Debug.Log($"[SwordCombat] ⚔️ HIT! {targetTransform.name} took {damage} damage!");
+            }
+            else
+            {
+                if (showDebugLogs)
+                    Debug.LogWarning($"[SwordCombat] ⚠️ {targetTransform.name} has 'Enemy' tag but NO IDamageable found anywhere in hierarchy!");
+            }
+        }
+
+        // Summary log
+        if (showDebugLogs)
+        {
+            if (hitCount > 0)
+                Debug.Log($"[SwordCombat] 💥 Attack complete! Hit {hitCount} enemies for {damage} damage each!");
+            else
+                Debug.Log("[SwordCombat] 🗡️ Attack complete - no enemies hit");
+        }
+    }
+
+    /// <summary>
+    /// IDamageable'ı tüm hiyerarşide ara (self, parent, children, root)
+    /// </summary>
+    private IDamageable FindIDamageable(Transform startTransform)
+    {
+        // 1. Önce kendi üzerinde
+        IDamageable damageable = startTransform.GetComponent<IDamageable>();
+        if (damageable != null)
+        {
+            if (showDebugLogs)
+                Debug.Log($"[SwordCombat] ✅ IDamageable found on: {startTransform.name}");
+            return damageable;
+        }
+
+        // 2. Parent'larda ara
+        damageable = startTransform.GetComponentInParent<IDamageable>();
+        if (damageable != null)
+        {
+            if (showDebugLogs)
+                Debug.Log($"[SwordCombat] ✅ IDamageable found in PARENT of: {startTransform.name}");
+            return damageable;
+        }
+
+        // 3. Children'larda ara
+        damageable = startTransform.GetComponentInChildren<IDamageable>();
+        if (damageable != null)
+        {
+            if (showDebugLogs)
+                Debug.Log($"[SwordCombat] ✅ IDamageable found in CHILD of: {startTransform.name}");
+            return damageable;
+        }
+
+        // 4. Root objeyi kontrol et
+        Transform root = startTransform.root;
+        if (root != startTransform)
+        {
+            damageable = root.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                if (showDebugLogs)
+                    Debug.Log($"[SwordCombat] ✅ IDamageable found on ROOT: {root.name}");
+                return damageable;
+            }
+
+            // Root'un children'larında da ara
+            damageable = root.GetComponentInChildren<IDamageable>();
+            if (damageable != null)
+            {
+                if (showDebugLogs)
+                    Debug.Log($"[SwordCombat] ✅ IDamageable found in ROOT's children: {root.name}");
+                return damageable;
             }
         }
 
         if (showDebugLogs)
-        {
-            if (hitCount > 0)
-                Debug.Log($"[SwordCombat] 💥 Sword swing hit {hitCount} enemies!");
-            else
-                Debug.Log("[SwordCombat] 🗡️ Sword swing - no enemies hit");
-        }
+            Debug.LogWarning($"[SwordCombat] ❌ IDamageable NOT FOUND anywhere for: {startTransform.name} (root: {startTransform.root.name})");
+
+        return null;
     }
 
     /// <summary>
@@ -171,8 +304,23 @@ public class SwordCombat : MonoBehaviour
             {
                 // Check if the equipped item name contains "sword" (case-insensitive)
                 string itemName = equippedItem.DisplayName ?? equippedItem.UniqueID ?? "";
-                return itemName.ToLower().Contains(swordItemName.ToLower());
+                bool hasSword = itemName.ToLower().Contains(swordItemName.ToLower());
+                
+                if (showDebugLogs && !hasSword)
+                    Debug.Log($"[SwordCombat] 📦 Equipped: '{itemName}' (not a sword)");
+                    
+                return hasSword;
             }
+            else
+            {
+                if (showDebugLogs)
+                    Debug.Log("[SwordCombat] 📦 No item equipped");
+            }
+        }
+        else
+        {
+            if (showDebugLogs)
+                Debug.Log("[SwordCombat] ⚠️ PlayerController or Inventory not found");
         }
 
         // If no inventory system found, allow attack (standalone mode)
@@ -224,6 +372,41 @@ public class SwordCombat : MonoBehaviour
         lastAttackTime = -999f;
     }
 
+    // Editor test buttons
+    [ContextMenu("🗡️ Test: Force Attack")]
+    private void TestForceAttack()
+    {
+        PerformAttackDamage();
+    }
+
+    [ContextMenu("🔍 Test: Check Enemies In Range")]
+    private void TestCheckEnemies()
+    {
+        Vector2 playerPos = transform.position;
+        Collider2D[] hits = Physics2D.OverlapCircleAll(playerPos, attackRange);
+        
+        Debug.Log($"=== ENEMIES IN RANGE ({attackRange} units) ===");
+        int enemyCount = 0;
+        
+        foreach (var hit in hits)
+        {
+            if (hit.transform == transform) continue;
+            
+            bool hasTag = hit.CompareTag(enemyTag);
+            bool parentHasTag = hit.transform.root.CompareTag(enemyTag);
+            IDamageable damageable = FindIDamageable(hit.transform);
+            
+            string tagInfo = hasTag ? "✓ Self" : (parentHasTag ? "✓ Root" : "✗");
+            string damageableInfo = damageable != null ? "✓" : "✗";
+            
+            Debug.Log($"  • {hit.gameObject.name} (root: {hit.transform.root.name}) | Tag: {tagInfo} | IDamageable: {damageableInfo}");
+            
+            if (hasTag || parentHasTag) enemyCount++;
+        }
+        
+        Debug.Log($"=== Total: {enemyCount} enemies found ===");
+    }
+
     // Gizmos for debugging
     private void OnDrawGizmosSelected()
     {
@@ -243,5 +426,9 @@ public class SwordCombat : MonoBehaviour
 
         Gizmos.DrawLine(transform.position, transform.position + leftBound);
         Gizmos.DrawLine(transform.position, transform.position + rightBound);
+        
+        // Draw current look direction
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(transform.position, forward * attackRange);
     }
 }
