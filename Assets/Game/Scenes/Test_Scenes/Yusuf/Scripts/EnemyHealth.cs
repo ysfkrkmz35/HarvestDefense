@@ -15,6 +15,7 @@ namespace YusufTest
 
         [Header("== REFERENCES ==")]
         private SimpleEnemyAI enemyAI;
+        private EnemyDropHandler dropHandler;
 
     [Header("== DEBUG ==")]
     [SerializeField] private bool showDebugLogs = true;
@@ -26,6 +27,9 @@ namespace YusufTest
         {
             Debug.LogWarning("[EnemyHealth] SimpleEnemyAI bulunamadı!");
         }
+
+        // Get drop handler if present
+        dropHandler = GetComponent<EnemyDropHandler>();
     }
 
     private void OnEnable()
@@ -73,6 +77,12 @@ namespace YusufTest
     {
         if (showDebugLogs)
             Debug.Log("[EnemyHealth] Düşman öldü!");
+
+        // Drop rewards (XP/Gold) if handler exists
+        if (dropHandler != null)
+        {
+            dropHandler.OnEnemyDeath();
+        }
 
         // EnemyAI'ye haber ver
         if (enemyAI != null)

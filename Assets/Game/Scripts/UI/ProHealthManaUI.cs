@@ -40,6 +40,14 @@ public class ProHealthManaUI : MonoBehaviour
     [SerializeField] private float damageBarSpeed = 3f;
     [SerializeField] private float lowHealthThreshold = 0.3f;
 
+    [Header("══════ MANA REGENERATION ══════")]
+    [Tooltip("Mana regenerated per second")]
+    [SerializeField] private float manaRegenRate = 5f;
+    [Tooltip("Delay after using mana before regen starts")]
+    [SerializeField] private float manaRegenDelay = 2f;
+    [Tooltip("Enable automatic mana regeneration")]
+    [SerializeField] private bool enableManaRegen = true;
+
     [Header("══════ SHAKE SETTINGS ══════")]
     [SerializeField] private float shakeDuration = 0.15f;
     [SerializeField] private float shakeMagnitude = 3f;
@@ -62,6 +70,7 @@ public class ProHealthManaUI : MonoBehaviour
     private float pulseTimer;
     private float glowTimer;
     private bool wasLowHealth;
+    private float lastManaUseTime = -999f; // For mana regen delay
 
     // Properties
     public float CurrentHealth => currentHealth;
@@ -92,6 +101,7 @@ public class ProHealthManaUI : MonoBehaviour
         UpdateShake();
         UpdateEffects();
         UpdateTexts();
+        RegenerateMana();
     }
 
     #region ═══════ PUBLIC METHODS ═══════
@@ -148,6 +158,7 @@ public class ProHealthManaUI : MonoBehaviour
     public void UseMana(float amount)
     {
         currentMana = Mathf.Max(0, currentMana - amount);
+        lastManaUseTime = Time.time; // Track for regen delay
     }
 
     /// <summary>
@@ -156,6 +167,21 @@ public class ProHealthManaUI : MonoBehaviour
     public void RestoreMana(float amount)
     {
         currentMana = Mathf.Min(maxMana, currentMana + amount);
+    }
+
+    /// <summary>
+    /// Automatic mana regeneration (called in Update)
+    /// </summary>
+    private void RegenerateMana()
+    {
+        if (!enableManaRegen) return;
+        if (currentMana >= maxMana) return;
+        
+        // Wait for delay after last mana use
+        if (Time.time < lastManaUseTime + manaRegenDelay) return;
+        
+        // Regenerate
+        currentMana = Mathf.Min(maxMana, currentMana + manaRegenRate * Time.deltaTime);
     }
 
     /// <summary>
