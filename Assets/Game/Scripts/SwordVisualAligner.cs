@@ -9,33 +9,53 @@ public class SwordVisualAligner : MonoBehaviour
     public DebugFacing TestDirection = DebugFacing.None;
 
     [Header("Right (DirX > 0)")]
-    public Vector3 RightPos = new Vector3(0, 0, -0.5f);
-    public Vector3 RightRot = new Vector3(0, 0, -90);
-    public Vector3 RightScale = new Vector3(1.29f, 1.09f, 1f);
+    public Vector3 PosRight = new Vector3(0, 0, -0.5f);
+    public Vector3 RotRight = new Vector3(0, 0, -90);
+    public Vector3 ScaleRight = new Vector3(1.29f, 1.09f, 1f);
 
     [Header("Left (DirX < 0)")]
-    public Vector3 LeftPos = new Vector3(0, 0, -0.5f);
-    public Vector3 LeftRot = new Vector3(0, 180, -90);
-    public Vector3 LeftScale = new Vector3(1.29f, 1.09f, 1f);
+    public Vector3 PosLeft = new Vector3(0, 0, -0.5f);
+    public Vector3 RotLeft = new Vector3(0, 0, 90); // Blade points left
+    public Vector3 ScaleLeft = new Vector3(1.29f, 1.09f, 1f);
 
     [Header("Up (DirY > 0)")]
-    public Vector3 UpPos = new Vector3(0, 0, 0.5f);
-    public Vector3 UpRot = new Vector3(0, 0, -45);
-    public Vector3 UpScale = new Vector3(1.29f, 1.09f, 1f);
+    public Vector3 PosUp = new Vector3(0, 0, 0.5f); // Behind player
+    public Vector3 RotUp = new Vector3(0, 0, -45); // Angled up-right
+    public Vector3 ScaleUp = new Vector3(1.29f, 1.09f, 1f);
 
     [Header("Down (DirY < 0)")]
-    public Vector3 DownPos = new Vector3(0, 0, -0.5f);
-    public Vector3 DownRot = new Vector3(0, 0, -135);
-    public Vector3 DownScale = new Vector3(1.29f, 1.09f, 1f);
+    public Vector3 PosDown = new Vector3(0, 0, -0.5f); // In front
+    public Vector3 RotDown = new Vector3(0, 0, -135); // Angled down-right
+    public Vector3 ScaleDown = new Vector3(1.29f, 1.09f, 1f);
 
     private Transform _transform;
     private Animator _playerAnimator;
+    private Renderer _renderer;
+    
+    [Header("Sorting Order (Higher = In Front)")]
+    public int SortingOrderFront = 50;  // When facing down (front view)
+    public int SortingOrderBack = 0;    // When facing up (back view)
+    public int SortingOrderSide = 25;   // When facing left/right
 
     void Start()
     {
         _transform = transform;
+        _renderer = GetComponentInChildren<Renderer>();
+        
         if (Application.isPlaying) {
-             _playerAnimator = GetComponentInParent<Animator>();
+            _playerAnimator = GetComponentInParent<Animator>();
+            if (_playerAnimator == null) 
+                Debug.LogError($"[SwordVisualAligner] Could not find Animator in parents of {gameObject.name}!");
+
+            // DISABLE any Animator ON THIS OBJECT
+            var localAnimator = GetComponent<Animator>();
+            if (localAnimator != null) {
+                localAnimator.enabled = false;
+            }
+            var childAnimator = GetComponentInChildren<Animator>();
+            if (childAnimator != null && childAnimator != _playerAnimator) {
+                childAnimator.enabled = false;
+            }
         }
     }
 
@@ -56,16 +76,15 @@ public class SwordVisualAligner : MonoBehaviour
                 case DebugFacing.Right: dirX = 1; break;
             }
         }
-        else if (Application.isPlaying && _playerAnimator != null)
+        else if (Application.isPlaying)
         {
-             dirY = _playerAnimator.GetFloat("DirY");
-             dirX = _playerAnimator.GetFloat("DirX");
-        }
-        else
-        {
-             // Editor logic without ForceDirection? Do nothing or default?
-             // If we do nothing, it allows manual transform manipulation without fighting script.
-             return;
+            // Try to get input from Animator, but don't fail if missing
+            if (_playerAnimator != null)
+            {
+                dirY = _playerAnimator.GetFloat("DirY");
+                dirX = _playerAnimator.GetFloat("DirX");
+            }
+            // If Animator is null, we default to (0,0) which is Down
         }
 
         Vector3 targetPos, targetRot, targetScale;
@@ -74,50 +93,68 @@ public class SwordVisualAligner : MonoBehaviour
         {
             if (dirX > 0) // Right
             {
-                targetPos = RightPos;
-                targetRot = RightRot;
-                targetScale = RightScale;
+                targetPos = PosRight;
+                targetRot = RotRight;
+                targetScale = ScaleRight;
             }
             else // Left
             {
-                targetPos = LeftPos;
-                targetRot = LeftRot;
-                targetScale = LeftScale;
+                targetPos = PosLeft;
+                targetRot = RotLeft;
+                targetScale = ScaleLeft;
             }
         }
         else // Vertical Dominant
         {
             if (dirY > 0.1f) // Up
             {
-                targetPos = UpPos;
-                targetRot = UpRot;
-                targetScale = UpScale;
+                targetPos = PosUp;
+                targetRot = RotUp;
+                targetScale = ScaleUp;
             }
             else // Down
             {
-                targetPos = DownPos;
-                targetRot = DownRot;
-                targetScale = DownScale;
+                targetPos = PosDown;
+                targetRot = RotDown;
+                targetScale = ScaleDown;
             }
         }
 
-        // Apply
+        // Apply transform
         _transform.localPosition = targetPos;
         _transform.localEulerAngles = targetRot;
-        
-        // Handle Parent Flip for Scale
-        // If parent is flipped negative, and we want positive result, we might need to flip our local scale?
-        // Actually, if user gives us the DESIRED world appearance in config, we should respect it relative to parent.
-        // If parent.x is -1, and we set local.x = 1, world is -1.
-        // If we want world 1, we set local -1.
-        // Let's assume the user fields define "Local Transform assuming Parent is (1,1,1)".
-        // So if parent is (-1,1,1), we should flip X.
-        
-        if (_transform.parent != null && _transform.parent.lossyScale.x < 0)
-        {
-             targetScale.x = -targetScale.x;
-        }
-        
         _transform.localScale = targetScale;
+        
+        // Apply sorting order
+        if (_renderer != null)
+        {
+            if (Mathf.Abs(dirX) > Mathf.Abs(dirY)) // Side
+            {
+                _renderer.sortingOrder = SortingOrderSide;
+            }
+            else if (dirY > 0.1f) // Up (back)
+            {
+                _renderer.sortingOrder = SortingOrderBack;
+            }
+            else // Down (front)
+            {
+                _renderer.sortingOrder = SortingOrderFront;
+            }
+        }
+    }
+    
+    string GetFullPath(Transform t) {
+        string path = t.name;
+        while (t.parent != null) {
+            t = t.parent;
+            path = t.name + "/" + path;
+        }
+        return path;
+    }
+
+    void OnValidate()
+    {
+        // Force update when values change in Inspector
+        LateUpdate();
     }
 }

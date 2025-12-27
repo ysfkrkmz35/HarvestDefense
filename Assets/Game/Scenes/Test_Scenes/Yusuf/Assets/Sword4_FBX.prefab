@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 26430834ea307e24083f9e03d7fc4f0f, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.2905
+      value: 1.29
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26430834ea307e24083f9e03d7fc4f0f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.0979
+      value: 1.09
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26430834ea307e24083f9e03d7fc4f0f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -26,11 +26,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26430834ea307e24083f9e03d7fc4f0f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26430834ea307e24083f9e03d7fc4f0f, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.38268346
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26430834ea307e24083f9e03d7fc4f0f, type: 3}
       propertyPath: m_LocalRotation.x
@@ -38,11 +38,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26430834ea307e24083f9e03d7fc4f0f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26430834ea307e24083f9e03d7fc4f0f, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.92387956
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 26430834ea307e24083f9e03d7fc4f0f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -64,20 +64,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sword4_FBX
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 26430834ea307e24083f9e03d7fc4f0f, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 26430834ea307e24083f9e03d7fc4f0f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8569151223878077543}
+      addedObject: {fileID: 6521074026897448606}
   m_SourcePrefab: {fileID: 100100000, guid: 26430834ea307e24083f9e03d7fc4f0f, type: 3}
 --- !u!1 &1588559265443898675 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 26430834ea307e24083f9e03d7fc4f0f, type: 3}
   m_PrefabInstance: {fileID: 1930597204011866210}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8569151223878077543
+--- !u!114 &6521074026897448606
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,3 +93,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56274180edd1f147a49f7ada5c3c099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwordVisualAligner
+  TestDirection: 0
+  PosRight: {x: 0, y: 0, z: -0.5}
+  RotRight: {x: 0, y: 0, z: -90}
+  ScaleRight: {x: 1.29, y: 1.09, z: 1}
+  PosLeft: {x: 0, y: 0, z: -0.5}
+  RotLeft: {x: 0, y: 0, z: -90}
+  ScaleLeft: {x: 1.29, y: 1.09, z: 1}
+  PosUp: {x: 0, y: 0, z: 0.5}
+  RotUp: {x: 0, y: 0, z: -45}
+  ScaleUp: {x: 1.29, y: 1.09, z: 1}
+  PosDown: {x: 0, y: 0, z: -0.5}
+  RotDown: {x: 0, y: 0, z: -135}
+  ScaleDown: {x: 1.29, y: 1.09, z: 1}
+  SortingOrderFront: 50
+  SortingOrderBack: 0
+  SortingOrderSide: 25
