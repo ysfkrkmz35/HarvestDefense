@@ -89,6 +89,16 @@ namespace HarvestDefense.Crafting
             var inventory = CraftingInventory.Instance;
             if (inventory == null) return false;
             
+            // Check crafting limit (MaxCraftable)
+            if (recipe.MaxCraftable > 0)
+            {
+                int currentCount = inventory.GetItemCount(recipe.ResultItem);
+                if (currentCount >= recipe.MaxCraftable)
+                {
+                    return false; // Already have max amount
+                }
+            }
+            
             // Check all ingredients
             foreach (var ingredient in recipe.Ingredients)
             {
@@ -127,8 +137,25 @@ namespace HarvestDefense.Crafting
                 inventory.RemoveItem(ingredient.Item, ingredient.Amount);
             }
             
-            // Add result
+            // Add result to CraftingInventory
             inventory.AddItem(recipe.ResultItem, recipe.ResultAmount);
+            
+            // ALSO add to HappyHarvest main inventory (toolbar) if linked
+            if (recipe.ResultItem.HappyHarvestItem != null)
+            {
+                var playerController = FindObjectOfType<HappyHarvest.PlayerController>();
+                if (playerController != null && playerController.Inventory != null)
+                {
+                    playerController.Inventory.AddItem(recipe.ResultItem.HappyHarvestItem, recipe.ResultAmount);
+                    if (showDebugLogs)
+                        Debug.Log($"[CraftingManager] Added to main inventory: {recipe.ResultItem.HappyHarvestItem.DisplayName}");
+                }
+                else
+                {
+                    if (showDebugLogs)
+                        Debug.LogWarning("[CraftingManager] PlayerController/Inventory not found for main inventory!");
+                }
+            }
             
             if (showDebugLogs)
                 Debug.Log($"[CraftingManager] ✅ Crafted {recipe.ResultAmount}x {recipe.ResultItem.ItemName}!");
@@ -173,6 +200,45 @@ namespace HarvestDefense.Crafting
             }
             
             return result;
+        }
+        /// <summary>
+        /// Get reason why crafting is blocked (for UI display)
+        /// </summary>
+        public string GetCraftBlockReason(CraftingRecipe recipe)
+        {
+            if (recipe == null) return "Invalid recipe";
+            if (!IsRecipeUnlocked(recipe)) return "Recipe locked";
+            
+            var inventory = CraftingInventory.Instance;
+            if (inventory == null) return "No inventory";
+            
+            // Check MaxCraftable limit
+            if (recipe.MaxCraftable > 0)
+            {
+                int currentCount = inventory.GetItemCount(recipe.ResultItem);
+                if (currentCount >= recipe.MaxCraftable)
+                {
+                    return $"Already have {currentCount}/{recipe.MaxCraftable}";
+                }
+            }
+            
+            // Check ingredients
+            foreach (var ingredient in recipe.Ingredients)
+            {
+                if (!inventory.HasItem(ingredient.Item, ingredient.Amount))
+                {
+                    int have = inventory.GetItemCount(ingredient.Item);
+                    return $"Need {ingredient.Amount - have} more {ingredient.Item.ItemName}";
+                }
+            }
+            
+            // Check station
+            if (recipe.RequiredStation != null)
+            {
+                return $"Requires {recipe.RequiredStation.ItemName}";
+            }
+            
+            return ""; // Can craft!
         }
         
         #endregion

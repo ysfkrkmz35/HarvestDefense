@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: CraftingTableRecipe
   m_EditorClassIdentifier: Assembly-CSharp::HarvestDefense.Crafting.CraftingRecipe
   RecipeName: CraftingTableRecipe
-  RecipeIcon: {fileID: 0}
+  RecipeIcon: {fileID: -4864485850085196174, guid: be2c202d5c3b8d245a8a1db011195a93, type: 3}
   Description: 
   Ingredients:
   - Item: {fileID: 11400000, guid: cd16ea5cf6f192049b7644a30039f452, type: 2}
     Amount: 2
   ResultItem: {fileID: 11400000, guid: 5cb8e664df7ae9c40801eac3b1583575, type: 2}
   ResultAmount: 1
+  MaxCraftable: 1
   RequiredStation: {fileID: 0}
   UnlockedByDefault: 1

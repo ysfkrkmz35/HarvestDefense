@@ -21,6 +21,10 @@ namespace HarvestDefense.Crafting
         public CraftingItem ResultItem;
         public int ResultAmount = 1;
         
+        [Header("═══ CRAFTING LIMITS ═══")]
+        [Tooltip("Max number player can have. 0 = unlimited. 1 = can only craft if don't have one.")]
+        public int MaxCraftable = 0;
+        
         [Header("═══ CRAFTING STATION ═══")]
         [Tooltip("Leave null for hand-crafting. Otherwise requires this station.")]
         public CraftingItem RequiredStation;

@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: CraftingTable
   m_EditorClassIdentifier: Assembly-CSharp::HarvestDefense.Crafting.CraftingItem
   ItemName: CraftingTable
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 28a60fe33df63c644be23b260b95b731, type: 3}
   Description: 
   MaxStackSize: 99
   Category: 1
+  IsPlaceable: 1
+  PlacedPrefab: {fileID: 2057876267308617738, guid: c450947fcd80f48489406903164d8833, type: 3}

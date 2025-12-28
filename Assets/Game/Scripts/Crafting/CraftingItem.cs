@@ -20,6 +20,16 @@ namespace HarvestDefense.Crafting
         [Header("═══ CATEGORY ═══")]
         public ItemCategory Category = ItemCategory.Material;
         
+        [Header("═══ PLACEMENT ═══")]
+        [Tooltip("Can this item be placed in the world? (e.g. Crafting Table)")]
+        public bool IsPlaceable = false;
+        [Tooltip("Prefab to spawn when placed (must have CraftingTableObject or similar)")]
+        public GameObject PlacedPrefab;
+        
+        [Header("═══ MAIN INVENTORY ═══")]
+        [Tooltip("Link to HappyHarvest Item to add to main toolbar when crafted")]
+        public HappyHarvest.Item HappyHarvestItem;
+        
         public enum ItemCategory
         {
             Material,    // Wood, Stone, etc.

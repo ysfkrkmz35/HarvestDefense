@@ -11,7 +11,6 @@ namespace HarvestDefense.Crafting
         [Header("═══ REFERENCES ═══")]
         [SerializeField] private CraftingManager craftingManager;
         [SerializeField] private CraftingInventory craftingInventory;
-        [SerializeField] private CraftingUI craftingUI;
         
         [Header("═══ TEST ITEMS (Assign in Inspector) ═══")]
         public CraftingItem woodItem;
@@ -31,8 +30,6 @@ namespace HarvestDefense.Crafting
                 craftingManager = FindObjectOfType<CraftingManager>();
             if (craftingInventory == null)
                 craftingInventory = FindObjectOfType<CraftingInventory>();
-            if (craftingUI == null)
-                craftingUI = FindObjectOfType<CraftingUI>();
             
             if (addTestItemsOnStart)
             {
