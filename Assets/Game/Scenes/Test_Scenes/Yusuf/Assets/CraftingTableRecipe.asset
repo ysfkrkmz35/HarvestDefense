@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3efc12bc6be25e42bf2779da23bf677, type: 3}
+  m_Name: CraftingTableRecipe
+  m_EditorClassIdentifier: Assembly-CSharp::HarvestDefense.Crafting.CraftingRecipe
+  RecipeName: CraftingTableRecipe
+  RecipeIcon: {fileID: 0}
+  Description: 
+  Ingredients:
+  - Item: {fileID: 11400000, guid: cd16ea5cf6f192049b7644a30039f452, type: 2}
+    Amount: 2
+  ResultItem: {fileID: 11400000, guid: 5cb8e664df7ae9c40801eac3b1583575, type: 2}
+  ResultAmount: 1
+  RequiredStation: {fileID: 0}
+  UnlockedByDefault: 1
