@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Cinemachine;
 
 namespace YusufTest
 {
@@ -60,7 +61,20 @@ namespace YusufTest
 
         [Header("Camera Settings")]
         [Tooltip("Gemideyken kamera orthographic size (ne kadar büyük o kadar uzak)")]
-        [SerializeField] private float boatCameraSize = 15f;
+        [SerializeField] private float boatCameraSize = 25f;
+
+        [Tooltip("Kamera zoom geçiş süresi (saniye)")]
+        [SerializeField] private float cameraTransitionDuration = 1.5f;
+
+        [Header("Fade Settings")]
+        [Tooltip("Ekran kararması efekti aktif olsun mu?")]
+        [SerializeField] private bool useFadeEffect = true;
+
+        [Tooltip("Fade in/out süresi (saniye)")]
+        [SerializeField] private float fadeDuration = 0.5f;
+
+        [Tooltip("Fade rengi (genelde siyah)")]
+        [SerializeField] private Color fadeColor = Color.black;
 
         [Header("Debug")]
         [SerializeField] private bool showDebugLogs = true;
@@ -96,7 +110,15 @@ namespace YusufTest
 
         // Camera zoom
         private Camera mainCamera;
+        private CinemachineCamera cinemachineCamera;
         private float originalCameraSize;
+        private bool useCinemachine;
+
+        // Fade effect
+        private Canvas fadeCanvas;
+        private UnityEngine.UI.Image fadeImage;
+        private Coroutine currentFadeCoroutine;
+        private Coroutine currentCameraZoomCoroutine;
 
         #endregion
 
@@ -119,22 +141,35 @@ namespace YusufTest
 
             FindPlayer();
 
-            // Kamera referansını al - Hem Camera.main hem FindObjectOfType dene
-            mainCamera = Camera.main;
-            if (mainCamera == null)
-            {
-                mainCamera = FindObjectOfType<Camera>();
-                Log("Camera.main null, FindObjectOfType ile arandı");
-            }
+            // Kamera referansını al - Önce Cinemachine, sonra normal Camera
+            cinemachineCamera = FindObjectOfType<CinemachineCamera>();
 
-            if (mainCamera != null)
+            if (cinemachineCamera != null)
             {
-                originalCameraSize = mainCamera.orthographicSize;
-                Log($"✅ Camera bulundu! Original size: {originalCameraSize}");
+                useCinemachine = true;
+                originalCameraSize = cinemachineCamera.Lens.OrthographicSize;
+                Log($"✅ Cinemachine Camera bulundu! Original size: {originalCameraSize}");
             }
             else
             {
-                LogError("❌ Main camera bulunamadı!");
+                // Cinemachine yoksa normal Camera kullan
+                mainCamera = Camera.main;
+                if (mainCamera == null)
+                {
+                    mainCamera = FindObjectOfType<Camera>();
+                    Log("Camera.main null, FindObjectOfType ile arandı");
+                }
+
+                if (mainCamera != null)
+                {
+                    useCinemachine = false;
+                    originalCameraSize = mainCamera.orthographicSize;
+                    Log($"✅ Normal Camera bulundu! Original size: {originalCameraSize}");
+                }
+                else
+                {
+                    LogError("❌ Hiçbir kamera bulunamadı!");
+                }
             }
 
             if (interactionPrompt != null)
@@ -147,6 +182,13 @@ namespace YusufTest
             {
                 Log("Creating text prompt...");
                 CreateTextPrompt();
+            }
+
+            // Fade Canvas oluştur
+            if (useFadeEffect)
+            {
+                Log("Creating fade canvas...");
+                CreateFadeCanvas();
             }
 
             // Trigger kullanılıyorsa Collider2D'nin trigger olduğundan emin ol
@@ -403,26 +445,42 @@ namespace YusufTest
 
             Log("Player is boarding the boat...");
 
-            // Player'ın orijinal durumunu kaydet
+            // Coroutine başlat
+            StartCoroutine(BoardBoatCoroutine());
+        }
+
+        /// <summary>
+        /// Bota binme animasyonu (fade + kamera geçişi)
+        /// </summary>
+        private System.Collections.IEnumerator BoardBoatCoroutine()
+        {
+            // 1. Fade to black (ekranı karart)
+            if (useFadeEffect && fadeImage != null)
+            {
+                Log("Fading to black...");
+                yield return StartCoroutine(FadeToBlack());
+            }
+
+            // 2. Player'ın orijinal durumunu kaydet
             originalPlayerParent = playerTransform.parent;
 
-            // Player kontrolünü devre dışı bırak
+            // 3. Player kontrolünü devre dışı bırak
             if (playerController != null)
             {
                 playerController.ToggleControl(false);
             }
 
-            // Player rigidbody'sini kinematic yap
+            // 4. Player rigidbody'sini kinematic yap
             if (playerRigidbody != null)
             {
                 playerRigidbody.linearVelocity = Vector2.zero;
                 playerRigidbody.isKinematic = true;
             }
 
-            // Player'ı bot üzerine yerleştir (Parent yapmıyoruz, manual olarak takip edeceğiz)
+            // 5. Player'ı bot üzerine yerleştir
             playerTransform.position = transform.TransformPoint(playerPositionOnBoat);
 
-            // Player'ın TÜM sprite'larını gizle
+            // 6. Player'ın TÜM sprite'larını gizle
             if (allPlayerSpriteRenderers != null && allPlayerSpriteRenderers.Length > 0)
             {
                 foreach (var sprite in allPlayerSpriteRenderers)
@@ -436,29 +494,32 @@ namespace YusufTest
                 playerSpriteRenderer.enabled = false;
                 Log("Player sprite gizlendi (fallback)");
             }
-            else
-            {
-                LogError("⚠️ Hiçbir sprite renderer bulunamadı!");
-            }
 
-            // Kamerayı UZAKLAŞTIR - Orthographic size'ı artır
-            if (mainCamera != null)
+            // 7. Kamerayı smooth olarak UZAKLAŞTIR
+            if (useCinemachine ? cinemachineCamera != null : mainCamera != null)
             {
-                mainCamera.orthographicSize = boatCameraSize;
-                Log($"🎥 KAMERA UZAKLAŞTIRILDI!");
-                Log($"  - Eski Size: {originalCameraSize}");
-                Log($"  - Yeni Size: {boatCameraSize}");
-                Log($"  - Gerçek Size: {mainCamera.orthographicSize}");
+                Log($"🎥 Kamera uzaklaştırılıyor... ({originalCameraSize} -> {boatCameraSize})");
+                if (currentCameraZoomCoroutine != null)
+                {
+                    StopCoroutine(currentCameraZoomCoroutine);
+                }
+                currentCameraZoomCoroutine = StartCoroutine(SmoothCameraZoom(originalCameraSize, boatCameraSize, cameraTransitionDuration));
             }
             else
             {
-                LogError("❌ Kamera null!");
+                LogError("❌ Kamera bulunamadı, zoom yapılamıyor!");
             }
 
-            // Boat controller'a bildir
+            // 8. Boat controller'a bildir
             boatController.PlayerBoarded();
-
             isPlayerOnBoard = true;
+
+            // 9. Fade from black (ekranı aç)
+            if (useFadeEffect && fadeImage != null)
+            {
+                Log("Fading from black...");
+                yield return StartCoroutine(FadeFromBlack());
+            }
 
             Log("Player boarded successfully!");
         }
@@ -472,26 +533,42 @@ namespace YusufTest
 
             Log("Player is leaving the boat...");
 
-            // İniş pozisyonunu hesapla (botun sağ tarafı)
+            // Coroutine başlat
+            StartCoroutine(DisembarkBoatCoroutine());
+        }
+
+        /// <summary>
+        /// Bottan inme animasyonu (fade + kamera geçişi)
+        /// </summary>
+        private System.Collections.IEnumerator DisembarkBoatCoroutine()
+        {
+            // 1. Fade to black (ekranı karart)
+            if (useFadeEffect && fadeImage != null)
+            {
+                Log("Fading to black...");
+                yield return StartCoroutine(FadeToBlack());
+            }
+
+            // 2. İniş pozisyonunu hesapla (botun sağ tarafı)
             Vector3 disembarkPosition = transform.position + transform.right * disembarkDistance;
 
-            // Player'ı pozisyonla
+            // 3. Player'ı pozisyonla
             playerTransform.position = disembarkPosition;
 
-            // Player kontrolünü geri ver
+            // 4. Player kontrolünü geri ver
             if (playerController != null)
             {
                 playerController.ToggleControl(true);
             }
 
-            // Player rigidbody'sini dinamik yap
+            // 5. Player rigidbody'sini dinamik yap
             if (playerRigidbody != null)
             {
                 playerRigidbody.isKinematic = false;
                 playerRigidbody.linearVelocity = Vector2.zero;
             }
 
-            // Player'ın TÜM sprite'larını tekrar göster
+            // 6. Player'ın TÜM sprite'larını tekrar göster
             if (allPlayerSpriteRenderers != null && allPlayerSpriteRenderers.Length > 0)
             {
                 foreach (var sprite in allPlayerSpriteRenderers)
@@ -506,14 +583,31 @@ namespace YusufTest
                 Log("Player sprite gösterildi (fallback)");
             }
 
-            // Kamerayı zoom out olarak bırak (orijinal haline GETİRME)
-            // Kamera uzak kalacak
-            Log("Kamera zoom out olarak kalıyor (reset yapılmadı)");
+            // 7. Kamerayı smooth olarak YAKLAŞTIR (orijinal boyuta döndür)
+            if (useCinemachine ? cinemachineCamera != null : mainCamera != null)
+            {
+                Log($"🎥 Kamera yakınlaştırılıyor... ({boatCameraSize} -> {originalCameraSize})");
+                if (currentCameraZoomCoroutine != null)
+                {
+                    StopCoroutine(currentCameraZoomCoroutine);
+                }
+                currentCameraZoomCoroutine = StartCoroutine(SmoothCameraZoom(boatCameraSize, originalCameraSize, cameraTransitionDuration));
+            }
+            else
+            {
+                LogError("❌ Kamera bulunamadı, zoom yapılamıyor!");
+            }
 
-            // Boat controller'a bildir
+            // 8. Boat controller'a bildir
             boatController.PlayerDisembarked();
-
             isPlayerOnBoard = false;
+
+            // 9. Fade from black (ekranı aç)
+            if (useFadeEffect && fadeImage != null)
+            {
+                Log("Fading from black...");
+                yield return StartCoroutine(FadeFromBlack());
+            }
 
             Log("Player disembarked successfully!");
         }
@@ -567,6 +661,152 @@ namespace YusufTest
                 // Player'ı botun üzerinde tut
                 playerTransform.position = transform.TransformPoint(playerPositionOnBoat);
             }
+        }
+
+        #endregion
+
+        #region Fade & Camera Effects
+
+        /// <summary>
+        /// Fade Canvas oluştur - Ekran kararması için
+        /// </summary>
+        private void CreateFadeCanvas()
+        {
+            // Canvas oluştur
+            GameObject canvasObj = new GameObject("BoatFadeCanvas");
+            fadeCanvas = canvasObj.AddComponent<Canvas>();
+            fadeCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            fadeCanvas.sortingOrder = 9999; // En üstte olsun
+
+            canvasObj.AddComponent<UnityEngine.UI.CanvasScaler>();
+            canvasObj.AddComponent<UnityEngine.UI.GraphicRaycaster>();
+
+            // Fade Image oluştur (tam ekran siyah)
+            GameObject imageObj = new GameObject("FadeImage");
+            imageObj.transform.SetParent(fadeCanvas.transform);
+
+            fadeImage = imageObj.AddComponent<UnityEngine.UI.Image>();
+            fadeImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, 0f); // Başlangıçta görünmez
+
+            // RectTransform - Tam ekran
+            RectTransform rectTransform = imageObj.GetComponent<RectTransform>();
+            rectTransform.anchorMin = Vector2.zero;
+            rectTransform.anchorMax = Vector2.one;
+            rectTransform.sizeDelta = Vector2.zero;
+            rectTransform.anchoredPosition = Vector2.zero;
+
+            Log("Fade canvas created successfully");
+        }
+
+        /// <summary>
+        /// Ekranı karart (Fade to black)
+        /// </summary>
+        private System.Collections.IEnumerator FadeToBlack()
+        {
+            if (fadeImage == null)
+            {
+                LogError("Fade image null!");
+                yield break;
+            }
+
+            float elapsed = 0f;
+            Color startColor = fadeImage.color;
+            Color targetColor = new Color(fadeColor.r, fadeColor.g, fadeColor.b, 1f);
+
+            while (elapsed < fadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / fadeDuration;
+                fadeImage.color = Color.Lerp(startColor, targetColor, t);
+                yield return null;
+            }
+
+            fadeImage.color = targetColor;
+        }
+
+        /// <summary>
+        /// Ekranı aç (Fade from black)
+        /// </summary>
+        private System.Collections.IEnumerator FadeFromBlack()
+        {
+            if (fadeImage == null)
+            {
+                LogError("Fade image null!");
+                yield break;
+            }
+
+            float elapsed = 0f;
+            Color startColor = fadeImage.color;
+            Color targetColor = new Color(fadeColor.r, fadeColor.g, fadeColor.b, 0f);
+
+            while (elapsed < fadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / fadeDuration;
+                fadeImage.color = Color.Lerp(startColor, targetColor, t);
+                yield return null;
+            }
+
+            fadeImage.color = targetColor;
+        }
+
+        /// <summary>
+        /// Kamerayı smooth olarak zoom yap
+        /// </summary>
+        private System.Collections.IEnumerator SmoothCameraZoom(float fromSize, float toSize, float duration)
+        {
+            if (useCinemachine && cinemachineCamera == null)
+            {
+                LogError("Cinemachine camera null!");
+                yield break;
+            }
+            else if (!useCinemachine && mainCamera == null)
+            {
+                LogError("Main camera null!");
+                yield break;
+            }
+
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
+
+                // Smooth easing (ease in-out)
+                t = t * t * (3f - 2f * t);
+
+                float newSize = Mathf.Lerp(fromSize, toSize, t);
+
+                if (useCinemachine)
+                {
+                    // Cinemachine için Lens.OrthographicSize değiştir
+                    var lens = cinemachineCamera.Lens;
+                    lens.OrthographicSize = newSize;
+                    cinemachineCamera.Lens = lens;
+                }
+                else
+                {
+                    // Normal kamera için orthographicSize değiştir
+                    mainCamera.orthographicSize = newSize;
+                }
+
+                yield return null;
+            }
+
+            // Final değeri ayarla
+            if (useCinemachine)
+            {
+                var lens = cinemachineCamera.Lens;
+                lens.OrthographicSize = toSize;
+                cinemachineCamera.Lens = lens;
+            }
+            else
+            {
+                mainCamera.orthographicSize = toSize;
+            }
+
+            Log($"Camera zoom completed: {toSize} (Cinemachine: {useCinemachine})");
         }
 
         #endregion
