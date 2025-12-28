@@ -16,11 +16,11 @@ namespace YusufTest
         #region Serialized Fields
 
         [Header("Interaction Settings")]
-        [Tooltip("Trigger kullan (true) veya mesafe kontrolü (false)")]
-        [SerializeField] private bool useTrigger = false; // FALSE - Mesafe kontrolü kullan
+        [Tooltip("Trigger kullan (true) veya mesafe kontrolü (false). Trigger kullanırsanız Circle Collider'ı 'Is Trigger' yapın!")]
+        [SerializeField] private bool useTrigger = true; // TRUE - Circle Collider trigger sistemi kullan
 
-        [Tooltip("Bota binmek için gereken mesafe")]
-        [SerializeField] private float interactionRange = 17f; // 8.5 * 2 = 17
+        [Tooltip("Bota binmek için gereken mesafe (grid cell cinsinden - SADECE useTrigger=false ise kullanılır)")]
+        [SerializeField] private float interactionRange = 3f; // Grid cell cinsinden - 3 cell mesafe
 
         [Tooltip("Binme tuşu (varsayılan: F)")]
         [SerializeField] private Key boardKey = Key.F;
@@ -29,8 +29,8 @@ namespace YusufTest
         [Tooltip("Player bot üzerinde nerede duracak (local position)")]
         [SerializeField] private Vector3 playerPositionOnBoat = new Vector3(0f, 0f, 0f);
 
-        [Tooltip("Player bottan inerken ne kadar uzakta spawn olacak")]
-        [SerializeField] private float disembarkDistance = 2f;
+        [Tooltip("Player bottan inerken ne kadar uzakta spawn olacak (en yakın Ground araması için max mesafe)")]
+        [SerializeField] private float disembarkDistance = 10f;
 
         [Header("Visual Feedback")]
         [Tooltip("Etkileşim göstergesi (opsiyonel - 3D dünyada GameObject)")]
@@ -369,20 +369,31 @@ namespace YusufTest
                 return;
             }
 
+            // Grid cell size'a göre mesafe hesapla (daha tutarlı)
+            float actualInteractionDistance = interactionRange;
+
+            // Eğer terrain varsa, grid cell size ile çarp
+            if (HappyHarvest.GameManager.Instance.Terrain != null &&
+                HappyHarvest.GameManager.Instance.Terrain.Grid != null)
+            {
+                float cellSize = HappyHarvest.GameManager.Instance.Terrain.Grid.cellSize.x;
+                actualInteractionDistance = interactionRange * cellSize;
+            }
+
             float distance = Vector2.Distance(playerTransform.position, transform.position);
             bool wasInRange = isPlayerInRange;
-            isPlayerInRange = distance <= interactionRange;
+            isPlayerInRange = distance <= actualInteractionDistance;
 
             // Debug: Mesafe değişikliğini logla
             if (wasInRange != isPlayerInRange)
             {
                 if (isPlayerInRange)
                 {
-                    Log($"✅ Player menzile GİRDİ! Mesafe: {distance:F2} (Max: {interactionRange})");
+                    Log($"✅ Player menzile GİRDİ! Mesafe: {distance:F2} (Max: {actualInteractionDistance:F2})");
                 }
                 else
                 {
-                    Log($"❌ Player menzilden ÇIKTI! Mesafe: {distance:F2} (Max: {interactionRange})");
+                    Log($"❌ Player menzilden ÇIKTI! Mesafe: {distance:F2} (Max: {actualInteractionDistance:F2})");
                 }
             }
 
@@ -454,6 +465,24 @@ namespace YusufTest
         /// </summary>
         private System.Collections.IEnumerator BoardBoatCoroutine()
         {
+            // 0. BİNMEDEN ÖNCE - Hem player hem boat yakınında Ground var mı kontrol et
+            Vector3? playerGroundCheck = FindNearestGroundPosition(playerTransform.position, disembarkDistance);
+            Vector3? boatGroundCheck = FindNearestGroundPosition(transform.position, disembarkDistance);
+
+            if (!playerGroundCheck.HasValue)
+            {
+                LogError("❌ Player yakınında Ground yok, gemiye binilemez!");
+                yield break; // Binmeyi iptal et
+            }
+
+            if (!boatGroundCheck.HasValue)
+            {
+                LogError("❌ Gemi yakınında Ground yok, gemiye binilemez (inebilmek için Ground gerekli)!");
+                yield break; // Binmeyi iptal et
+            }
+
+            Log($"✅ Binilebilir: Player Ground={playerGroundCheck.Value}, Boat Ground={boatGroundCheck.Value}");
+
             // 1. Fade to black (ekranı karart)
             if (useFadeEffect && fadeImage != null)
             {
@@ -542,15 +571,24 @@ namespace YusufTest
         /// </summary>
         private System.Collections.IEnumerator DisembarkBoatCoroutine()
         {
-            // 1. Fade to black (ekranı karart)
+            // 1. En yakın Ground tile'ını kontrol et - İNMEDEN ÖNCE!
+            Vector3? disembarkPositionNullable = FindNearestGroundPosition(transform.position, disembarkDistance);
+
+            if (!disembarkPositionNullable.HasValue)
+            {
+                LogError("❌ Yakında Ground yok, gemiden inilemez!");
+                yield break; // İnmeyi iptal et
+            }
+
+            Vector3 disembarkPosition = disembarkPositionNullable.Value;
+            Log($"✅ İnilebilir Ground bulundu: {disembarkPosition}");
+
+            // 2. Fade to black (ekranı karart)
             if (useFadeEffect && fadeImage != null)
             {
                 Log("Fading to black...");
                 yield return StartCoroutine(FadeToBlack());
             }
-
-            // 2. İniş pozisyonunu hesapla (botun sağ tarafı)
-            Vector3 disembarkPosition = transform.position + transform.right * disembarkDistance;
 
             // 3. Player'ı pozisyonla
             playerTransform.position = disembarkPosition;
@@ -661,6 +699,67 @@ namespace YusufTest
                 // Player'ı botun üzerinde tut
                 playerTransform.position = transform.TransformPoint(playerPositionOnBoat);
             }
+        }
+
+        #endregion
+
+        #region Ground Finding
+
+        /// <summary>
+        /// En yakın Ground tile pozisyonunu bulur
+        /// </summary>
+        /// <returns>Ground pozisyonu, bulunamazsa null</returns>
+        private Vector3? FindNearestGroundPosition(Vector3 startPosition, float maxSearchDistance)
+        {
+            if (HappyHarvest.GameManager.Instance.Terrain == null)
+            {
+                LogError("Terrain null!");
+                return null;
+            }
+
+            var grid = HappyHarvest.GameManager.Instance.Terrain.Grid;
+            var groundTilemap = HappyHarvest.GameManager.Instance.Terrain.GroundTilemap;
+
+            if (grid == null || groundTilemap == null)
+            {
+                LogError("Grid veya GroundTilemap null!");
+                return null;
+            }
+
+            // Başlangıç cell'i
+            Vector3Int startCell = grid.WorldToCell(startPosition);
+
+            // Spiral arama - merkez noktadan başlayıp giderek genişleyen daireler çiz
+            int maxRadius = Mathf.CeilToInt(maxSearchDistance / grid.cellSize.x);
+
+            for (int radius = 1; radius <= maxRadius; radius++)
+            {
+                // Her radius için etrafındaki cell'leri kontrol et
+                for (int x = -radius; x <= radius; x++)
+                {
+                    for (int y = -radius; y <= radius; y++)
+                    {
+                        // Sadece mevcut radius sınırındaki cell'lere bak
+                        if (Mathf.Abs(x) != radius && Mathf.Abs(y) != radius)
+                            continue;
+
+                        Vector3Int checkCell = startCell + new Vector3Int(x, y, 0);
+
+                        // Bu cell'de Ground tile var mı?
+                        if (groundTilemap.HasTile(checkCell))
+                        {
+                            // Bulundu! Dünya pozisyonunu döndür
+                            Vector3 groundPosition = grid.GetCellCenterWorld(checkCell);
+                            Log($"✅ En yakın Ground bulundu: {checkCell}, Dünya pozisyonu: {groundPosition}");
+                            return groundPosition;
+                        }
+                    }
+                }
+            }
+
+            // Hiç Ground bulunamadı
+            LogError($"❌ {maxSearchDistance} birim içinde Ground bulunamadı!");
+            return null;
         }
 
         #endregion
@@ -874,11 +973,22 @@ namespace YusufTest
                 promptTextObject.SetActive(true);
                 promptText.text = "Press F to Enter Boat";
             }
-            // Player bottaysa farklı mesaj göster
+            // Player bottaysa - SADECE yakında Ground varsa "Exit" göster
             else if (isPlayerOnBoard)
             {
-                promptTextObject.SetActive(true);
-                promptText.text = "Press F to Exit Boat";
+                // Yakında Ground var mı kontrol et
+                Vector3? nearestGround = FindNearestGroundPosition(transform.position, disembarkDistance);
+
+                if (nearestGround.HasValue)
+                {
+                    promptTextObject.SetActive(true);
+                    promptText.text = "Press F to Exit Boat";
+                }
+                else
+                {
+                    // Yakında Ground yok, inme mümkün değil
+                    promptTextObject.SetActive(false);
+                }
             }
             else
             {
@@ -936,10 +1046,9 @@ namespace YusufTest
                 Gizmos.DrawWireSphere(transform.TransformPoint(playerPositionOnBoat), 0.3f);
             }
 
-            // Disembark position
-            Gizmos.color = Color.red;
-            Vector3 disembarkPos = transform.position + transform.right * disembarkDistance;
-            Gizmos.DrawWireSphere(disembarkPos, 0.3f);
+            // Disembark search area - En yakın Ground arama alanı
+            Gizmos.color = new Color(0f, 1f, 0f, 0.3f); // Yeşil yarı saydam
+            Gizmos.DrawWireSphere(transform.position, disembarkDistance);
         }
 
         private void OnDrawGizmosSelected()

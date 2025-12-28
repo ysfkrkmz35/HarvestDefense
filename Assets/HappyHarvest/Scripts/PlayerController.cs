@@ -255,12 +255,38 @@ namespace HappyHarvest
 
             var movement = move * Speed;
             var speed = movement.sqrMagnitude;
-            
+
             m_Animator.SetFloat(m_DirXHash, m_CurrentLookDirection.x);
             m_Animator.SetFloat(m_DirYHash, m_CurrentLookDirection.y);
             m_Animator.SetFloat(m_SpeedHash, speed);
 
-            m_Rigidbody.MovePosition(m_Rigidbody.position + movement * Time.deltaTime);
+            // Hedef pozisyonu hesapla
+            Vector2 targetPosition = m_Rigidbody.position + movement * Time.deltaTime;
+
+            // Eğer hareket ediyorsak, hedef pozisyonda Ground tile var mı kontrol et
+            if (move != Vector2.zero && GameManager.Instance.Terrain != null)
+            {
+                // Hedef pozisyonun grid cell'ini al
+                var grid = GameManager.Instance.Terrain.Grid;
+                var groundTilemap = GameManager.Instance.Terrain.GroundTilemap;
+
+                if (grid != null && groundTilemap != null)
+                {
+                    // Karakterin merkez pozisyonunu kontrol et
+                    Vector3Int targetCell = grid.WorldToCell(targetPosition);
+
+                    // Hedef cell'de Ground tile var mı?
+                    bool hasGroundTile = groundTilemap.HasTile(targetCell);
+
+                    // Ground tile yoksa hareket etme
+                    if (!hasGroundTile)
+                    {
+                        return; // Hareketi iptal et
+                    }
+                }
+            }
+
+            m_Rigidbody.MovePosition(targetPosition);
         }
 
         bool IsMouseOverGameWindow()
