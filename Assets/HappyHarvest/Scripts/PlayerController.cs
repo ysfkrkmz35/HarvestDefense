@@ -222,15 +222,15 @@ namespace HappyHarvest
         {
             if(m_IsOverUI)
                 return;
-            
+
             if (m_CurrentInteractiveTarget != null)
             {
                 m_CurrentInteractiveTarget.InteractedWith();
                 return;
             }
-            
+
             if (m_Inventory.EquippedItem != null && m_Inventory.EquippedItem.NeedTarget() && !m_HasTarget) return;
-            
+
             UseItem();
         }
 

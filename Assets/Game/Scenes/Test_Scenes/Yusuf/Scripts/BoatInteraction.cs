@@ -687,6 +687,7 @@ namespace YusufTest
 
             fadeImage = imageObj.AddComponent<UnityEngine.UI.Image>();
             fadeImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, 0f); // Başlangıçta görünmez
+            fadeImage.raycastTarget = false; // ÖNEMLİ: Mouse tıklamalarını engellemez
 
             // RectTransform - Tam ekran
             RectTransform rectTransform = imageObj.GetComponent<RectTransform>();
@@ -844,6 +845,7 @@ namespace YusufTest
             promptText.fontSize = promptTextSize;
             promptText.color = promptTextColor;
             promptText.alignment = TextAnchor.MiddleCenter;
+            promptText.raycastTarget = false; // Mouse tıklamalarını engellemez
 
             // RectTransform ayarları - Ekranın üst ortasında
             RectTransform rectTransform = promptTextObject.GetComponent<RectTransform>();
