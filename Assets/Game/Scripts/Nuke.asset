@@ -16,11 +16,11 @@ MonoBehaviour:
   description: A very powerful nuke spell.It destryos everything.
   icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   spellType: 0
-  damage: 25
+  damage: 150
   cooldown: 2
   manaCost: 10
-  maxRange: 10
-  areaRadius: 3
+  maxRange: 100
+  areaRadius: 100
   projectileSpeed: 15
   requiredLevel: 1
   goldCost: 0
