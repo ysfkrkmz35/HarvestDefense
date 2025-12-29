@@ -76,6 +76,10 @@ namespace YusufTest
         [Tooltip("Fade rengi (genelde siyah)")]
         [SerializeField] private Color fadeColor = Color.black;
 
+        [Header("Repair System")]
+        [Tooltip("Repair cost in gold")]
+        [SerializeField] private int repairCost = 10;
+
         [Header("Debug")]
         [SerializeField] private bool showDebugLogs = true;
         [SerializeField] private bool showGizmos = true;
@@ -119,6 +123,9 @@ namespace YusufTest
         private UnityEngine.UI.Image fadeImage;
         private Coroutine currentFadeCoroutine;
         private Coroutine currentCameraZoomCoroutine;
+
+        // Repair system state
+        private bool isRepaired = false;
 
         #endregion
 
@@ -426,29 +433,65 @@ namespace YusufTest
 
             if (keyboard[boardKey].wasPressedThisFrame)
             {
-                Log($"🎮 {boardKey} tuşuna basıldı!");
+                Log($"🎮 {boardKey} key pressed!");
                 Log($"  - isPlayerOnBoard: {isPlayerOnBoard}");
                 Log($"  - isPlayerInRange: {isPlayerInRange}");
+                Log($"  - isRepaired: {isRepaired}");
 
                 if (isPlayerOnBoard)
                 {
-                    Log("-> Bottan iniliyor...");
+                    Log("-> Disembarking boat...");
                     DisembarkBoat();
                 }
                 else if (isPlayerInRange)
                 {
-                    Log("-> Bota biniliyor...");
-                    BoardBoat();
+                    // Repair system check
+                    if (!isRepaired)
+                    {
+                        Log("-> Boat not repaired, attempting repair...");
+                        TryRepairBoat();
+                    }
+                    else
+                    {
+                        Log("-> Boarding boat...");
+                        BoardBoat();
+                    }
                 }
                 else
                 {
-                    Log("-> Player yakın değil, hiçbir şey yapılmadı");
+                    Log("-> Player not in range, no action taken");
                 }
             }
         }
 
         /// <summary>
-        /// Bota bin
+        /// Try to repair the boat
+        /// </summary>
+        private void TryRepairBoat()
+        {
+            if (playerController == null)
+            {
+                LogError("PlayerController not found!");
+                return;
+            }
+
+            if (playerController.Coins >= repairCost)
+            {
+                playerController.Coins -= repairCost;
+                isRepaired = true;
+                Log($"✅ Boat repaired! Paid {repairCost} gold.");
+
+                // After repair, board automatically
+                BoardBoat();
+            }
+            else
+            {
+                LogError($"❌ Not enough gold! Repair costs {repairCost} gold. (Current: {playerController.Coins})");
+            }
+        }
+
+        /// <summary>
+        /// Board the boat
         /// </summary>
         private void BoardBoat()
         {
@@ -456,7 +499,7 @@ namespace YusufTest
 
             Log("Player is boarding the boat...");
 
-            // Coroutine başlat
+            // Start coroutine
             StartCoroutine(BoardBoatCoroutine());
         }
 
@@ -967,11 +1010,20 @@ namespace YusufTest
         {
             if (!showTextPrompt || promptText == null) return;
 
-            // Player yakındaysa ve botta değilse göster
+            // Show prompt if player is in range and not on board
             if (isPlayerInRange && !isPlayerOnBoard)
             {
                 promptTextObject.SetActive(true);
-                promptText.text = "Press F to Enter Boat";
+
+                // Show message based on repair state
+                if (!isRepaired)
+                {
+                    promptText.text = $"Press F to Repair Boat ({repairCost} Gold)";
+                }
+                else
+                {
+                    promptText.text = "Press F to Enter Boat";
+                }
             }
             // Player bottaysa - SADECE yakında Ground varsa "Exit" göster
             else if (isPlayerOnBoard)

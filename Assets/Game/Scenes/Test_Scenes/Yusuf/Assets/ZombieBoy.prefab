@@ -1525,9 +1525,11 @@ GameObject:
   - component: {fileID: -3068195819747975121}
   - component: {fileID: 5272456655939545209}
   - component: {fileID: 3392664336725427323}
+  - component: {fileID: -9212712465984693000}
+  - component: {fileID: 6637833150731797368}
   m_Layer: 0
   m_Name: ZombieBoy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1542,7 +1544,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -23, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.58, y: 0.69, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 438510}
@@ -1635,7 +1637,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &5272456655939545209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1699,6 +1701,44 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-9212712465984693000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28f3c99ec7a50a2439eee09c0462448a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::YusufTest.EnemyHealth
+  maxHealth: 100
+  showDebugLogs: 1
+--- !u!114 &6637833150731797368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c084437c8a45674eba28f03cd0d39d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::YusufTest.EnemyDropHandler
+  xpReward: 25
+  goldReward: 10
+  goldPickupPrefab: {fileID: 7776306472184317177, guid: 601db7ad96199b5478d30426d593acde, type: 3}
+  xpPickupPrefab: {fileID: 7776306472184317177, guid: 27fd331da9f910d4ea59eed7645fe5f3, type: 3}
+  goldPickupCount: 3
+  xpPickupCount: 2
+  spawnOffset: {x: 0, y: 0.3}
+  useRandomVariance: 1
+  minMultiplier: 0.8
+  maxMultiplier: 1.2
+  fallbackToDirectReward: 1
+  showDebugLogs: 1
 --- !u!1 &195908
 GameObject:
   m_ObjectHideFlags: 0

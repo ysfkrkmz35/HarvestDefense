@@ -362,7 +362,7 @@ namespace YusufTest
                 currentVelocity = Vector2.Lerp(currentVelocity, targetVelocity, Time.fixedDeltaTime * 8f);
                 rb.linearVelocity = currentVelocity;
 
-                // Sprite flip - Yatay hareket yönüne göre
+                // Sprite flip - Hareket yönüne göre sağa/sola flip
                 UpdateSpriteFlip(moveInput.x);
 
                 if (showDebugLogs)
@@ -377,7 +377,7 @@ namespace YusufTest
         }
 
         /// <summary>
-        /// Sprite'ı hareket yönüne göre flip et
+        /// Sprite'ı hareket yönüne göre flip et (sağa/sola)
         /// </summary>
         private void UpdateSpriteFlip(float horizontalInput)
         {

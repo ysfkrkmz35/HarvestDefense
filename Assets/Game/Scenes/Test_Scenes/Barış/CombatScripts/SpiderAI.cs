@@ -83,27 +83,138 @@ public class SpiderAI : MonoBehaviour
     
     private void FixedUpdate()
     {
-        // Apply movement based on state
+        Vector2 myPos = (Vector2)transform.position;
+
+        // ═══ MEVCUT POZİSYON KONTROLÜ ═══
+        // Eğer şu anda Water üzerindeyse, en yakın Ground'a geri dön
+        if (!IsPositionOnGround(myPos))
+        {
+            Debug.LogWarning($"[SpiderAI] {gameObject.name} Water üzerinde! En yakın Ground'a dönüyor...");
+            Vector2? nearestGround = FindNearestGroundPosition(myPos, 10f);
+            if (nearestGround.HasValue)
+            {
+                transform.position = nearestGround.Value;
+            }
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        // Apply movement based on state (Ground tile kontrolü ile)
+        Vector2 targetVelocity = Vector2.zero;
+
         switch (currentState)
         {
             case State.Patrol:
                 float patrolDir = patrollingRight ? 1f : -1f;
-                rb.linearVelocity = new Vector2(patrolDir * patrolSpeed, rb.linearVelocity.y);
+                targetVelocity = new Vector2(patrolDir * patrolSpeed, rb.linearVelocity.y);
                 break;
-                
+
             case State.Chase:
                 if (target != null)
                 {
                     Vector2 direction = ((Vector2)target.position - (Vector2)transform.position).normalized;
-                    rb.linearVelocity = direction * chaseSpeed;
+                    targetVelocity = direction * chaseSpeed;
                 }
                 break;
-                
+
             case State.Idle:
             case State.Attack:
                 rb.linearVelocity = Vector2.zero;
-                break;
+                return; // Hareket yok, kontrol gerekmiyor
         }
+
+        // ═══ HEDEF POZİSYON KONTROLÜ (Player gibi) ═══
+        // Enemy sadece Ground üzerinde hareket edebilir, Water'a giremez!
+        if (targetVelocity.sqrMagnitude > 0.01f)
+        {
+            Vector2 targetPosition = myPos + targetVelocity * Time.fixedDeltaTime;
+
+            // Ground tile var mı kontrol et
+            if (HappyHarvest.GameManager.Instance?.Terrain != null)
+            {
+                var grid = HappyHarvest.GameManager.Instance.Terrain.Grid;
+                var groundTilemap = HappyHarvest.GameManager.Instance.Terrain.GroundTilemap;
+
+                if (grid != null && groundTilemap != null)
+                {
+                    Vector3Int targetCell = grid.WorldToCell(targetPosition);
+                    bool hasGroundTile = groundTilemap.HasTile(targetCell);
+
+                    // Ground tile yoksa hareket etme (Player ile aynı sistem)
+                    if (!hasGroundTile)
+                    {
+                        rb.linearVelocity = Vector2.zero;
+                        return; // Hareketi iptal et
+                    }
+                }
+            }
+
+            // Ground üzerinde, hareket edebilir
+            rb.linearVelocity = targetVelocity;
+        }
+    }
+
+    /// <summary>
+    /// Pozisyon Ground tile üzerinde mi kontrol et
+    /// </summary>
+    bool IsPositionOnGround(Vector2 position)
+    {
+        if (HappyHarvest.GameManager.Instance?.Terrain != null)
+        {
+            var grid = HappyHarvest.GameManager.Instance.Terrain.Grid;
+            var groundTilemap = HappyHarvest.GameManager.Instance.Terrain.GroundTilemap;
+
+            if (grid != null && groundTilemap != null)
+            {
+                Vector3Int cellPosition = grid.WorldToCell(new Vector3(position.x, position.y, 0f));
+
+                // Ground tile var mı?
+                return groundTilemap.HasTile(cellPosition);
+            }
+        }
+
+        // Tilemap yoksa güvenli kabul et (eski davranış)
+        return true;
+    }
+
+    /// <summary>
+    /// En yakın Ground pozisyonunu bul (spiral search)
+    /// </summary>
+    Vector2? FindNearestGroundPosition(Vector2 currentPosition, float maxSearchDistance)
+    {
+        if (HappyHarvest.GameManager.Instance?.Terrain == null) return null;
+
+        var grid = HappyHarvest.GameManager.Instance.Terrain.Grid;
+        var groundTilemap = HappyHarvest.GameManager.Instance.Terrain.GroundTilemap;
+
+        if (grid == null || groundTilemap == null) return null;
+
+        Vector3Int startCell = grid.WorldToCell(new Vector3(currentPosition.x, currentPosition.y, 0f));
+        int maxRadius = Mathf.CeilToInt(maxSearchDistance / grid.cellSize.x);
+
+        // Spiral search - yakından uzağa
+        for (int radius = 1; radius <= maxRadius; radius++)
+        {
+            for (int x = -radius; x <= radius; x++)
+            {
+                for (int y = -radius; y <= radius; y++)
+                {
+                    // Sadece kenarları kontrol et
+                    if (Mathf.Abs(x) != radius && Mathf.Abs(y) != radius)
+                        continue;
+
+                    Vector3Int checkCell = startCell + new Vector3Int(x, y, 0);
+
+                    if (groundTilemap.HasTile(checkCell))
+                    {
+                        Vector3 groundWorldPos = grid.GetCellCenterWorld(checkCell);
+                        return new Vector2(groundWorldPos.x, groundWorldPos.y);
+                    }
+                }
+            }
+        }
+
+        return null;
     }
     
     private void HandleIdle()

@@ -477,12 +477,41 @@ namespace YusufTest
         }
 
         /// <summary>
-        /// Verilen XZ pozisyonunda zemin var mı bul
+        /// Verilen XZ pozisyonunda GROUND TILE var mı bul (sadece Ground üzerinde spawn!)
         /// </summary>
         private bool FindGroundAtPosition(Vector2 xzPosition, out Vector3 groundPosition)
         {
-            Vector3 rayStart = new Vector3(xzPosition.x, raycastStartHeight, 0f);
+            // ═══ GROUND TİLE KONTROLÜ (Tilemap Sistemi) ═══
+            // Enemy sadece Ground tilemap üzerinde spawn olabilir!
+            if (HappyHarvest.GameManager.Instance?.Terrain != null)
+            {
+                var grid = HappyHarvest.GameManager.Instance.Terrain.Grid;
+                var groundTilemap = HappyHarvest.GameManager.Instance.Terrain.GroundTilemap;
 
+                if (grid != null && groundTilemap != null)
+                {
+                    // Pozisyonu grid cell'e çevir
+                    Vector3 checkPosition = new Vector3(xzPosition.x, xzPosition.y, 0f);
+                    Vector3Int cellPosition = grid.WorldToCell(checkPosition);
+
+                    // Bu cell'de Ground tile var mı?
+                    if (groundTilemap.HasTile(cellPosition))
+                    {
+                        // Ground tile bulundu! Cell'in dünya pozisyonunu döndür
+                        groundPosition = grid.GetCellCenterWorld(cellPosition);
+                        return true;
+                    }
+                    else
+                    {
+                        // Ground tile yok (Water, boşluk vb.)
+                        groundPosition = Vector3.zero;
+                        return false;
+                    }
+                }
+            }
+
+            // Fallback: Raycast ile zemin kontrolü (eski yöntem)
+            Vector3 rayStart = new Vector3(xzPosition.x, raycastStartHeight, 0f);
             RaycastHit2D hit = Physics2D.Raycast(rayStart, Vector2.down, raycastMaxDistance, groundLayer);
 
             if (hit.collider != null)

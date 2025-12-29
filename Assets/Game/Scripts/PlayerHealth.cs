@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Player Health Sistemi
@@ -15,7 +16,20 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     [Header("═══ SETTINGS ═══")]
     [Tooltip("Hasar sonrası kısa süre yenilmezlik")]
     [SerializeField] private float invincibilityDuration = 0.5f;
-    
+
+    [Header("═══ DEATH & RESPAWN ═══")]
+    [Tooltip("Game Over UI kullan (butona basarak restart)")]
+    [SerializeField] private bool useGameOverUI = true;
+
+    [Tooltip("Game Over UI referansı (otomatik bulunur)")]
+    [SerializeField] private GameOverUI gameOverUI;
+
+    [Tooltip("Game Over UI kullanılmıyorsa, otomatik restart yapsın mı?")]
+    [SerializeField] private bool autoRestartIfNoUI = true;
+
+    [Tooltip("Otomatik restart için bekleme süresi (saniye)")]
+    [SerializeField] private float autoRestartDelay = 2f;
+
     [Header("═══ DEBUG ═══")]
     [SerializeField] private bool showDebugLogs = true;
 
@@ -24,11 +38,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void Start()
     {
-        // UI referansını otomatik bul
+        // UI referanslarını otomatik bul
         if (healthUI == null)
         {
             healthUI = FindObjectOfType<ProHealthManaUI>();
-            
+
             if (healthUI == null)
             {
                 Debug.LogError("[PlayerHealth] ❌ ProHealthManaUI bulunamadı! Sahnede olduğundan emin ol.");
@@ -39,11 +53,31 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             }
         }
 
+        // Game Over UI'ı otomatik bul
+        if (useGameOverUI && gameOverUI == null)
+        {
+            gameOverUI = FindObjectOfType<GameOverUI>();
+
+            if (gameOverUI == null)
+            {
+                Debug.LogWarning("[PlayerHealth] ⚠️ GameOverUI bulunamadı! Sahnede GameOverUI ekleyin!");
+                Debug.LogWarning("[PlayerHealth] ⚠️ Geçici olarak otomatik restart kullanılacak.");
+                useGameOverUI = false;
+            }
+            else
+            {
+                Debug.Log("[PlayerHealth] ✅ GameOverUI otomatik bulundu.");
+            }
+        }
+
         // Player tag kontrolü
         if (!gameObject.CompareTag("Player"))
         {
             Debug.LogWarning("[PlayerHealth] ⚠️ Bu objenin tag'i 'Player' değil! Düşmanlar bulamayabilir.");
         }
+
+        // Ölüm durumunu sıfırla
+        isDead = false;
     }
 
     /// <summary>
@@ -124,13 +158,68 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
         Debug.Log("[PlayerHealth] 💀 PLAYER ÖLDÜ!");
 
-        // Buraya eklenebilir:
-        // - Ölüm animasyonu
-        // - Game Over ekranı
-        // - Respawn sistemi
-        
-        // Örnek: GameManager'a haber ver
-        // GameManager.Instance?.PlayerDied();
+        // Player kontrolünü devre dışı bırak
+        DisablePlayerControls();
+
+        // Game Over UI göster
+        if (useGameOverUI && gameOverUI != null)
+        {
+            // UI ile restart (buton ile)
+            gameOverUI.Show();
+
+            if (showDebugLogs)
+                Debug.Log("[PlayerHealth] 🎮 Game Over ekranı gösteriliyor. Restart için butona basın.");
+        }
+        else if (autoRestartIfNoUI)
+        {
+            // Otomatik restart (UI yoksa)
+            StartCoroutine(RestartSceneAfterDelay());
+
+            if (showDebugLogs)
+                Debug.Log($"[PlayerHealth] ⏱️ {autoRestartDelay} saniye sonra otomatik restart...");
+        }
+        else
+        {
+            Debug.Log("[PlayerHealth] ⚠️ Game Over! Restart sistemi kapalı.");
+        }
+    }
+
+    /// <summary>
+    /// Player kontrollerini devre dışı bırak
+    /// </summary>
+    private void DisablePlayerControls()
+    {
+        // PlayerController'ı devre dışı bırak
+        var playerController = GetComponent<HappyHarvest.PlayerController>();
+        if (playerController != null)
+        {
+            playerController.enabled = false;
+            if (showDebugLogs)
+                Debug.Log("[PlayerHealth] 🚫 PlayerController devre dışı bırakıldı.");
+        }
+
+        // Rigidbody'yi durdur
+        var rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+    }
+
+    /// <summary>
+    /// Belirli süre bekleyip sahneyi yenile (otomatik restart için)
+    /// </summary>
+    private System.Collections.IEnumerator RestartSceneAfterDelay()
+    {
+        yield return new WaitForSeconds(autoRestartDelay);
+
+        // Aktif sahneyi yeniden yükle
+        string currentSceneName = SceneManager.GetActiveScene().name;
+
+        if (showDebugLogs)
+            Debug.Log($"[PlayerHealth] 🔄 Sahne yenileniyor: {currentSceneName}");
+
+        SceneManager.LoadScene(currentSceneName);
     }
 
     /// <summary>

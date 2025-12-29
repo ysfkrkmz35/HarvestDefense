@@ -39,6 +39,22 @@ public class SimpleEnemyAI : MonoBehaviour
         rb.interpolation = RigidbodyInterpolation2D.Interpolate; // Smooth hareket
     }
 
+    void LateUpdate()
+    {
+        // Ekstra güvenlik: Her frame rotasyonu sıfırla
+        // Eğer herhangi bir şey (Animator, fizik충돌 vb.) rotasyonu değiştirirse, düzelt
+        if (transform.eulerAngles != Vector3.zero)
+        {
+            transform.rotation = Quaternion.identity;
+        }
+
+        // Rigidbody rotasyonunu da sıfırla
+        if (rb != null && rb.rotation != 0f)
+        {
+            rb.rotation = 0f;
+        }
+    }
+
     void Start()
     {
         FindPlayer();
@@ -61,6 +77,20 @@ public class SimpleEnemyAI : MonoBehaviour
         Vector2 playerPos = new Vector2(player.position.x, player.position.y);
         Vector2 myPos = new Vector2(transform.position.x, transform.position.y);
 
+        // ═══ MEVCUT POZİSYON KONTROLÜ ═══
+        // Eğer şu anda Water üzerindeyse, en yakın Ground'a geri dön
+        if (!IsPositionOnGround(myPos))
+        {
+            Debug.LogWarning($"[SimpleEnemyAI] {gameObject.name} Water üzerinde! En yakın Ground'a dönüyor...");
+            Vector2? nearestGround = FindNearestGroundPosition(myPos, 10f);
+            if (nearestGround.HasValue)
+            {
+                transform.position = nearestGround.Value;
+            }
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         // Mesafe hesapla
         float distance = Vector2.Distance(myPos, playerPos);
 
@@ -73,10 +103,100 @@ public class SimpleEnemyAI : MonoBehaviour
         }
         else
         {
-            // Player'a doğru hareket
+            // Player'a doğru hareket (Ground tile kontrolü ile)
             Vector2 direction = (playerPos - myPos).normalized;
-            rb.linearVelocity = direction * moveSpeed;
+            Vector2 targetVelocity = direction * moveSpeed;
+
+            // ═══ HEDEF POZİSYON KONTROLÜ (PlayerController ile AYNI) ═══
+            Vector2 targetPosition = myPos + targetVelocity * Time.fixedDeltaTime;
+
+            // Hedef pozisyonda Ground tile var mı kontrol et
+            if (HappyHarvest.GameManager.Instance?.Terrain != null)
+            {
+                var grid = HappyHarvest.GameManager.Instance.Terrain.Grid;
+                var groundTilemap = HappyHarvest.GameManager.Instance.Terrain.GroundTilemap;
+
+                if (grid != null && groundTilemap != null)
+                {
+                    // Hedef cell'de Ground tile var mı?
+                    Vector3Int targetCell = grid.WorldToCell(targetPosition);
+                    bool hasGroundTile = groundTilemap.HasTile(targetCell);
+
+                    // Ground tile yoksa hareket etme (PlayerController ile aynı)
+                    if (!hasGroundTile)
+                    {
+                        rb.linearVelocity = Vector2.zero;
+                        return; // Hareketi iptal et
+                    }
+                }
+            }
+
+            // Ground üzerinde, hareket edebilir
+            rb.linearVelocity = targetVelocity;
         }
+    }
+
+    /// <summary>
+    /// Pozisyon Ground tile üzerinde mi kontrol et
+    /// </summary>
+    bool IsPositionOnGround(Vector2 position)
+    {
+        if (HappyHarvest.GameManager.Instance?.Terrain != null)
+        {
+            var grid = HappyHarvest.GameManager.Instance.Terrain.Grid;
+            var groundTilemap = HappyHarvest.GameManager.Instance.Terrain.GroundTilemap;
+
+            if (grid != null && groundTilemap != null)
+            {
+                Vector3Int cellPosition = grid.WorldToCell(new Vector3(position.x, position.y, 0f));
+
+                // Ground tile var mı?
+                return groundTilemap.HasTile(cellPosition);
+            }
+        }
+
+        // Tilemap yoksa güvenli kabul et (eski davranış)
+        return true;
+    }
+
+    /// <summary>
+    /// En yakın Ground pozisyonunu bul (spiral search)
+    /// </summary>
+    Vector2? FindNearestGroundPosition(Vector2 currentPosition, float maxSearchDistance)
+    {
+        if (HappyHarvest.GameManager.Instance?.Terrain == null) return null;
+
+        var grid = HappyHarvest.GameManager.Instance.Terrain.Grid;
+        var groundTilemap = HappyHarvest.GameManager.Instance.Terrain.GroundTilemap;
+
+        if (grid == null || groundTilemap == null) return null;
+
+        Vector3Int startCell = grid.WorldToCell(new Vector3(currentPosition.x, currentPosition.y, 0f));
+        int maxRadius = Mathf.CeilToInt(maxSearchDistance / grid.cellSize.x);
+
+        // Spiral search - yakından uzağa
+        for (int radius = 1; radius <= maxRadius; radius++)
+        {
+            for (int x = -radius; x <= radius; x++)
+            {
+                for (int y = -radius; y <= radius; y++)
+                {
+                    // Sadece kenarları kontrol et
+                    if (Mathf.Abs(x) != radius && Mathf.Abs(y) != radius)
+                        continue;
+
+                    Vector3Int checkCell = startCell + new Vector3Int(x, y, 0);
+
+                    if (groundTilemap.HasTile(checkCell))
+                    {
+                        Vector3 groundWorldPos = grid.GetCellCenterWorld(checkCell);
+                        return new Vector2(groundWorldPos.x, groundWorldPos.y);
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     void TryAttack()

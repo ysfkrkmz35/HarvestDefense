@@ -348,16 +348,52 @@ namespace YusufTest
                 movement += CalculateSeparation();
             }
 
-            // Hareketi uygula
+            // Hareketi uygula (Ground tile kontrolü ile)
             if (movement != Vector2.zero)
             {
-                rb.linearVelocity = movement;
-                FlipSprite(movement.x);
+                // ═══ GROUND TİLE KONTROLÜ ═══
+                // Enemy sadece Ground üzerinde hareket edebilir, Water'a giremez!
+                Vector2 targetPosition = rb.position + movement * Time.fixedDeltaTime;
+
+                if (IsPositionOnGround(targetPosition))
+                {
+                    // Ground üzerinde, hareket edebilir
+                    rb.linearVelocity = movement;
+                    FlipSprite(movement.x);
+                }
+                else
+                {
+                    // Water veya boşluk, hareketi engelle
+                    rb.linearVelocity = Vector2.zero;
+                }
             }
             else if (currentState == AIState.Idle || currentState == AIState.Attack)
             {
                 rb.linearVelocity = Vector2.zero;
             }
+        }
+
+        /// <summary>
+        /// Pozisyon Ground tile üzerinde mi kontrol et
+        /// </summary>
+        bool IsPositionOnGround(Vector2 position)
+        {
+            if (HappyHarvest.GameManager.Instance?.Terrain != null)
+            {
+                var grid = HappyHarvest.GameManager.Instance.Terrain.Grid;
+                var groundTilemap = HappyHarvest.GameManager.Instance.Terrain.GroundTilemap;
+
+                if (grid != null && groundTilemap != null)
+                {
+                    Vector3Int cellPosition = grid.WorldToCell(new Vector3(position.x, position.y, 0f));
+
+                    // Ground tile var mı?
+                    return groundTilemap.HasTile(cellPosition);
+                }
+            }
+
+            // Tilemap yoksa güvenli kabul et (eski davranış)
+            return true;
         }
 
         void SetState(AIState newState)

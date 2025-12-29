@@ -13,14 +13,14 @@ GameObject:
   - component: {fileID: 5049610439942423346}
   - component: {fileID: 7250253701884806289}
   - component: {fileID: 5191184969876686809}
-  - component: {fileID: 5208531326143202481}
   - component: {fileID: 3931591363181883012}
-  - component: {fileID: 2841047802924372668}
   - component: {fileID: 6052217295316437093}
   - component: {fileID: 3026924027035357011}
+  - component: {fileID: -3461622173667794662}
+  - component: {fileID: -6671915046230350944}
   m_Layer: 9
   m_Name: Spider_Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -176,20 +176,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5208531326143202481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1513094920655034533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ef8662524e7f514cbf040c30440b669, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 500
-  debugLogs: 1
 --- !u!114 &3931591363181883012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,20 +189,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5191184969876686809}
---- !u!114 &2841047802924372668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1513094920655034533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20ba9ed292f5d7b46a9739e896126f69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 2
-  moveDistance: 5
 --- !u!212 &6052217295316437093
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -290,3 +262,41 @@ MonoBehaviour:
   sortingLayerName: Default
   sortingOrder: 5
   fixZPosition: 1
+--- !u!114 &-3461622173667794662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513094920655034533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28f3c99ec7a50a2439eee09c0462448a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::YusufTest.EnemyHealth
+  maxHealth: 100
+  showDebugLogs: 1
+--- !u!114 &-6671915046230350944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513094920655034533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c084437c8a45674eba28f03cd0d39d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::YusufTest.EnemyDropHandler
+  xpReward: 25
+  goldReward: 10
+  goldPickupPrefab: {fileID: 7776306472184317177, guid: 601db7ad96199b5478d30426d593acde, type: 3}
+  xpPickupPrefab: {fileID: 7776306472184317177, guid: 27fd331da9f910d4ea59eed7645fe5f3, type: 3}
+  goldPickupCount: 3
+  xpPickupCount: 2
+  spawnOffset: {x: 0, y: 0.3}
+  useRandomVariance: 1
+  minMultiplier: 0.8
+  maxMultiplier: 1.2
+  fallbackToDirectReward: 1
+  showDebugLogs: 1
