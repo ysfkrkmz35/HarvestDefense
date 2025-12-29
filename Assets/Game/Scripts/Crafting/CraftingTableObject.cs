@@ -110,20 +110,21 @@ namespace HarvestDefense.Crafting
         {
             Debug.Log("[CraftingTable] Interacted!");
             
-            // Open crafting UI
+            // Find or use cached crafting UI
+            if (craftingUI == null)
+            {
+                craftingUI = FindObjectOfType<CraftingUISimple>();
+            }
+            
+            // Open crafting UI with station access
             if (craftingUI != null)
             {
-                // Use SendMessage or direct method call
-                craftingUI.SendMessage("OpenFromStation", SendMessageOptions.DontRequireReceiver);
+                craftingUI.OpenFromStation();  // Direct call - sets isAtStation = true
+                Debug.Log("[CraftingTable] Called OpenFromStation directly");
             }
             else
             {
-                // Try to find it again
-                craftingUI = FindObjectOfType<CraftingUISimple>();
-                if (craftingUI != null)
-                {
-                    craftingUI.SendMessage("OpenFromStation", SendMessageOptions.DontRequireReceiver);
-                }
+                Debug.LogWarning("[CraftingTable] CraftingUISimple not found!");
             }
         }
         

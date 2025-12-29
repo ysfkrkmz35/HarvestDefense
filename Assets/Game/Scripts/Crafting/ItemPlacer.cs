@@ -66,16 +66,24 @@ namespace HarvestDefense.Crafting
         
         private void TryStartPlacing()
         {
-            var inventory = CraftingInventory.Instance;
-            if (inventory == null) return;
-            
-            // Find a placeable item (CraftingTable)
-            var items = inventory.GetAllItems();
-            foreach (var kvp in items)
+            // Check HH inventory via bridge for placeable items
+            var inventory = InventoryBridge.GetPlayerInventory();
+            if (inventory == null)
             {
-                if (kvp.Key != null && kvp.Key.IsPlaceable && kvp.Value > 0)
+                Debug.Log("[ItemPlacer] No HH inventory found");
+                return;
+            }
+            
+            // Find a placeable CraftedItem or ResourceItem in HH inventory
+            for (int i = 0; i < HappyHarvest.InventorySystem.InventorySize; i++)
+            {
+                var entry = inventory.Entries[i];
+                if (entry.Item == null || entry.StackSize <= 0) continue;
+                
+                // Check if it's a CraftedItem with a placeable source
+                if (entry.Item is CraftedItem ci && ci.SourceItem != null && ci.SourceItem.IsPlaceable)
                 {
-                    StartPlacing(kvp.Key);
+                    StartPlacing(ci.SourceItem);
                     return;
                 }
             }
@@ -207,9 +215,8 @@ namespace HarvestDefense.Crafting
                 return;
             }
             
-            // Consume item from inventory
-            var inventory = CraftingInventory.Instance;
-            if (inventory != null && inventory.RemoveItem(selectedItem, 1))
+            // Consume item from HH inventory via bridge
+            if (InventoryBridge.RemoveItem(selectedItem, 1))
             {
                 // Destroy preview
                 Destroy(previewObject);
@@ -230,7 +237,7 @@ namespace HarvestDefense.Crafting
             }
             else
             {
-                Debug.Log("[ItemPlacer] Failed to remove item from inventory!");
+                Debug.Log("[ItemPlacer] Failed to remove item from HH inventory!");
             }
         }
         

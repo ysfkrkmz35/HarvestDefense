@@ -21,6 +21,7 @@ namespace HarvestDefense.Crafting
         
         // State
         private bool isOpen = false;
+        private bool isAtStation = false;  // TRUE = opened from crafting table, FALSE = opened via O key
         private Rect windowRect = new Rect(100, 100, 420, 580);
         private Vector2 recipeScrollPosition;
         private Vector2 inventoryScrollPosition;
@@ -40,33 +41,66 @@ namespace HarvestDefense.Crafting
         private float craftSuccessTimer = 0f;
         private const float CRAFT_SUCCESS_DURATION = 2f;
         
-        // Public accessor
+        // Public accessors
         public bool IsOpen => isOpen;
+        public bool IsAtStation => isAtStation;
         
         /// <summary>
-        /// Called by CraftingTableObject to open the UI
+        /// Called by CraftingTableObject to open the UI (shows ALL recipes)
         /// </summary>
         public void OpenFromStation()
         {
             isOpen = true;
-            Debug.Log("[CraftingUISimple] Opened from crafting station");
+            isAtStation = true;  // Can craft station-required recipes
+            
+            // Sync to CraftingManager so CanCraft() works
+            if (CraftingManager.Instance != null)
+                CraftingManager.Instance.SetAtStation(true);
+                
+            Debug.Log("[CraftingUISimple] Opened from crafting station - ALL recipes available");
         }
         
         /// <summary>
-        /// Toggle UI visibility
+        /// Open UI without station (only hand-craftable recipes)
         /// </summary>
-        public void Toggle()
+        public void OpenHandCrafting()
         {
-            isOpen = !isOpen;
+            isOpen = true;
+            isAtStation = false;  // Only hand-craftable recipes
+            
+            // Sync to CraftingManager
+            if (CraftingManager.Instance != null)
+                CraftingManager.Instance.SetAtStation(false);
+                
+            Debug.Log("[CraftingUISimple] Opened for hand crafting only");
+        }
+        
+        /// <summary>
+        /// Close the UI
+        /// </summary>
+        public void Close()
+        {
+            isOpen = false;
+            isAtStation = false;
+            
+            // Sync to CraftingManager
+            if (CraftingManager.Instance != null)
+                CraftingManager.Instance.SetAtStation(false);
         }
         
         private void Update()
         {
+            // O key = toggle hand-crafting mode (no station recipes)
             if (Input.GetKeyDown(toggleKey))
             {
-                isOpen = !isOpen;
                 if (isOpen)
-                    Debug.Log("[CraftingUISimple] Opened");
+                {
+                    Close();
+                }
+                else
+                {
+                    OpenHandCrafting();  // O key = hand crafting only
+                }
             }
             
             // Update success message timer
@@ -135,11 +169,13 @@ namespace HarvestDefense.Crafting
             // ═══ HEADER ═══
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            GUILayout.Label("⚒ CRAFTING", headerStyle);
+            // Show station status for debugging
+            string stationStatus = isAtStation ? "⚒ CRAFTING (at table)" : "⚒ CRAFTING (hand)";
+            GUILayout.Label(stationStatus, headerStyle);
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("✕", GUILayout.Width(30), GUILayout.Height(25)))
             {
-                isOpen = false;
+                Close();  // Use Close() to properly reset isAtStation
             }
             GUILayout.EndHorizontal();
             
@@ -164,6 +200,7 @@ namespace HarvestDefense.Crafting
             if (CraftingManager.Instance != null)
             {
                 var recipes = CraftingManager.Instance.GetAvailableRecipes();
+                // Use internal flag to determine if we have station access
                 
                 if (recipes == null || recipes.Count == 0)
                 {
@@ -171,10 +208,19 @@ namespace HarvestDefense.Crafting
                 }
                 else
                 {
+                    bool anyShown = false;
+                    
                     foreach (var recipe in recipes)
                     {
                         if (recipe == null) continue;
                         
+                        // FILTER: Skip station-required recipes if not at station
+                        if (recipe.RequiredStation != null && !isAtStation)
+                        {
+                            continue; // Don't show this recipe
+                        }
+                        
+                        anyShown = true;
                         bool isSelected = selectedRecipe == recipe;
                         bool canCraft = CraftingManager.Instance.CanCraft(recipe);
                         
@@ -191,6 +237,11 @@ namespace HarvestDefense.Crafting
                         {
                             selectedRecipe = recipe;
                         }
+                    }
+                    
+                    if (!anyShown)
+                    {
+                        GUILayout.Label("No hand-craftable recipes\n(Use crafting table for more)", labelStyle);
                     }
                 }
             }
@@ -228,7 +279,7 @@ namespace HarvestDefense.Crafting
                 {
                     if (ingredient.Item == null) continue;
                     
-                    int have = CraftingInventory.Instance?.GetItemCount(ingredient.Item) ?? 0;
+                    int have = InventoryBridge.GetItemCount(ingredient.Item);
                     bool enough = have >= ingredient.Amount;
                     
                     ingredientLabelStyle.normal.textColor = enough ? Color.green : Color.red;
@@ -278,62 +329,9 @@ namespace HarvestDefense.Crafting
             
             GUILayout.Space(10);
             
-            // ═══ INVENTORY PANEL ═══
-            GUILayout.Label("──── Inventory ────", labelStyle);
+            // Note: Inventory is now shown in HappyHarvest toolbar at bottom of screen
+            GUILayout.Label("──── Inventory: See bottom toolbar ────", labelStyle);
             
-            inventoryScrollPosition = GUILayout.BeginScrollView(inventoryScrollPosition, GUILayout.Height(100));
-            
-            if (CraftingInventory.Instance != null)
-            {
-                var items = CraftingInventory.Instance.GetAllItems();
-                
-                if (items.Count == 0)
-                {
-                    GUILayout.Label("Empty", labelStyle);
-                }
-                else
-                {
-                    GUILayout.BeginHorizontal();
-                    int itemsPerRow = 0;
-                    foreach (var kvp in items)
-                    {
-                        if (kvp.Key == null) continue;
-                        
-                        // Start new row after 5 items
-                        if (itemsPerRow >= 5)
-                        {
-                            GUILayout.EndHorizontal();
-                            GUILayout.BeginHorizontal();
-                            itemsPerRow = 0;
-                        }
-                        
-                        // Draw item slot
-                        GUILayout.BeginVertical(GUILayout.Width(60));
-                        
-                        // Draw icon if available
-                        if (kvp.Key.Icon != null && kvp.Key.Icon.texture != null)
-                        {
-                            Rect iconRect = GUILayoutUtility.GetRect(40, 40);
-                            GUI.DrawTexture(iconRect, kvp.Key.Icon.texture, ScaleMode.ScaleToFit);
-                        }
-                        else
-                        {
-                            // Fallback: colored box
-                            GUILayout.Box("?", GUILayout.Width(40), GUILayout.Height(40));
-                        }
-                        
-                        // Item name and count
-                        GUILayout.Label($"{kvp.Key.ItemName}\nx{kvp.Value}", labelStyle);
-                        
-                        GUILayout.EndVertical();
-                        itemsPerRow++;
-                    }
-                    GUILayout.FlexibleSpace();
-                    GUILayout.EndHorizontal();
-                }
-            }
-            
-            GUILayout.EndScrollView();
             
             // Make window draggable
             GUI.DragWindow(new Rect(0, 0, windowRect.width, 30));

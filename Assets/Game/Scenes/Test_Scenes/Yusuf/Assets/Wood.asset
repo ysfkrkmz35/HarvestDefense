@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Wood
   m_EditorClassIdentifier: Assembly-CSharp::HarvestDefense.Crafting.CraftingItem
   ItemName: Wood
-  Icon: {fileID: 0}
+  Icon: {fileID: -3723118755774083741, guid: 386c6b721072a5a4bbb710a2b0efaf88, type: 3}
   Description: 
   MaxStackSize: 99
   Category: 0
+  IsPlaceable: 0
+  PlacedPrefab: {fileID: 0}
+  HappyHarvestItem: {fileID: 11400000, guid: 300dcbbd88900924080e8fd0cd33643a, type: 2}

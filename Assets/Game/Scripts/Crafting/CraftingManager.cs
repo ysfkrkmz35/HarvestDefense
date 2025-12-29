@@ -21,6 +21,9 @@ namespace HarvestDefense.Crafting
         // Unlocked recipes (for progression)
         private HashSet<CraftingRecipe> unlockedRecipes = new HashSet<CraftingRecipe>();
         
+        // Station tracking - set when UI is opened from a CraftingTable
+        public bool IsAtStation { get; private set; } = false;
+        
         // Events
         public event Action<CraftingRecipe> OnRecipeCrafted;
         public event Action OnRecipeUnlocked;
@@ -86,23 +89,23 @@ namespace HarvestDefense.Crafting
             if (recipe == null) return false;
             if (!IsRecipeUnlocked(recipe)) return false;
             
-            var inventory = CraftingInventory.Instance;
-            if (inventory == null) return false;
+            // Check HappyHarvest inventory via bridge
+            if (InventoryBridge.GetPlayerInventory() == null) return false;
             
             // Check crafting limit (MaxCraftable)
             if (recipe.MaxCraftable > 0)
             {
-                int currentCount = inventory.GetItemCount(recipe.ResultItem);
+                int currentCount = InventoryBridge.GetItemCount(recipe.ResultItem);
                 if (currentCount >= recipe.MaxCraftable)
                 {
                     return false; // Already have max amount
                 }
             }
             
-            // Check all ingredients
+            // Check all ingredients in HH inventory
             foreach (var ingredient in recipe.Ingredients)
             {
-                if (!inventory.HasItem(ingredient.Item, ingredient.Amount))
+                if (!InventoryBridge.HasItem(ingredient.Item, ingredient.Amount))
                 {
                     return false;
                 }
@@ -111,11 +114,23 @@ namespace HarvestDefense.Crafting
             // Check station requirement
             if (recipe.RequiredStation != null)
             {
-                // TODO: Check if player is near the required station
-                // For now, skip station check
+                if (!IsAtStation)
+                {
+                    return false; // Need to be at a crafting station
+                }
             }
             
             return true;
+        }
+        
+        /// <summary>
+        /// Set whether player is at a crafting station (called by UI)
+        /// </summary>
+        public void SetAtStation(bool atStation)
+        {
+            IsAtStation = atStation;
+            if (showDebugLogs)
+                Debug.Log($"[CraftingManager] AtStation: {atStation}");
         }
         
         /// <summary>
@@ -129,39 +144,30 @@ namespace HarvestDefense.Crafting
                 return false;
             }
             
-            var inventory = CraftingInventory.Instance;
-            
-            // Consume ingredients
+            // Consume ingredients from HH inventory
             foreach (var ingredient in recipe.Ingredients)
             {
-                inventory.RemoveItem(ingredient.Item, ingredient.Amount);
+                InventoryBridge.RemoveItem(ingredient.Item, ingredient.Amount);
             }
             
-            // Add result to CraftingInventory
-            inventory.AddItem(recipe.ResultItem, recipe.ResultAmount);
-            
-            // ALSO add to HappyHarvest main inventory (toolbar) if linked
-            if (recipe.ResultItem.HappyHarvestItem != null)
-            {
-                var playerController = FindObjectOfType<HappyHarvest.PlayerController>();
-                if (playerController != null && playerController.Inventory != null)
-                {
-                    playerController.Inventory.AddItem(recipe.ResultItem.HappyHarvestItem, recipe.ResultAmount);
-                    if (showDebugLogs)
-                        Debug.Log($"[CraftingManager] Added to main inventory: {recipe.ResultItem.HappyHarvestItem.DisplayName}");
-                }
-                else
-                {
-                    if (showDebugLogs)
-                        Debug.LogWarning("[CraftingManager] PlayerController/Inventory not found for main inventory!");
-                }
-            }
+            // Add result to HH inventory
+            bool addSuccess = InventoryBridge.AddItem(recipe.ResultItem, recipe.ResultAmount);
             
             if (showDebugLogs)
-                Debug.Log($"[CraftingManager] ✅ Crafted {recipe.ResultAmount}x {recipe.ResultItem.ItemName}!");
+            {
+                var hhItem = InventoryBridge.GetOrCreateHHItem(recipe.ResultItem);
+                Debug.Log($"[CraftingManager] Craft result: {recipe.ResultItem.ItemName}");
+                Debug.Log($"[CraftingManager] HH Item: {hhItem?.name ?? "NULL"} (Type: {hhItem?.GetType().Name ?? "?"})");
+                Debug.Log($"[CraftingManager] AddItem success: {addSuccess}");
+                
+                if (addSuccess)
+                    Debug.Log($"[CraftingManager] ✅ Crafted {recipe.ResultAmount}x {recipe.ResultItem.ItemName}!");
+                else
+                    Debug.LogError($"[CraftingManager] ❌ Failed to add {recipe.ResultItem.ItemName} to inventory!");
+            }
             
             OnRecipeCrafted?.Invoke(recipe);
-            return true;
+            return addSuccess;
         }
         
         /// <summary>
@@ -180,6 +186,23 @@ namespace HarvestDefense.Crafting
         }
         
         /// <summary>
+        /// Add a recipe at runtime (and auto-unlock if UnlockedByDefault)
+        /// </summary>
+        public void AddRecipe(CraftingRecipe recipe)
+        {
+            if (recipe == null) return;
+            if (allRecipes.Contains(recipe)) return;
+            
+            allRecipes.Add(recipe);
+            
+            if (recipe.UnlockedByDefault)
+                unlockedRecipes.Add(recipe);
+            
+            if (showDebugLogs)
+                Debug.Log($"[CraftingManager] ➕ Added recipe: {recipe.RecipeName}");
+        }
+        
+        /// <summary>
         /// Get missing ingredients for a recipe
         /// </summary>
         public List<(CraftingItem item, int have, int need)> GetMissingIngredients(CraftingRecipe recipe)
@@ -187,12 +210,9 @@ namespace HarvestDefense.Crafting
             var result = new List<(CraftingItem, int, int)>();
             if (recipe == null) return result;
             
-            var inventory = CraftingInventory.Instance;
-            if (inventory == null) return result;
-            
             foreach (var ingredient in recipe.Ingredients)
             {
-                int have = inventory.GetItemCount(ingredient.Item);
+                int have = InventoryBridge.GetItemCount(ingredient.Item);
                 if (have < ingredient.Amount)
                 {
                     result.Add((ingredient.Item, have, ingredient.Amount));
@@ -201,6 +221,7 @@ namespace HarvestDefense.Crafting
             
             return result;
         }
+        
         /// <summary>
         /// Get reason why crafting is blocked (for UI display)
         /// </summary>
@@ -209,13 +230,12 @@ namespace HarvestDefense.Crafting
             if (recipe == null) return "Invalid recipe";
             if (!IsRecipeUnlocked(recipe)) return "Recipe locked";
             
-            var inventory = CraftingInventory.Instance;
-            if (inventory == null) return "No inventory";
+            if (InventoryBridge.GetPlayerInventory() == null) return "No inventory";
             
             // Check MaxCraftable limit
             if (recipe.MaxCraftable > 0)
             {
-                int currentCount = inventory.GetItemCount(recipe.ResultItem);
+                int currentCount = InventoryBridge.GetItemCount(recipe.ResultItem);
                 if (currentCount >= recipe.MaxCraftable)
                 {
                     return $"Already have {currentCount}/{recipe.MaxCraftable}";
@@ -225,9 +245,9 @@ namespace HarvestDefense.Crafting
             // Check ingredients
             foreach (var ingredient in recipe.Ingredients)
             {
-                if (!inventory.HasItem(ingredient.Item, ingredient.Amount))
+                if (!InventoryBridge.HasItem(ingredient.Item, ingredient.Amount))
                 {
-                    int have = inventory.GetItemCount(ingredient.Item);
+                    int have = InventoryBridge.GetItemCount(ingredient.Item);
                     return $"Need {ingredient.Amount - have} more {ingredient.Item.ItemName}";
                 }
             }
