@@ -163,7 +163,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aed91d50b737fe41a74b104009c9512, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HarvestDefenseMainMenu
-  gameSceneName: GameScene
+  gameSceneName: Yusuf_Test 12
+  pauseKey: 27
+  isPauseMode: 0
   hoverSound: {fileID: 0}
   clickSound: {fileID: 0}
   backgroundMusic: {fileID: 0}

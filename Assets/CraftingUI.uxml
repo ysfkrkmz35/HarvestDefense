@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" 
+         editor-extension-mode="False">
+    
+    <Style src="project://database/Assets/Game/UI/CraftingUI.uss" />
+    
+    <!-- Main Popup Container -->
+    <ui:VisualElement name="CraftingPopup" class="hidden">
+        
+        <!-- Crafting Panel -->
+        <ui:VisualElement name="CraftingPanel">
+            
+            <!-- Header - click and drag to move window -->
+            <ui:VisualElement name="Header" style="flex-direction: row; justify-content: space-between; align-items: center;">
+                <ui:Label name="Title" text="⚒ Crafting" />
+                <ui:Label name="ModeIndicator" text="2×2 Mode" />
+                <ui:Button name="CloseButton" text="✕" />
+            </ui:VisualElement>
+            
+            <!-- Crafting Area (Grid + Arrow + Output) -->
+            <ui:VisualElement name="CraftingArea">
+                
+                <!-- Grid Container -->
+                <ui:VisualElement name="GridContainer">
+                    <ui:Label name="GridLabel" text="Place Items" />
+                    
+                    <!-- 3x3 Crafting Grid (rows hidden for 2x2 mode) -->
+                    <ui:VisualElement name="CraftingGrid">
+                        <ui:VisualElement name="Row0" class="grid-row">
+                            <ui:VisualElement name="Slot0" class="craft-slot">
+                                <ui:VisualElement name="Icon" class="slot-icon" />
+                                <ui:Label name="Count" class="slot-count" text="" />
+                            </ui:VisualElement>
+                            <ui:VisualElement name="Slot1" class="craft-slot">
+                                <ui:VisualElement name="Icon" class="slot-icon" />
+                                <ui:Label name="Count" class="slot-count" text="" />
+                            </ui:VisualElement>
+                            <ui:VisualElement name="Slot2" class="craft-slot extra-slot">
+                                <ui:VisualElement name="Icon" class="slot-icon" />
+                                <ui:Label name="Count" class="slot-count" text="" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                        
+                        <ui:VisualElement name="Row1" class="grid-row">
+                            <ui:VisualElement name="Slot3" class="craft-slot">
+                                <ui:VisualElement name="Icon" class="slot-icon" />
+                                <ui:Label name="Count" class="slot-count" text="" />
+                            </ui:VisualElement>
+                            <ui:VisualElement name="Slot4" class="craft-slot">
+                                <ui:VisualElement name="Icon" class="slot-icon" />
+                                <ui:Label name="Count" class="slot-count" text="" />
+                            </ui:VisualElement>
+                            <ui:VisualElement name="Slot5" class="craft-slot extra-slot">
+                                <ui:VisualElement name="Icon" class="slot-icon" />
+                                <ui:Label name="Count" class="slot-count" text="" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                        
+                        <ui:VisualElement name="Row2" class="grid-row extra-row">
+                            <ui:VisualElement name="Slot6" class="craft-slot">
+                                <ui:VisualElement name="Icon" class="slot-icon" />
+                                <ui:Label name="Count" class="slot-count" text="" />
+                            </ui:VisualElement>
+                            <ui:VisualElement name="Slot7" class="craft-slot">
+                                <ui:VisualElement name="Icon" class="slot-icon" />
+                                <ui:Label name="Count" class="slot-count" text="" />
+                            </ui:VisualElement>
+                            <ui:VisualElement name="Slot8" class="craft-slot">
+                                <ui:VisualElement name="Icon" class="slot-icon" />
+                                <ui:Label name="Count" class="slot-count" text="" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                
+                <!-- Arrow -->
+                <ui:Label name="Arrow" text="→" />
+                
+                <!-- Output Container -->
+                <ui:VisualElement name="OutputContainer">
+                    <ui:Label name="OutputLabel" text="Result" />
+                    <ui:VisualElement name="OutputSlot">
+                        <ui:VisualElement name="OutputIcon" />
+                        <ui:Label name="OutputCount" text="" />
+                    </ui:VisualElement>
+                    <ui:Button name="CraftButton" text="CRAFT" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            
+            <!-- Recipe Info -->
+            <ui:VisualElement name="RecipeInfo">
+                <ui:Label name="RecipeName" text="Select ingredients..." />
+                <ui:Label name="RecipeDescription" text="Place items in the grid to craft" />
+            </ui:VisualElement>
+            
+            <!-- Inventory Section -->
+            <ui:VisualElement name="InventorySection">
+                <ui:Label name="InventoryLabel" text="Your Inventory" />
+                <ui:VisualElement name="InventoryRow">
+                    <!-- Inventory slots will be created dynamically -->
+                </ui:VisualElement>
+            </ui:VisualElement>
+            
+            <!-- Hint -->
+            <ui:Label name="HintText" text="Click inventory item, then click grid slot to place" />
+            
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

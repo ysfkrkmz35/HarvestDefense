@@ -21,6 +21,10 @@ public class HealthBarCreator : Editor
     
     private static readonly Color MANA_FILL = new Color(0.3f, 0.6f, 1f, 1f);
     private static readonly Color MANA_GLOW = new Color(0.4f, 0.7f, 1f, 0.6f);
+    
+    // XP Bar colors
+    private static readonly Color XP_FILL = new Color(0.6f, 0.2f, 0.9f, 1f);
+    private static readonly Color XP_GLOW = new Color(0.8f, 0.4f, 1f, 0.6f);
 
     [MenuItem("Tools/Create Pro Health Bars")]
     public static void CreateHealthManaBars()
@@ -37,9 +41,12 @@ public class HealthBarCreator : Editor
         // Mana Bar  
         GameObject manaBar = CreateProBar(container.transform, "ManaBar", -50, false);
 
+        // XP Bar
+        GameObject xpBar = CreateXPBar(container.transform, "XPBar", -100);
+
         // UI Manager ekle
         ProHealthManaUI uiManager = container.AddComponent<ProHealthManaUI>();
-        AssignReferences(uiManager, healthBar, manaBar);
+        AssignReferences(uiManager, healthBar, manaBar, xpBar);
 
         Selection.activeGameObject = container;
         Undo.RegisterCreatedObjectUndo(container, "Create Pro Health Bars");
@@ -82,7 +89,7 @@ public class HealthBarCreator : Editor
         rect.anchorMax = new Vector2(0, 1);
         rect.pivot = new Vector2(0, 1);
         rect.anchoredPosition = new Vector2(30, -30);
-        rect.sizeDelta = new Vector2(320, 120);
+        rect.sizeDelta = new Vector2(320, 180);
 
         return container;
     }
@@ -206,6 +213,102 @@ public class HealthBarCreator : Editor
         return bar;
     }
 
+    /// <summary>
+    /// Creates the XP bar with level text, fill bar, and XP progress text
+    /// </summary>
+    private static GameObject CreateXPBar(Transform parent, string name, float yOffset)
+    {
+        // Ana bar container
+        GameObject bar = new GameObject(name);
+        bar.transform.SetParent(parent, false);
+        
+        RectTransform barRect = bar.AddComponent<RectTransform>();
+        barRect.anchorMin = new Vector2(0, 1);
+        barRect.anchorMax = new Vector2(1, 1);
+        barRect.pivot = new Vector2(0, 1);
+        barRect.anchoredPosition = new Vector2(0, yOffset);
+        barRect.sizeDelta = new Vector2(0, 38); // Slightly smaller than health/mana
+
+        // === LEVEL TEXT (instead of icon) ===
+        GameObject levelTextObj = CreateElement("LevelText", bar.transform);
+        TextMeshProUGUI levelText = levelTextObj.AddComponent<TextMeshProUGUI>();
+        levelText.text = "Lv 1";
+        levelText.fontSize = 14;
+        levelText.fontStyle = FontStyles.Bold;
+        levelText.alignment = TextAlignmentOptions.Left;
+        levelText.color = new Color(0.8f, 0.6f, 1f, 1f); // Light purple
+        SetRect(levelTextObj, 0, 0, 0, 1, 0, 0.5f, new Vector2(4, 0), new Vector2(44, 0));
+
+        // === OUTER FRAME ===
+        GameObject outerFrame = CreateElement("OuterFrame", bar.transform);
+        Image outerImg = outerFrame.AddComponent<Image>();
+        outerImg.color = FRAME_LIGHT;
+        SetRect(outerFrame, 0, 0, 1, 1, 0, 0.5f, new Vector2(50, 0), new Vector2(-60, 0));
+        
+        // === INNER FRAME (Dark background) ===
+        GameObject innerFrame = CreateElement("InnerFrame", outerFrame.transform);
+        Image innerImg = innerFrame.AddComponent<Image>();
+        innerImg.color = FRAME_DARK;
+        SetRectStretch(innerFrame, 2, 2, -2, -2);
+
+        // === FILL BAR ===
+        GameObject fill = CreateElement("Fill", innerFrame.transform);
+        Image fillImg = fill.AddComponent<Image>();
+        fillImg.color = XP_FILL;
+        fillImg.raycastTarget = false;
+        RectTransform fillRect = fill.GetComponent<RectTransform>();
+        fillRect.anchorMin = Vector2.zero;
+        fillRect.anchorMax = Vector2.one;
+        fillRect.pivot = new Vector2(0, 0.5f);
+        fillRect.offsetMin = new Vector2(4, 4);
+        fillRect.offsetMax = new Vector2(-4, -4);
+
+        // === GLOW OVERLAY ===
+        GameObject glow = CreateElement("Glow", innerFrame.transform);
+        Image glowImg = glow.AddComponent<Image>();
+        glowImg.color = XP_GLOW;
+        glowImg.raycastTarget = false;
+        RectTransform glowRect = glow.GetComponent<RectTransform>();
+        glowRect.anchorMin = Vector2.zero;
+        glowRect.anchorMax = Vector2.one;
+        glowRect.pivot = new Vector2(0, 0.5f);
+        glowRect.offsetMin = new Vector2(4, 4);
+        glowRect.offsetMax = new Vector2(-4, -4);
+
+        // === SHINE (Üst parlama) ===
+        GameObject shine = CreateElement("Shine", innerFrame.transform);
+        Image shineImg = shine.AddComponent<Image>();
+        shineImg.color = new Color(1f, 1f, 1f, 0.12f);
+        shineImg.raycastTarget = false;
+        RectTransform shineRect = shine.GetComponent<RectTransform>();
+        shineRect.anchorMin = new Vector2(0, 0.55f);
+        shineRect.anchorMax = new Vector2(1, 1);
+        shineRect.offsetMin = new Vector2(4, 0);
+        shineRect.offsetMax = new Vector2(-4, -4);
+
+        // === SEGMENT LINES ===
+        CreateSegmentLines(innerFrame.transform);
+
+        // === ACCENT LINE (Alt purple çizgi) ===
+        GameObject accent = CreateElement("AccentLine", outerFrame.transform);
+        Image accentImg = accent.AddComponent<Image>();
+        accentImg.color = new Color(0.7f, 0.4f, 1f, 0.6f); // Purple accent
+        accentImg.raycastTarget = false;
+        SetRect(accent, 0, 0, 1, 0, 0.5f, 0, new Vector2(10, -1), new Vector2(-10, 2));
+
+        // === VALUE TEXT (XP progress) ===
+        GameObject valueText = CreateElement("ValueText", bar.transform);
+        TextMeshProUGUI tmpText = valueText.AddComponent<TextMeshProUGUI>();
+        tmpText.text = "0/100";
+        tmpText.fontSize = 12;
+        tmpText.fontStyle = FontStyles.Bold;
+        tmpText.alignment = TextAlignmentOptions.Right;
+        tmpText.color = new Color(0.9f, 0.9f, 0.9f, 0.9f);
+        SetRect(valueText, 1, 0, 1, 1, 1, 0.5f, new Vector2(-4, 0), new Vector2(55, 0));
+
+        return bar;
+    }
+
     private static void CreateSegmentLines(Transform parent)
     {
         float[] positions = { 0.25f, 0.5f, 0.75f };
@@ -227,10 +330,11 @@ public class HealthBarCreator : Editor
         }
     }
 
-    private static void AssignReferences(ProHealthManaUI ui, GameObject healthBar, GameObject manaBar)
+    private static void AssignReferences(ProHealthManaUI ui, GameObject healthBar, GameObject manaBar, GameObject xpBar)
     {
         Transform hInner = healthBar.transform.Find("OuterFrame/InnerFrame");
         Transform mInner = manaBar.transform.Find("OuterFrame/InnerFrame");
+        Transform xpInner = xpBar.transform.Find("OuterFrame/InnerFrame");
 
         ui.healthFill = hInner.Find("Fill").GetComponent<Image>();
         ui.healthGlow = hInner.Find("Glow").GetComponent<Image>();
@@ -242,6 +346,12 @@ public class HealthBarCreator : Editor
         ui.manaGlow = mInner.Find("Glow").GetComponent<Image>();
         ui.manaText = manaBar.transform.Find("ValueText").GetComponent<TextMeshProUGUI>();
         ui.manaIconGlow = manaBar.transform.Find("IconBg/IconGlow").GetComponent<Image>();
+
+        // XP Bar references
+        ui.xpFill = xpInner.Find("Fill").GetComponent<Image>();
+        ui.xpGlow = xpInner.Find("Glow").GetComponent<Image>();
+        ui.levelText = xpBar.transform.Find("LevelText").GetComponent<TextMeshProUGUI>();
+        ui.xpText = xpBar.transform.Find("ValueText").GetComponent<TextMeshProUGUI>();
     }
 
     #region Helper Methods

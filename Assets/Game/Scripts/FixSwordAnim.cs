@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
@@ -35,3 +36,4 @@ public class FixSwordAnim
         Debug.Log($"✅ Success! Assigned SwordOverride to Player '{player.name}'.");
     }
 }
+#endif

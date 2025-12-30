@@ -5701,7 +5701,7 @@ MonoBehaviour:
   loseTargetRange: 15
   attackRange: 5
   strafeRange: 3
-  attackDamage: 10
+  attackDamage: 1
   attackCooldown: 1
   attackWindup: 0.3
   retreatDuration: 0.5

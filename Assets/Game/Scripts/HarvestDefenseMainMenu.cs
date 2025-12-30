@@ -6,14 +6,18 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-
 /// <summary>
 /// HARVEST DEFENSE - PREMIUM DARK FANTASY FARM MENU
 /// </summary>
 public class HarvestDefenseMainMenu : MonoBehaviour
 {
     [Header("=== SCENE SETTINGS ===")]
-    public string gameSceneName = "GameScene";
+    public string gameSceneName = "Yusuf_Test 11";
+    public KeyCode pauseKey = KeyCode.Escape;
+    
+    [Header("=== PAUSE MODE ===")]
+    [Tooltip("If true, this menu acts as an in-game pause overlay instead of main menu")]
+    public bool isPauseMode = false;
 
     [Header("=== AUDIO ===")]
     public AudioClip hoverSound;
@@ -37,6 +41,19 @@ public class HarvestDefenseMainMenu : MonoBehaviour
     private RectTransform titleRect;
     private readonly List<ParticleInfo> particles = new List<ParticleInfo>();
     private bool ready;
+    private bool isPaused = false;
+    private GameObject menuRoot; // Root container for hiding/showing all menu elements
+
+    // Settings & Credits panels
+    private GameObject settingsPanel;
+    private GameObject creditsPanel;
+    private GameObject buttonsContainer;
+    private Slider masterVolumeSlider;
+    private Slider musicVolumeSlider;
+    private Slider sfxVolumeSlider;
+    private TMP_Dropdown resolutionDropdown;
+    private Toggle fullscreenToggle;
+    private List<Resolution> availableResolutions = new List<Resolution>();
 
     private Sprite leafSprite;
     private Sprite wheatSprite;
@@ -76,6 +93,7 @@ public class HarvestDefenseMainMenu : MonoBehaviour
 
     void Start()
     {
+        Debug.Log($"[HarvestDefenseMainMenu] Start() - isPauseMode = {isPauseMode}");
         SetupAudio();
         CreateCanvas();
         CacheSprites();
@@ -85,15 +103,66 @@ public class HarvestDefenseMainMenu : MonoBehaviour
         CreateTitle();
         CreateButtons();
         CreateVersionText();
+        CreateSettingsPanel();
+        CreateCreditsPanel();
 
         ready = true;
-        StartCoroutine(EntranceAnimation());
+        Debug.Log($"[HarvestDefenseMainMenu] All UI created. menuRoot = {(menuRoot != null ? menuRoot.name : "NULL")}");
+        
+        // In pause mode, hide the menu initially (after all UI is created)
+        if (isPauseMode)
+        {
+            menuRoot.SetActive(false);
+            Debug.Log("[HarvestDefenseMainMenu] Menu hidden (pause mode). Press ESC to show.");
+        }
+        else
+        {
+            StartCoroutine(EntranceAnimation());
+        }
     }
 
     void Update()
     {
+        // Handle pause key in pause mode - check this BEFORE ready check
+        if (isPauseMode && Input.GetKeyDown(pauseKey))
+        {
+            Debug.Log($"[PauseMenu] ESC pressed. isPaused = {isPaused}");
+            if (isPaused)
+                ResumeGame();
+            else
+                PauseGame();
+        }
+        
         if (!ready) return;
         AnimateParticles();
+    }
+
+    void PauseGame()
+    {
+        Debug.Log("[PauseMenu] PauseGame called");
+        isPaused = true;
+        Time.timeScale = 0f;
+        if (menuRoot != null)
+        {
+            menuRoot.SetActive(true);
+            Debug.Log("[PauseMenu] Menu shown");
+        }
+        else
+        {
+            Debug.LogError("[PauseMenu] menuRoot is NULL!");
+        }
+    }
+
+    void ResumeGame()
+    {
+        Debug.Log("[PauseMenu] ResumeGame called");
+        isPaused = false;
+        Time.timeScale = 1f;
+        if (menuRoot != null)
+        {
+            menuRoot.SetActive(false);
+            Debug.Log("[PauseMenu] Menu hidden");
+        }
     }
 
     void SetupAudio()
@@ -124,6 +193,9 @@ public class HarvestDefenseMainMenu : MonoBehaviour
         mainCanvas = canvasObj.AddComponent<Canvas>();
         mainCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
         mainCanvas.sortingOrder = 100;
+        
+        // Store reference for pause mode show/hide
+        menuRoot = canvasObj;
 
         var scaler = canvasObj.AddComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
@@ -256,8 +328,8 @@ public class HarvestDefenseMainMenu : MonoBehaviour
     {
         var container = CreateUI("Title", mainCanvas.transform);
         titleRect = container.GetComponent<RectTransform>();
-        titleRect.anchorMin = titleRect.anchorMax = new Vector2(0.5f, 0.84f);
-        titleRect.sizeDelta = new Vector2(700, 220);
+        titleRect.anchorMin = titleRect.anchorMax = new Vector2(0.5f, 0.82f);
+        titleRect.sizeDelta = new Vector2(700, 180);
 
         CreateTitleDecoration(container.transform);
 
@@ -341,9 +413,10 @@ public class HarvestDefenseMainMenu : MonoBehaviour
     void CreateButtons()
     {
         var container = CreateUI("Buttons", mainCanvas.transform);
+        buttonsContainer = container;
         var cRect = container.GetComponent<RectTransform>();
-        cRect.anchorMin = cRect.anchorMax = new Vector2(0.5f, 0.47f);
-        cRect.sizeDelta = new Vector2(560, 520);
+        cRect.anchorMin = cRect.anchorMax = new Vector2(0.5f, 0.38f);
+        cRect.sizeDelta = new Vector2(480, 400);
 
         var btnData = new (string label, string icon, System.Action action)[]
         {
@@ -354,8 +427,8 @@ public class HarvestDefenseMainMenu : MonoBehaviour
             ("QUIT", "exit", OnQuit)
         };
 
-        float startY = 190f;
-        float spacing = 90f;
+        float startY = 150f;
+        float spacing = 70f;
         for (int i = 0; i < btnData.Length; i++)
         {
             var b = btnData[i];
@@ -939,9 +1012,31 @@ public class HarvestDefenseMainMenu : MonoBehaviour
     }
 
     void OnPlay() => StartCoroutine(TransitionTo(gameSceneName));
-    void OnContinue() => Debug.Log("Continue");
-    void OnSettings() => Debug.Log("Settings");
-    void OnCredits() => Debug.Log("Credits");
+    
+    void OnContinue()
+    {
+        if (isPauseMode)
+        {
+            ResumeGame();
+        }
+        else
+        {
+            Debug.Log("Continue - Load saved game");
+        }
+    }
+    
+    void OnSettings()
+    {
+        buttonsContainer.SetActive(false);
+        settingsPanel.SetActive(true);
+        LoadSettings();
+    }
+    
+    void OnCredits()
+    {
+        buttonsContainer.SetActive(false);
+        creditsPanel.SetActive(true);
+    }
     void OnQuit() => StartCoroutine(QuitAnim());
 
     IEnumerator TransitionTo(string scene)
@@ -981,5 +1076,452 @@ public class HarvestDefenseMainMenu : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    void CreateSettingsPanel()
+    {
+        settingsPanel = CreateUI("SettingsPanel", mainCanvas.transform);
+        var panelRect = settingsPanel.GetComponent<RectTransform>();
+        Stretch(panelRect);
+
+        // Dark overlay background
+        var overlay = settingsPanel.AddComponent<Image>();
+        overlay.color = new Color(0, 0, 0, 0.85f);
+
+        // Settings container
+        var container = CreateUI("SettingsContainer", settingsPanel.transform);
+        var containerRect = container.GetComponent<RectTransform>();
+        containerRect.anchorMin = containerRect.anchorMax = new Vector2(0.5f, 0.5f);
+        containerRect.sizeDelta = new Vector2(480, 520);
+
+        // Background panel
+        var bgImage = container.AddComponent<Image>();
+        bgImage.sprite = buttonBgSprite;
+        bgImage.type = Image.Type.Sliced;
+        bgImage.color = bgMedium;
+
+        // Title
+        var titleObj = CreateUI("Title", container.transform);
+        var titleTxt = titleObj.AddComponent<TextMeshProUGUI>();
+        titleTxt.text = "SETTINGS";
+        titleTxt.fontSize = 36;
+        titleTxt.fontStyle = FontStyles.Bold;
+        titleTxt.alignment = TextAlignmentOptions.Center;
+        titleTxt.color = goldLight;
+        var titleR = titleObj.GetComponent<RectTransform>();
+        titleR.anchorMin = new Vector2(0, 0.85f);
+        titleR.anchorMax = new Vector2(1, 0.95f);
+        titleR.offsetMin = titleR.offsetMax = Vector2.zero;
+
+        float yPos = 0.72f;
+        float spacing = 0.12f;
+
+        // Master Volume
+        CreateSettingsSlider(container.transform, "Master Volume", yPos, out masterVolumeSlider);
+        yPos -= spacing;
+
+        // Music Volume
+        CreateSettingsSlider(container.transform, "Music Volume", yPos, out musicVolumeSlider);
+        yPos -= spacing;
+
+        // SFX Volume
+        CreateSettingsSlider(container.transform, "SFX Volume", yPos, out sfxVolumeSlider);
+        yPos -= spacing;
+
+        // Resolution Dropdown
+        CreateResolutionDropdown(container.transform, yPos);
+        yPos -= spacing;
+
+        // Fullscreen Toggle
+        CreateFullscreenToggle(container.transform, yPos);
+
+        // Close Button
+        var closeBtn = CreateUI("CloseBtn", container.transform);
+        var closeBtnRect = closeBtn.GetComponent<RectTransform>();
+        closeBtnRect.anchorMin = new Vector2(0.2f, 0.05f);
+        closeBtnRect.anchorMax = new Vector2(0.8f, 0.12f);
+        closeBtnRect.offsetMin = closeBtnRect.offsetMax = Vector2.zero;
+
+        var closeBg = closeBtn.AddComponent<Image>();
+        closeBg.sprite = buttonBgSprite;
+        closeBg.type = Image.Type.Sliced;
+        closeBg.color = brownDark;
+
+        var closeTxtObj = CreateUI("Text", closeBtn.transform);
+        var closeTxt = closeTxtObj.AddComponent<TextMeshProUGUI>();
+        closeTxt.text = "CLOSE";
+        closeTxt.fontSize = 22;
+        closeTxt.fontStyle = FontStyles.Bold;
+        closeTxt.alignment = TextAlignmentOptions.Center;
+        closeTxt.color = goldLight;
+        Stretch(closeTxtObj.GetComponent<RectTransform>());
+
+        var btn = closeBtn.AddComponent<Button>();
+        btn.targetGraphic = closeBg;
+        btn.onClick.AddListener(() =>
+        {
+            PlaySFX(clickSound);
+            SaveSettings();
+            settingsPanel.SetActive(false);
+            buttonsContainer.SetActive(true);
+        });
+
+        settingsPanel.SetActive(false);
+    }
+
+    void CreateSettingsSlider(Transform parent, string label, float yAnchor, out Slider slider)
+    {
+        var row = CreateUI(label + "Row", parent);
+        var rowRect = row.GetComponent<RectTransform>();
+        rowRect.anchorMin = new Vector2(0.08f, yAnchor - 0.05f);
+        rowRect.anchorMax = new Vector2(0.92f, yAnchor + 0.05f);
+        rowRect.offsetMin = rowRect.offsetMax = Vector2.zero;
+
+        var labelObj = CreateUI("Label", row.transform);
+        var labelTxt = labelObj.AddComponent<TextMeshProUGUI>();
+        labelTxt.text = label;
+        labelTxt.fontSize = 18;
+        labelTxt.alignment = TextAlignmentOptions.Left;
+        labelTxt.color = cream;
+        var labelRect = labelObj.GetComponent<RectTransform>();
+        labelRect.anchorMin = new Vector2(0, 0);
+        labelRect.anchorMax = new Vector2(0.4f, 1);
+        labelRect.offsetMin = labelRect.offsetMax = Vector2.zero;
+
+        var sliderObj = CreateUI("Slider", row.transform);
+        var sliderRect = sliderObj.GetComponent<RectTransform>();
+        sliderRect.anchorMin = new Vector2(0.42f, 0.2f);
+        sliderRect.anchorMax = new Vector2(1f, 0.8f);
+        sliderRect.offsetMin = sliderRect.offsetMax = Vector2.zero;
+
+        // Slider background
+        var bgObj = CreateUI("Background", sliderObj.transform);
+        var bgImg = bgObj.AddComponent<Image>();
+        bgImg.color = brownDark;
+        Stretch(bgObj.GetComponent<RectTransform>());
+
+        // Fill area
+        var fillArea = CreateUI("FillArea", sliderObj.transform);
+        Stretch(fillArea.GetComponent<RectTransform>());
+
+        var fill = CreateUI("Fill", fillArea.transform);
+        var fillImg = fill.AddComponent<Image>();
+        fillImg.color = goldDark;
+        var fillRect = fill.GetComponent<RectTransform>();
+        fillRect.anchorMin = Vector2.zero;
+        fillRect.anchorMax = Vector2.one;
+        fillRect.offsetMin = fillRect.offsetMax = Vector2.zero;
+
+        // Handle
+        var handleArea = CreateUI("HandleArea", sliderObj.transform);
+        Stretch(handleArea.GetComponent<RectTransform>());
+
+        var handle = CreateUI("Handle", handleArea.transform);
+        var handleImg = handle.AddComponent<Image>();
+        handleImg.color = goldLight;
+        var handleRect = handle.GetComponent<RectTransform>();
+        handleRect.sizeDelta = new Vector2(16, 0);
+
+        slider = sliderObj.AddComponent<Slider>();
+        slider.fillRect = fillRect;
+        slider.handleRect = handleRect;
+        slider.minValue = 0f;
+        slider.maxValue = 1f;
+        slider.value = 1f;
+        slider.onValueChanged.AddListener(v => PlaySFX(hoverSound));
+    }
+
+    void CreateResolutionDropdown(Transform parent, float yAnchor)
+    {
+        var row = CreateUI("ResolutionRow", parent);
+        var rowRect = row.GetComponent<RectTransform>();
+        rowRect.anchorMin = new Vector2(0.08f, yAnchor - 0.05f);
+        rowRect.anchorMax = new Vector2(0.92f, yAnchor + 0.05f);
+        rowRect.offsetMin = rowRect.offsetMax = Vector2.zero;
+
+        var labelObj = CreateUI("Label", row.transform);
+        var labelTxt = labelObj.AddComponent<TextMeshProUGUI>();
+        labelTxt.text = "Resolution";
+        labelTxt.fontSize = 18;
+        labelTxt.alignment = TextAlignmentOptions.Left;
+        labelTxt.color = cream;
+        var labelRect = labelObj.GetComponent<RectTransform>();
+        labelRect.anchorMin = new Vector2(0, 0);
+        labelRect.anchorMax = new Vector2(0.4f, 1);
+        labelRect.offsetMin = labelRect.offsetMax = Vector2.zero;
+
+        var dropdownObj = CreateUI("Dropdown", row.transform);
+        var dropdownRect = dropdownObj.GetComponent<RectTransform>();
+        dropdownRect.anchorMin = new Vector2(0.42f, 0.1f);
+        dropdownRect.anchorMax = new Vector2(1f, 0.9f);
+        dropdownRect.offsetMin = dropdownRect.offsetMax = Vector2.zero;
+
+        var dropdownBg = dropdownObj.AddComponent<Image>();
+        dropdownBg.color = brownDark;
+
+        resolutionDropdown = dropdownObj.AddComponent<TMP_Dropdown>();
+
+        // Label for dropdown
+        var dropLabelObj = CreateUI("Label", dropdownObj.transform);
+        var dropLabel = dropLabelObj.AddComponent<TextMeshProUGUI>();
+        dropLabel.text = "Select";
+        dropLabel.fontSize = 16;
+        dropLabel.alignment = TextAlignmentOptions.Left;
+        dropLabel.color = cream;
+        var dropLabelRect = dropLabelObj.GetComponent<RectTransform>();
+        dropLabelRect.anchorMin = new Vector2(0.05f, 0);
+        dropLabelRect.anchorMax = new Vector2(0.8f, 1);
+        dropLabelRect.offsetMin = dropLabelRect.offsetMax = Vector2.zero;
+        resolutionDropdown.captionText = dropLabel;
+
+        // Template
+        var template = CreateUI("Template", dropdownObj.transform);
+        var templateRect = template.GetComponent<RectTransform>();
+        templateRect.anchorMin = new Vector2(0, 0);
+        templateRect.anchorMax = new Vector2(1, 0);
+        templateRect.pivot = new Vector2(0.5f, 1);
+        templateRect.sizeDelta = new Vector2(0, 150);
+        var templateBg = template.AddComponent<Image>();
+        templateBg.color = bgMedium;
+        var templateScroll = template.AddComponent<ScrollRect>();
+
+        var viewport = CreateUI("Viewport", template.transform);
+        Stretch(viewport.GetComponent<RectTransform>());
+        viewport.AddComponent<Mask>().showMaskGraphic = false;
+        viewport.AddComponent<Image>();
+
+        var content = CreateUI("Content", viewport.transform);
+        var contentRect = content.GetComponent<RectTransform>();
+        contentRect.anchorMin = new Vector2(0, 1);
+        contentRect.anchorMax = new Vector2(1, 1);
+        contentRect.pivot = new Vector2(0.5f, 1);
+        contentRect.sizeDelta = new Vector2(0, 28);
+
+        var item = CreateUI("Item", content.transform);
+        var itemRect = item.GetComponent<RectTransform>();
+        itemRect.anchorMin = new Vector2(0, 0.5f);
+        itemRect.anchorMax = new Vector2(1, 0.5f);
+        itemRect.sizeDelta = new Vector2(0, 28);
+        var itemToggle = item.AddComponent<Toggle>();
+
+        var itemLabel = CreateUI("ItemLabel", item.transform);
+        var itemLabelTxt = itemLabel.AddComponent<TextMeshProUGUI>();
+        itemLabelTxt.fontSize = 14;
+        itemLabelTxt.color = cream;
+        itemLabelTxt.alignment = TextAlignmentOptions.Left;
+        Stretch(itemLabel.GetComponent<RectTransform>());
+
+        templateScroll.viewport = viewport.GetComponent<RectTransform>();
+        templateScroll.content = contentRect;
+
+        resolutionDropdown.template = templateRect;
+        resolutionDropdown.itemText = itemLabelTxt;
+
+        template.SetActive(false);
+
+        // Populate resolutions
+        availableResolutions.Clear();
+        var options = new List<TMP_Dropdown.OptionData>();
+        foreach (var res in Screen.resolutions)
+        {
+            if (availableResolutions.FindIndex(r => r.width == res.width && r.height == res.height) != -1)
+                continue;
+            availableResolutions.Add(res);
+            options.Add(new TMP_Dropdown.OptionData($"{res.width}x{res.height}"));
+        }
+        resolutionDropdown.options = options;
+
+        resolutionDropdown.onValueChanged.AddListener(idx =>
+        {
+            if (idx >= 0 && idx < availableResolutions.Count)
+            {
+                var res = availableResolutions[idx];
+                Screen.SetResolution(res.width, res.height, fullscreenToggle.isOn);
+            }
+        });
+    }
+
+    void CreateFullscreenToggle(Transform parent, float yAnchor)
+    {
+        var row = CreateUI("FullscreenRow", parent);
+        var rowRect = row.GetComponent<RectTransform>();
+        rowRect.anchorMin = new Vector2(0.08f, yAnchor - 0.05f);
+        rowRect.anchorMax = new Vector2(0.92f, yAnchor + 0.05f);
+        rowRect.offsetMin = rowRect.offsetMax = Vector2.zero;
+
+        var labelObj = CreateUI("Label", row.transform);
+        var labelTxt = labelObj.AddComponent<TextMeshProUGUI>();
+        labelTxt.text = "Fullscreen";
+        labelTxt.fontSize = 18;
+        labelTxt.alignment = TextAlignmentOptions.Left;
+        labelTxt.color = cream;
+        var labelRect = labelObj.GetComponent<RectTransform>();
+        labelRect.anchorMin = new Vector2(0, 0);
+        labelRect.anchorMax = new Vector2(0.4f, 1);
+        labelRect.offsetMin = labelRect.offsetMax = Vector2.zero;
+
+        var toggleObj = CreateUI("Toggle", row.transform);
+        var toggleRect = toggleObj.GetComponent<RectTransform>();
+        toggleRect.anchorMin = new Vector2(0.42f, 0.15f);
+        toggleRect.anchorMax = new Vector2(0.55f, 0.85f);
+        toggleRect.offsetMin = toggleRect.offsetMax = Vector2.zero;
+
+        var toggleBg = toggleObj.AddComponent<Image>();
+        toggleBg.color = brownDark;
+
+        var checkmark = CreateUI("Checkmark", toggleObj.transform);
+        var checkImg = checkmark.AddComponent<Image>();
+        checkImg.color = goldLight;
+        var checkRect = checkmark.GetComponent<RectTransform>();
+        checkRect.anchorMin = new Vector2(0.15f, 0.15f);
+        checkRect.anchorMax = new Vector2(0.85f, 0.85f);
+        checkRect.offsetMin = checkRect.offsetMax = Vector2.zero;
+
+        fullscreenToggle = toggleObj.AddComponent<Toggle>();
+        fullscreenToggle.targetGraphic = toggleBg;
+        fullscreenToggle.graphic = checkImg;
+        fullscreenToggle.isOn = Screen.fullScreen;
+        fullscreenToggle.onValueChanged.AddListener(val => Screen.fullScreen = val);
+    }
+
+    void LoadSettings()
+    {
+        masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        musicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVolume", musicVolume);
+        sfxVolumeSlider.value = PlayerPrefs.GetFloat("SFXVolume", sfxVolume);
+        fullscreenToggle.isOn = Screen.fullScreen;
+
+        string currentRes = $"{Screen.width}x{Screen.height}";
+        for (int i = 0; i < resolutionDropdown.options.Count; i++)
+        {
+            if (resolutionDropdown.options[i].text == currentRes)
+            {
+                resolutionDropdown.value = i;
+                break;
+            }
+        }
+
+        // Apply loaded volumes
+        musicSource.volume = masterVolumeSlider.value * musicVolumeSlider.value;
+        sfxSource.volume = masterVolumeSlider.value * sfxVolumeSlider.value;
+    }
+
+    void SaveSettings()
+    {
+        PlayerPrefs.SetFloat("MasterVolume", masterVolumeSlider.value);
+        PlayerPrefs.SetFloat("MusicVolume", musicVolumeSlider.value);
+        PlayerPrefs.SetFloat("SFXVolume", sfxVolumeSlider.value);
+        PlayerPrefs.Save();
+
+        musicSource.volume = masterVolumeSlider.value * musicVolumeSlider.value;
+        sfxSource.volume = masterVolumeSlider.value * sfxVolumeSlider.value;
+    }
+
+    void CreateCreditsPanel()
+    {
+        creditsPanel = CreateUI("CreditsPanel", mainCanvas.transform);
+        var panelRect = creditsPanel.GetComponent<RectTransform>();
+        Stretch(panelRect);
+
+        // Dark overlay
+        var overlay = creditsPanel.AddComponent<Image>();
+        overlay.color = new Color(0, 0, 0, 0.9f);
+
+        // Container
+        var container = CreateUI("CreditsContainer", creditsPanel.transform);
+        var containerRect = container.GetComponent<RectTransform>();
+        containerRect.anchorMin = containerRect.anchorMax = new Vector2(0.5f, 0.5f);
+        containerRect.sizeDelta = new Vector2(420, 480);
+
+        // Background
+        var bgImage = container.AddComponent<Image>();
+        bgImage.sprite = buttonBgSprite;
+        bgImage.type = Image.Type.Sliced;
+        bgImage.color = bgMedium;
+
+        // Title
+        var titleObj = CreateUI("Title", container.transform);
+        var titleTxt = titleObj.AddComponent<TextMeshProUGUI>();
+        titleTxt.text = "CREDITS";
+        titleTxt.fontSize = 36;
+        titleTxt.fontStyle = FontStyles.Bold;
+        titleTxt.alignment = TextAlignmentOptions.Center;
+        titleTxt.color = goldLight;
+        var titleR = titleObj.GetComponent<RectTransform>();
+        titleR.anchorMin = new Vector2(0, 0.85f);
+        titleR.anchorMax = new Vector2(1, 0.95f);
+        titleR.offsetMin = titleR.offsetMax = Vector2.zero;
+
+        // Team label
+        var teamLabel = CreateUI("TeamLabel", container.transform);
+        var teamTxt = teamLabel.AddComponent<TextMeshProUGUI>();
+        teamTxt.text = "THE TEAM";
+        teamTxt.fontSize = 20;
+        teamTxt.fontStyle = FontStyles.Bold;
+        teamTxt.alignment = TextAlignmentOptions.Center;
+        teamTxt.color = redTitle;
+        var teamRect = teamLabel.GetComponent<RectTransform>();
+        teamRect.anchorMin = new Vector2(0, 0.72f);
+        teamRect.anchorMax = new Vector2(1, 0.8f);
+        teamRect.offsetMin = teamRect.offsetMax = Vector2.zero;
+
+        // Team members
+        string[] members = {
+            "Yusuf Korkmaz",
+            "Mehmet Baran Çelebi",
+            "Barış Aydın",
+            "Nazif Tosun",
+            "Tuna Ünüvar",
+            "Aysima Adatepe",
+            "Yiğit Soner"
+        };
+
+        float startY = 0.65f;
+        float step = 0.08f;
+        for (int i = 0; i < members.Length; i++)
+        {
+            var nameObj = CreateUI($"Member{i}", container.transform);
+            var nameTxt = nameObj.AddComponent<TextMeshProUGUI>();
+            nameTxt.text = members[i];
+            nameTxt.fontSize = 22;
+            nameTxt.alignment = TextAlignmentOptions.Center;
+            nameTxt.color = cream;
+            var nameRect = nameObj.GetComponent<RectTransform>();
+            nameRect.anchorMin = new Vector2(0, startY - i * step - 0.04f);
+            nameRect.anchorMax = new Vector2(1, startY - i * step + 0.04f);
+            nameRect.offsetMin = nameRect.offsetMax = Vector2.zero;
+        }
+
+        // Close Button
+        var closeBtn = CreateUI("CloseBtn", container.transform);
+        var closeBtnRect = closeBtn.GetComponent<RectTransform>();
+        closeBtnRect.anchorMin = new Vector2(0.25f, 0.05f);
+        closeBtnRect.anchorMax = new Vector2(0.75f, 0.12f);
+        closeBtnRect.offsetMin = closeBtnRect.offsetMax = Vector2.zero;
+
+        var closeBg = closeBtn.AddComponent<Image>();
+        closeBg.sprite = buttonBgSprite;
+        closeBg.type = Image.Type.Sliced;
+        closeBg.color = brownDark;
+
+        var closeTxtObj = CreateUI("Text", closeBtn.transform);
+        var closeTxt = closeTxtObj.AddComponent<TextMeshProUGUI>();
+        closeTxt.text = "CLOSE";
+        closeTxt.fontSize = 22;
+        closeTxt.fontStyle = FontStyles.Bold;
+        closeTxt.alignment = TextAlignmentOptions.Center;
+        closeTxt.color = goldLight;
+        Stretch(closeTxtObj.GetComponent<RectTransform>());
+
+        var btn = closeBtn.AddComponent<Button>();
+        btn.targetGraphic = closeBg;
+        btn.onClick.AddListener(() =>
+        {
+            PlaySFX(clickSound);
+            creditsPanel.SetActive(false);
+            buttonsContainer.SetActive(true);
+        });
+
+        creditsPanel.SetActive(false);
     }
 }

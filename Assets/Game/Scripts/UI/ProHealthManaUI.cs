@@ -28,6 +28,16 @@ public class ProHealthManaUI : MonoBehaviour
     public Image manaIconGlow;
     public TextMeshProUGUI manaText;
 
+    [Header("══════ XP BAR ══════")]
+    [Tooltip("XP fill bar (scaled from left)")]
+    public Image xpFill;
+    [Tooltip("XP glow effect (optional)")]
+    public Image xpGlow;
+    [Tooltip("Level number text (e.g., 'Lv 1')")]
+    public TextMeshProUGUI levelText;
+    [Tooltip("XP amount text (e.g., '50/100')")]
+    public TextMeshProUGUI xpText;
+
     [Header("══════ STATS ══════")]
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth = 100f;
@@ -58,6 +68,13 @@ public class ProHealthManaUI : MonoBehaviour
     [SerializeField] private Color healthLow = new Color(1f, 0.25f, 0.2f, 1f);
     [SerializeField] private Color manaColor = new Color(0.3f, 0.6f, 1f, 1f);
 
+    [Header("══════ XP COLORS & ANIMATION ══════")]
+    [SerializeField] private Color xpBarColor = new Color(0.6f, 0.2f, 0.9f, 1f);
+    [SerializeField] private Color xpGlowColor = new Color(0.8f, 0.4f, 1f, 0.5f);
+    [SerializeField] private Color levelUpFlashColor = Color.white;
+    [SerializeField] private float levelUpFlashDuration = 0.3f;
+    [SerializeField] private float levelUpScaleAmount = 1.3f;
+
     // Internal
     private float displayedHealth;
     private float displayedMana;
@@ -71,6 +88,14 @@ public class ProHealthManaUI : MonoBehaviour
     private float glowTimer;
     private bool wasLowHealth;
     private float lastManaUseTime = -999f; // For mana regen delay
+
+    // XP Bar internal state
+    private float displayedXP;
+    private float targetXP;
+    private int displayedLevel;
+    private float levelFlashTimer;
+    private float levelScaleTimer;
+    private Vector3 originalLevelScale;
 
     // Properties
     public float CurrentHealth => currentHealth;
@@ -90,7 +115,27 @@ public class ProHealthManaUI : MonoBehaviour
         displayedMana = currentMana;
         damageBarValue = currentHealth;
 
+        // Subscribe to PlayerProgression events
+        PlayerProgression.OnXPChanged += OnXPChanged;
+        PlayerProgression.OnLevelUp += OnLevelUp;
+
+        // Cache level text scale
+        if (levelText != null)
+        {
+            originalLevelScale = levelText.transform.localScale;
+        }
+
+        // Initialize XP display
+        InitializeXPDisplay();
+
         UpdateVisuals();
+    }
+
+    private void OnDestroy()
+    {
+        // Unsubscribe from events
+        PlayerProgression.OnXPChanged -= OnXPChanged;
+        PlayerProgression.OnLevelUp -= OnLevelUp;
     }
 
     private void Update()
@@ -98,6 +143,9 @@ public class ProHealthManaUI : MonoBehaviour
         AnimateHealthBar();
         AnimateManaBar();
         AnimateDamageBar();
+        AnimateXPBar();
+        UpdateLevelUpFlash();
+        UpdateLevelScaleEffect();
         UpdateShake();
         UpdateEffects();
         UpdateTexts();
@@ -463,6 +511,7 @@ public class ProHealthManaUI : MonoBehaviour
 
         UpdateHealthColor(hp);
         UpdateTexts();
+        UpdateXPBar(true);
     }
 
     #endregion
@@ -473,6 +522,158 @@ public class ProHealthManaUI : MonoBehaviour
     {
         Debug.Log("<color=red>☠ OYUNCU ÖLDÜ!</color>");
         // GameManager.Instance?.PlayerDied();
+    }
+
+    #endregion
+
+    #region ═══════ XP BAR SYSTEM ═══════
+
+    private void InitializeXPDisplay()
+    {
+        if (PlayerProgression.Instance != null)
+        {
+            displayedLevel = PlayerProgression.Instance.CurrentLevel;
+            displayedXP = PlayerProgression.Instance.CurrentXP;
+            targetXP = displayedXP;
+
+            UpdateLevelText();
+            UpdateXPText();
+            UpdateXPBar(true);
+        }
+        else
+        {
+            displayedLevel = 1;
+            displayedXP = 0;
+            targetXP = 0;
+            UpdateLevelText();
+        }
+
+        // Set initial colors
+        if (xpFill != null)
+        {
+            xpFill.color = xpBarColor;
+        }
+        if (xpGlow != null)
+        {
+            xpGlow.color = xpGlowColor;
+        }
+    }
+
+    private void OnXPChanged(int currentXP, int xpToNextLevel)
+    {
+        targetXP = currentXP;
+        UpdateXPText();
+    }
+
+    private void OnLevelUp(int newLevel)
+    {
+        displayedLevel = newLevel;
+        UpdateLevelText();
+
+        // Reset XP display for new level
+        displayedXP = 0;
+        targetXP = PlayerProgression.Instance?.CurrentXP ?? 0;
+
+        // Trigger effects
+        levelFlashTimer = levelUpFlashDuration;
+        levelScaleTimer = levelUpFlashDuration;
+
+        Debug.Log($"[ProHealthManaUI] 🎉 Level Up! Now level {newLevel}");
+    }
+
+    private void UpdateLevelText()
+    {
+        if (levelText != null)
+        {
+            levelText.text = $"Lv {displayedLevel}";
+        }
+    }
+
+    private void UpdateXPText()
+    {
+        if (xpText != null && PlayerProgression.Instance != null)
+        {
+            int current = PlayerProgression.Instance.CurrentXP;
+            int max = PlayerProgression.Instance.XPToNextLevel;
+            xpText.text = $"{current}/{max}";
+        }
+    }
+
+    private void UpdateXPBar(bool instant = false)
+    {
+        if (xpFill == null) return;
+
+        float progress = 0f;
+        if (PlayerProgression.Instance != null)
+        {
+            progress = PlayerProgression.Instance.XPProgress;
+        }
+
+        if (instant)
+        {
+            displayedXP = targetXP;
+            xpFill.transform.localScale = new Vector3(progress, 1, 1);
+        }
+
+        if (xpGlow != null)
+        {
+            xpGlow.transform.localScale = xpFill.transform.localScale;
+        }
+    }
+
+    private void AnimateXPBar()
+    {
+        if (xpFill == null || PlayerProgression.Instance == null) return;
+
+        // Smooth lerp to target
+        float targetProgress = PlayerProgression.Instance.XPProgress;
+        float currentScaleX = xpFill.transform.localScale.x;
+
+        if (Mathf.Abs(targetProgress - currentScaleX) > 0.001f)
+        {
+            float newScale = Mathf.Lerp(currentScaleX, targetProgress, Time.deltaTime * fillSpeed);
+            xpFill.transform.localScale = new Vector3(newScale, 1, 1);
+        }
+        else
+        {
+            xpFill.transform.localScale = new Vector3(targetProgress, 1, 1);
+        }
+
+        // Sync glow
+        if (xpGlow != null)
+        {
+            xpGlow.transform.localScale = xpFill.transform.localScale;
+        }
+    }
+
+    private void UpdateLevelUpFlash()
+    {
+        if (levelFlashTimer <= 0) return;
+
+        levelFlashTimer -= Time.deltaTime;
+        float t = levelFlashTimer / levelUpFlashDuration;
+
+        if (xpFill != null)
+        {
+            xpFill.color = Color.Lerp(xpBarColor, levelUpFlashColor, t);
+        }
+
+        if (levelText != null)
+        {
+            levelText.color = Color.Lerp(Color.white, levelUpFlashColor, t);
+        }
+    }
+
+    private void UpdateLevelScaleEffect()
+    {
+        if (levelText == null || levelScaleTimer <= 0) return;
+
+        levelScaleTimer -= Time.deltaTime;
+        float t = levelScaleTimer / levelUpFlashDuration;
+
+        // Punch scale effect
+        float scale = Mathf.Lerp(1f, levelUpScaleAmount, t);
+        levelText.transform.localScale = originalLevelScale * scale;
     }
 
     #endregion
