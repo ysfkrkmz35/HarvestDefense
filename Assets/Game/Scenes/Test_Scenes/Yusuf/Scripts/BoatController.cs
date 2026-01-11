@@ -15,8 +15,8 @@ namespace YusufTest
         [Tooltip("Botun ileri/geri hareket hızı")]
         [SerializeField] private float moveSpeed = 5f;
 
-        [Tooltip("Botun dönüş hızı (derece/saniye)")]
-        [SerializeField] private float rotationSpeed = 120f;
+        // [Tooltip("Botun dönüş hızı (derece/saniye)")]
+        // [SerializeField] private float rotationSpeed = 120f;
 
         [Header("Rotation Constraint")]
         [Tooltip("Rotation kısıtlamasını aktif et - Bot sadece yatay düzlemde kalır")]
@@ -26,8 +26,8 @@ namespace YusufTest
         [Tooltip("Hareket damping - Yavaşça durma efekti (daha düşük = daha hızlı durur)")]
         [SerializeField] private float movementDamping = 0.75f; // 0.85'ten 0.75'e düşürüldü - daha hızlı durma
 
-        [Tooltip("Dönüş damping - Yavaşça durma efekti")]
-        [SerializeField] private float rotationDamping = 0.9f;
+        // [Tooltip("Dönüş damping - Yavaşça durma efekti")]
+        // [SerializeField] private float rotationDamping = 0.9f;
 
         [Header("Water Physics")]
         [Tooltip("Su sürtünmesi - Botun su üzerindeki hareketi için")]
@@ -53,7 +53,7 @@ namespace YusufTest
         private bool isPlayerOnBoard = false;
 
         private Vector2 currentVelocity;
-        private float currentAngularVelocity;
+        // private float currentAngularVelocity;
 
         // Auto-unstuck detection
         private Vector2 lastStuckCheckPosition;
@@ -404,7 +404,7 @@ namespace YusufTest
             // Rotation tamamen devre dışı - Bot orijinal rotation'ını korur
             // Angular velocity'yi sıfırla
             rb.angularVelocity = 0f;
-            currentAngularVelocity = 0f;
+            // currentAngularVelocity = 0f;
         }
 
         /// <summary>
@@ -425,17 +425,17 @@ namespace YusufTest
         /// <summary>
         /// Dönüş damping uygula - Yavaşça dönmeyi bırak
         /// </summary>
-        private void ApplyRotationDamping()
-        {
-            currentAngularVelocity *= rotationDamping;
-            rb.angularVelocity = currentAngularVelocity;
+        // private void ApplyRotationDamping()
+        // {
+        //     currentAngularVelocity *= rotationDamping;
+        //     rb.angularVelocity = currentAngularVelocity;
 
-            if (Mathf.Abs(rb.angularVelocity) < 0.1f)
-            {
-                rb.angularVelocity = 0f;
-                currentAngularVelocity = 0f;
-            }
-        }
+        //     if (Mathf.Abs(rb.angularVelocity) < 0.1f)
+        //     {
+        //         rb.angularVelocity = 0f;
+        //         currentAngularVelocity = 0f;
+        //     }
+        // }
 
         /// <summary>
         /// En yakın Water tile'ını bulur

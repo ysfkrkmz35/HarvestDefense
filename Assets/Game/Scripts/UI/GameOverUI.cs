@@ -219,7 +219,7 @@ public class GameOverUI : MonoBehaviour
         {
             if (instance == null)
             {
-                instance = FindObjectOfType<GameOverUI>();
+                instance = FindFirstObjectByType<GameOverUI>();
             }
             return instance;
         }

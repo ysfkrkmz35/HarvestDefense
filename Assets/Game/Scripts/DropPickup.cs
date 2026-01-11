@@ -175,7 +175,10 @@ namespace YusufTest
             // Yere düşmeden ve delay geçmeden toplanamaz
             if (!canBeCollected)
             {
-                if (isGrounded && timeSinceSpawn >= pickupDelay)
+                // Check if grounded requirement is met
+                bool groundedCheck = !requireGrounded || isGrounded;
+                
+                if (groundedCheck && timeSinceSpawn >= pickupDelay)
                 {
                     canBeCollected = true;
                     if (showDebugLogs)

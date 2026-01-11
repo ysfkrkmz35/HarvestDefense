@@ -192,7 +192,7 @@ public class EnemySystemSetup : EditorWindow
     void SetupGameManager()
     {
         // Sahnede GameManager var mı kontrol et
-        GameManager existingGM = FindObjectOfType<GameManager>();
+        GameManager existingGM = FindFirstObjectByType<GameManager>();
 
         if (existingGM != null)
         {
@@ -212,7 +212,7 @@ public class EnemySystemSetup : EditorWindow
     void SetupEnemySpawner()
     {
         // Sahnede spawner var mı kontrol et
-        SimpleEnemySpawner existingSpawner = FindObjectOfType<SimpleEnemySpawner>();
+        SimpleEnemySpawner existingSpawner = FindFirstObjectByType<SimpleEnemySpawner>();
 
         if (existingSpawner != null)
         {
@@ -354,7 +354,7 @@ public class EnemySystemSetup : EditorWindow
         int removedCount = 0;
 
         // Spawner'ı kaldır
-        SimpleEnemySpawner spawner = FindObjectOfType<SimpleEnemySpawner>();
+        SimpleEnemySpawner spawner = FindFirstObjectByType<SimpleEnemySpawner>();
         if (spawner != null)
         {
             DestroyImmediate(spawner.gameObject);
@@ -364,7 +364,7 @@ public class EnemySystemSetup : EditorWindow
 
         // GameManager'ı KALDIRMA (başka sistemler kullanıyor olabilir)
         // Sadece uyarı ver
-        GameManager gm = FindObjectOfType<GameManager>();
+        GameManager gm = FindFirstObjectByType<GameManager>();
         if (gm != null)
         {
             Debug.LogWarning("[EnemySystemSetup] GameManager kaldırılmadı (başka sistemler kullanıyor olabilir)");

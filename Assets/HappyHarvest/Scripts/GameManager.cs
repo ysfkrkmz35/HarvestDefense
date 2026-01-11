@@ -124,7 +124,7 @@ namespace HappyHarvest
             if (myEs != null)
             {
                 // Simple search for other event systems
-                var allSystems = FindObjectsOfType<EventSystem>();
+                var allSystems = FindObjectsByType<EventSystem>(FindObjectsSortMode.None);
                 if (allSystems.Length > 1) 
                 {
                     // If we found duplicates, assume the ONE in the scene currently is the master (or handled by checker)
