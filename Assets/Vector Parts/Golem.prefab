@@ -200,7 +200,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4870238150847112}
   - component: {fileID: 212797188521510632}
-  - component: {fileID: 114909241985616812}
+  - component: {fileID: 3282955788740897854}
   m_Layer: 0
   m_Name: Face 01
   m_TagString: Untagged
@@ -281,7 +281,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &114909241985616812
+--- !u!114 &3282955788740897854
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -292,7 +292,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87d8dc87df01e4958ab48153b19f0ccd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::Spriter2UnityDX.TextureController
   DisplayedSprite: 0
   Sprites:
   - {fileID: 21300000, guid: 10a3bcd53ef4c6948ba70d5da37a4f21, type: 3}
@@ -5755,7 +5755,7 @@ AnimationClip:
     path: SlashFX
     classID: 212
     script: {fileID: 0}
-    flags: 16
+    flags: 0
   - serializedVersion: 2
     curve:
       serializedVersion: 2
@@ -5866,7 +5866,7 @@ AnimationClip:
     path: bone_006/bone_002/bone_003/Sword
     classID: 212
     script: {fileID: 0}
-    flags: 16
+    flags: 0
   m_PPtrCurves: []
   m_SampleRate: 60
   m_WrapMode: 2
@@ -7264,7 +7264,7 @@ AnimationClip:
     path: SlashFX
     classID: 212
     script: {fileID: 0}
-    flags: 16
+    flags: 0
   - serializedVersion: 2
     curve:
       serializedVersion: 2
@@ -7375,7 +7375,7 @@ AnimationClip:
     path: bone_006/bone_002/bone_003/Sword
     classID: 212
     script: {fileID: 0}
-    flags: 16
+    flags: 0
   m_PPtrCurves: []
   m_SampleRate: 60
   m_WrapMode: 2
@@ -8361,7 +8361,7 @@ AnimationClip:
     path: bone_006/bone_007/Face 01
     classID: 114
     script: {fileID: 11500000, guid: 87d8dc87df01e4958ab48153b19f0ccd, type: 3}
-    flags: 16
+    flags: 0
   m_PPtrCurves: []
   m_SampleRate: 60
   m_WrapMode: 2
@@ -11090,7 +11090,7 @@ AnimationClip:
     path: bone_006/bone_007/Face 01
     classID: 114
     script: {fileID: 11500000, guid: 87d8dc87df01e4958ab48153b19f0ccd, type: 3}
-    flags: 16
+    flags: 0
   m_PPtrCurves: []
   m_SampleRate: 60
   m_WrapMode: 2
@@ -13663,7 +13663,7 @@ AnimationClip:
     path: bone_006/bone_007/Face 01
     classID: 114
     script: {fileID: 11500000, guid: 87d8dc87df01e4958ab48153b19f0ccd, type: 3}
-    flags: 16
+    flags: 0
   m_PPtrCurves: []
   m_SampleRate: 60
   m_WrapMode: 2
@@ -16747,7 +16747,7 @@ AnimationClip:
     path: SlashFX
     classID: 212
     script: {fileID: 0}
-    flags: 16
+    flags: 0
   - serializedVersion: 2
     curve:
       serializedVersion: 2
@@ -16885,7 +16885,7 @@ AnimationClip:
     path: bone_006/bone_002/bone_003/Sword
     classID: 212
     script: {fileID: 0}
-    flags: 16
+    flags: 0
   m_PPtrCurves: []
   m_SampleRate: 60
   m_WrapMode: 2
