@@ -5360,7 +5360,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2500527722359185169}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.0029433984, y: -0.00011561533, z: -0.03924911, w: 0.99922514}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
@@ -5718,6 +5718,12 @@ MonoBehaviour:
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   bodyTransform: {fileID: 1215309949967917192}
+  useDirectPlayAnimation: 0
+  idleAnimState: 
+  walkAnimState: 
+  attackAnimState: 
+  hurtAnimState: 
+  deathAnimState: 
   maxBodyTilt: 15
   rotationSmoothSpeed: 8
   showDebugGizmos: 1

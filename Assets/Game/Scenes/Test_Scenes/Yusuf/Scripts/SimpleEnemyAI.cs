@@ -74,6 +74,20 @@ namespace YusufTest
         [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private Transform bodyTransform;
         
+        [Header("═══ DIRECT ANIMATION (Optional) ═══")]
+        [Tooltip("Enable to use Animator.Play() with state names below. Leave OFF for parameter-based animation (existing mobs).")]
+        [SerializeField] private bool useDirectPlayAnimation = false;
+        [Tooltip("Animation state name for idle (e.g., 'Idle')")]
+        [SerializeField] private string idleAnimState = "";
+        [Tooltip("Animation state name for walking (e.g., 'Walking')")]
+        [SerializeField] private string walkAnimState = "";
+        [Tooltip("Animation state name for attack (e.g., 'Slashing')")]
+        [SerializeField] private string attackAnimState = "";
+        [Tooltip("Animation state name for hurt (e.g., 'Hurt')")]
+        [SerializeField] private string hurtAnimState = "";
+        [Tooltip("Animation state name for death (e.g., 'Dying')")]
+        [SerializeField] private string deathAnimState = "";
+        
         [Header("═══ BODY ROTATION ═══")]
         [Tooltip("Yukarı/aşağı hareket ederken body'nin eğilme açısı")]
         [SerializeField] private float maxBodyTilt = 15f;
@@ -577,8 +591,17 @@ namespace YusufTest
             // Animasyon tetikle
             if (animator != null)
             {
-                animator.SetTrigger(useAlternateAttack ? "attack02" : "attack");
-                useAlternateAttack = !useAlternateAttack;
+                if (useDirectPlayAnimation && !string.IsNullOrEmpty(attackAnimState))
+                {
+                    // Direct Play for mobs like Golem
+                    PlayAnimationState(attackAnimState);
+                }
+                else
+                {
+                    // Parameter-based for existing mobs
+                    animator.SetTrigger(useAlternateAttack ? "attack02" : "attack");
+                    useAlternateAttack = !useAlternateAttack;
+                }
             }
 
             // Windup - saldırı hazırlığı
@@ -637,7 +660,16 @@ namespace YusufTest
             // Damage animasyonu
             if (animator != null)
             {
-                animator.SetTrigger("damage");
+                if (useDirectPlayAnimation && !string.IsNullOrEmpty(hurtAnimState))
+                {
+                    // Direct Play for mobs like Golem
+                    PlayAnimationState(hurtAnimState);
+                }
+                else
+                {
+                    // Parameter-based for existing mobs
+                    animator.SetTrigger("damage");
+                }
             }
         }
 
@@ -720,11 +752,41 @@ namespace YusufTest
             if (animator == null) return;
 
             bool isMoving = rb.linearVelocity.magnitude > 0.1f;
-            animator.SetBool("walk", isMoving && !isAttacking);
+            
+            // Use direct Play() method for mobs with configured state names (e.g., Golem)
+            if (useDirectPlayAnimation && !string.IsNullOrEmpty(idleAnimState) && !string.IsNullOrEmpty(walkAnimState))
+            {
+                if (!isAttacking)
+                {
+                    string targetState = isMoving ? walkAnimState : idleAnimState;
+                    PlayAnimationState(targetState);
+                }
+            }
+            else
+            {
+                // Default: Use parameter-based animation (existing mobs like Spider)
+                animator.SetBool("walk", isMoving && !isAttacking);
+            }
             
             // Body rotation güncelle
             UpdateBodyRotation();
         }
+        
+        /// <summary>
+        /// Play animation state directly (safe, prevents re-triggering same state)
+        /// </summary>
+        void PlayAnimationState(string stateName)
+        {
+            if (animator == null || string.IsNullOrEmpty(stateName)) return;
+            
+            // Don't restart the same animation
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            if (!stateInfo.IsName(stateName))
+            {
+                animator.Play(stateName);
+            }
+        }
+
 
         /// <summary>
         /// Hareket yönüne göre body'yi döndür (4 yön illüzyonu)
@@ -851,6 +913,24 @@ namespace YusufTest
             currentState = AIState.Idle;
             isAttacking = false;
             isPlayerDetected = false;
+            
+            // Play death animation if using direct play mode
+            if (useDirectPlayAnimation && !string.IsNullOrEmpty(deathAnimState) && animator != null)
+            {
+                PlayAnimationState(deathAnimState);
+                // Delay deactivation to let death animation play
+                StartCoroutine(DeathAnimationCoroutine());
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
+        }
+        
+        System.Collections.IEnumerator DeathAnimationCoroutine()
+        {
+            // Wait for death animation to play (estimate based on typical animation length)
+            yield return new WaitForSeconds(1.5f);
             gameObject.SetActive(false);
         }
 
