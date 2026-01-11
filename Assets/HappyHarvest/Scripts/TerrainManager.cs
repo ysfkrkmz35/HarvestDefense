@@ -112,7 +112,9 @@ namespace HappyHarvest
 
         public bool IsTillable(Vector3Int target)
         {
-            return GroundTilemap.GetTile(target) == TilleableTile;
+            // Allow tilling on any ground tile, not just specific tilleable tiles
+            var tile = GroundTilemap.GetTile(target);
+            return tile != null && tile != TilledTile && !IsTilled(target);
         }
 
         public bool IsPlantable(Vector3Int target)

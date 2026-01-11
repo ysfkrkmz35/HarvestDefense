@@ -289,14 +289,14 @@ MonoBehaviour:
   m_Coins: 9999
   m_Inventory:
     Entries:
+    - Item: {fileID: 11400000, guid: ea72e0a3a88d7e640bfa3aab3cc8699c, type: 2}
+      StackSize: 1
     - Item: {fileID: 11400000, guid: 24774bb1dcc10094fb98253c0f50c2d4, type: 2}
       StackSize: 1
-    - Item: {fileID: 0}
-      StackSize: 0
-    - Item: {fileID: 0}
-      StackSize: 0
-    - Item: {fileID: 0}
-      StackSize: 0
+    - Item: {fileID: 11400000, guid: 049df2fdc39a1ab4f80a2de6d2d7d8a2, type: 2}
+      StackSize: 5
+    - Item: {fileID: 11400000, guid: 56e65a5b3c0576a4a9dda85af469bce9, type: 2}
+      StackSize: 1
     - Item: {fileID: 0}
       StackSize: 0
     - Item: {fileID: 0}

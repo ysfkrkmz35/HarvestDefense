@@ -360,6 +360,22 @@ namespace HappyHarvest
                 return false;
             }
 
+            // Check if this is a SpellItem - handle differently
+            if (item is SpellItem spellItem)
+            {
+                if (!spellItem.TryEquipSpell())
+                {
+                    // Failed to equip (no empty slots or already owned)
+                    return false;
+                }
+                
+                m_Coins -= item.BuyPrice;
+                UIHandler.UpdateCoins(m_Coins);
+                UIHandler.PlayBuySellSound(transform.position);
+                return true;
+            }
+
+            // Normal item - add to inventory
             m_Coins -= item.BuyPrice;
             UIHandler.UpdateCoins(m_Coins);
             UIHandler.PlayBuySellSound(transform.position);
