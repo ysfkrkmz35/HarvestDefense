@@ -17,7 +17,7 @@ MonoBehaviour:
   ItemSprite: {fileID: 21300000, guid: 1a0774ef281b3fa418ab4659c049da87, type: 3}
   MaxStackSize: 1
   Consumable: 0
-  BuyPrice: -1
+  BuyPrice: 50
   VisualPrefab: {fileID: 371218168475551889, guid: 4feaad5eaa6311e4f9c15878951fcdad, type: 3}
   PlayerAnimatorTriggerUse: Watering
   UseSound:
