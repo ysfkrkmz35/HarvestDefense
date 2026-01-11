@@ -1,4 +1,5 @@
 using UnityEngine;
+using HappyHarvest;
 
 /// <summary>
 /// Day/Night döngüsünü yöneten timer sistemi
