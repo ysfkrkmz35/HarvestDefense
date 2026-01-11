@@ -24,6 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1853935594432360775}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 16.614565, y: 0.39788264, z: -0.12198752}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,7 +32,6 @@ Transform:
   m_Children:
   - {fileID: 1875651293223974594}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1853935594432360792
 MonoBehaviour:
@@ -45,9 +45,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7aaabf1ce21bf941ac2b6e07aeeaa6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentState: 0
   MarketEntries:
+  - {fileID: 11400000, guid: 24774bb1dcc10094fb98253c0f50c2d4, type: 2}
+  - {fileID: 11400000, guid: ea72e0a3a88d7e640bfa3aab3cc8699c, type: 2}
+  - {fileID: 11400000, guid: 5922ff6f3915ddd4a967ab68ccbda8b4, type: 2}
+  - {fileID: 11400000, guid: 56e65a5b3c0576a4a9dda85af469bce9, type: 2}
   - {fileID: 11400000, guid: 049df2fdc39a1ab4f80a2de6d2d7d8a2, type: 2}
   - {fileID: 11400000, guid: 7f6b8f8fade48f64492add0e59a790df, type: 2}
+  - {fileID: 11400000, guid: 72f289a3f969ccc419c7805ac712fd29, type: 2}
+  - {fileID: 11400000, guid: 32ed44c58cb903b4cbd87a852129358c, type: 2}
+  - {fileID: 11400000, guid: fb30bbfaf1669124b937febd65208db9, type: 2}
   DayDurationInSeconds: 120
   StartingTime: 46
   ItemDatabase: {fileID: 11400000, guid: 9af3a7812e32d5e4b958cde796a24cb4, type: 2}

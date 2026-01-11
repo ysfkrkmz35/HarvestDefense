@@ -8,7 +8,7 @@ public class FixSwordAnim
     public static void ApplyFix()
     {
         // Find player by PlayerController component (more robust than name)
-        var playerController = Object.FindObjectOfType<HappyHarvest.PlayerController>();
+        var playerController = Object.FindFirstObjectByType<HappyHarvest.PlayerController>();
         GameObject player = playerController != null ? playerController.gameObject : GameObject.Find("Player");
         
         if (player == null) 

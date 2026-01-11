@@ -17,7 +17,7 @@ MonoBehaviour:
   ItemSprite: {fileID: 21300000, guid: d625705c2b10393418fa45b27c7370b0, type: 3}
   MaxStackSize: 1
   Consumable: 0
-  BuyPrice: -1
+  BuyPrice: 100
   VisualPrefab: {fileID: 1588559265443898675, guid: a4655ab71e3e4cd43841dcb7fcd1b520, type: 3}
   PlayerAnimatorTriggerUse: ToolSwing
   UseSound: []

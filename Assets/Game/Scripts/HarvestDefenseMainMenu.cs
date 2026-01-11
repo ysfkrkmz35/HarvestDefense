@@ -182,11 +182,17 @@ public class HarvestDefenseMainMenu : MonoBehaviour
 
     void CreateCanvas()
     {
-        if (FindObjectOfType<EventSystem>() == null)
+        if (FindFirstObjectByType<EventSystem>() == null)
         {
             var es = new GameObject("EventSystem");
             es.AddComponent<EventSystem>();
             es.AddComponent<StandaloneInputModule>();
+        }
+        
+        // Ensure single event system
+        if (GetComponent<EventSystemChecker>() == null)
+        {
+            gameObject.AddComponent<EventSystemChecker>();
         }
 
         var canvasObj = new GameObject("MenuCanvas");

@@ -10,7 +10,7 @@ public class SpellBarUICreator : MonoBehaviour
     [Header("═══ SETTINGS ═══")]
     [SerializeField] private Vector2 slotSize = new Vector2(45, 45); // Smaller slots
     [SerializeField] private float spacing = 6f;
-    [SerializeField] private float bottomMargin = 90f; // Above inventory bar
+    [SerializeField] private float bottomMargin = 130f; // Above inventory bar - increased for better separation
 
     [Header("═══ COLORS ═══")]
     [SerializeField] private Color backgroundColor = new Color(0.15f, 0.15f, 0.15f, 0.9f);
@@ -54,16 +54,16 @@ public class SpellBarUICreator : MonoBehaviour
         
         spellBarRect = container.AddComponent<RectTransform>();
         
-        // Calculate size
-        float totalWidth = (slotSize.x * 4) + (spacing * 3) + 20; // +20 for padding
-        float totalHeight = slotSize.y + 10;
+        // Calculate size for VERTICAL layout
+        float totalWidth = slotSize.x + 10;
+        float totalHeight = (slotSize.y * 4) + (spacing * 3) + 20; // 4 slots vertically
         
-        // FORCE bottom center positioning
-        spellBarRect.anchorMin = new Vector2(0.5f, 0f);
-        spellBarRect.anchorMax = new Vector2(0.5f, 0f);
-        spellBarRect.pivot = new Vector2(0.5f, 0f);
+        // Position on LEFT SIDE of screen, vertically centered
+        spellBarRect.anchorMin = new Vector2(0f, 0.5f); // Left edge, middle
+        spellBarRect.anchorMax = new Vector2(0f, 0.5f);
+        spellBarRect.pivot = new Vector2(0f, 0.5f);
         spellBarRect.sizeDelta = new Vector2(totalWidth, totalHeight);
-        spellBarRect.anchoredPosition = new Vector2(0, bottomMargin);
+        spellBarRect.anchoredPosition = new Vector2(10, 0); // 10px from left edge
         
         Debug.Log($"[SpellBarUICreator] Bar rect: size={spellBarRect.sizeDelta}, pos={spellBarRect.anchoredPosition}");
 
@@ -71,10 +71,10 @@ public class SpellBarUICreator : MonoBehaviour
         Image bgImage = container.AddComponent<Image>();
         bgImage.color = backgroundColor;
 
-        // Add layout
-        HorizontalLayoutGroup layout = container.AddComponent<HorizontalLayoutGroup>();
+        // Add VERTICAL layout
+        VerticalLayoutGroup layout = container.AddComponent<VerticalLayoutGroup>();
         layout.spacing = spacing;
-        layout.padding = new RectOffset(10, 10, 5, 5);
+        layout.padding = new RectOffset(5, 5, 10, 10);
         layout.childAlignment = TextAnchor.MiddleCenter;
         layout.childControlWidth = false;
         layout.childControlHeight = false;

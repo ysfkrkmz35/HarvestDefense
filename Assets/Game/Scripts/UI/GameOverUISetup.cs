@@ -13,7 +13,7 @@ public class GameOverUISetup
     public static void CreateGameOverUI()
     {
         // Canvas bul veya oluştur
-        Canvas canvas = Object.FindObjectOfType<Canvas>();
+        Canvas canvas = Object.FindFirstObjectByType<Canvas>();
         if (canvas == null)
         {
             // Canvas yoksa oluştur

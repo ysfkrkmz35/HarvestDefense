@@ -41,7 +41,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         // UI referanslarını otomatik bul
         if (healthUI == null)
         {
-            healthUI = FindObjectOfType<ProHealthManaUI>();
+            healthUI = FindFirstObjectByType<ProHealthManaUI>();
 
             if (healthUI == null)
             {
@@ -56,7 +56,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         // Game Over UI'ı otomatik bul
         if (useGameOverUI && gameOverUI == null)
         {
-            gameOverUI = FindObjectOfType<GameOverUI>();
+            gameOverUI = FindFirstObjectByType<GameOverUI>();
 
             if (gameOverUI == null)
             {

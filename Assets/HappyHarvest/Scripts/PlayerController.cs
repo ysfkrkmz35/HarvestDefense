@@ -334,6 +334,25 @@ namespace HappyHarvest
             UIHandler.PlayBuySellSound(transform.position);
         }
 
+        /// <summary>
+        /// Sell any item (not just Product) at a specified price per unit
+        /// </summary>
+        public void SellItemGeneric(int inventoryIndex, int count, int pricePerUnit)
+        {
+            if (inventoryIndex < 0 || inventoryIndex > Inventory.Entries.Length)
+                return;
+
+            var item = Inventory.Entries[inventoryIndex].Item;
+            if (item == null)
+                return;
+            
+            int actualCount = m_Inventory.Remove(inventoryIndex, count);
+
+            m_Coins += actualCount * pricePerUnit;
+            UIHandler.UpdateCoins(m_Coins);
+            UIHandler.PlayBuySellSound(transform.position);
+        }
+
         public bool BuyItem(Item item)
         {
             if (item.BuyPrice > m_Coins)
@@ -341,6 +360,22 @@ namespace HappyHarvest
                 return false;
             }
 
+            // Check if this is a SpellItem - handle differently
+            if (item is SpellItem spellItem)
+            {
+                if (!spellItem.TryEquipSpell())
+                {
+                    // Failed to equip (no empty slots or already owned)
+                    return false;
+                }
+                
+                m_Coins -= item.BuyPrice;
+                UIHandler.UpdateCoins(m_Coins);
+                UIHandler.PlayBuySellSound(transform.position);
+                return true;
+            }
+
+            // Normal item - add to inventory
             m_Coins -= item.BuyPrice;
             UIHandler.UpdateCoins(m_Coins);
             UIHandler.PlayBuySellSound(transform.position);
