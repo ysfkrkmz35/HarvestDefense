@@ -12,7 +12,7 @@ public class AutoAssignSwordAnim : MonoBehaviour
         if (controller != null)
         {
             // Find finding by type
-            var playerController = FindObjectOfType<HappyHarvest.PlayerController>();
+            var playerController = FindFirstObjectByType<HappyHarvest.PlayerController>();
             GameObject player = playerController != null ? playerController.gameObject : GameObject.Find("Player");
 
             if (player != null)

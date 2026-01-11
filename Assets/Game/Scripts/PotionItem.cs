@@ -41,7 +41,7 @@ namespace HappyHarvest
             Debug.Log($"[PotionItem] 🧪 Using potion: +{HealAmount} HP");
             
             // Find the health UI and heal
-            var healthUI = Object.FindObjectOfType<ProHealthManaUI>();
+            var healthUI = Object.FindFirstObjectByType<ProHealthManaUI>();
             if (healthUI != null)
             {
                 healthUI.Heal(HealAmount);

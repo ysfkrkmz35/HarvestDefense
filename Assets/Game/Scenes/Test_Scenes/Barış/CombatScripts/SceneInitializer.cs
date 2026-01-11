@@ -11,7 +11,7 @@ public class SceneInitializer : MonoBehaviour
     [SerializeField] private float barWidth = 1.5f;
     [SerializeField] private float barHeight = 0.2f;
     [SerializeField] private float yOffset = 1.5f;
-    [SerializeField] private float canvasScaleFactor = 0.01f; // Very small for world space
+    // [SerializeField] private float canvasScaleFactor = 0.01f; // Very small for world space
     
     [Header("Colors")]
     [SerializeField] private Color bgColor = new Color(0.1f, 0.1f, 0.1f, 0.9f);

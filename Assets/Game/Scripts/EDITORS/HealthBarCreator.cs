@@ -57,7 +57,7 @@ public class HealthBarCreator : Editor
 
     private static Canvas FindOrCreateCanvas()
     {
-        Canvas canvas = Object.FindObjectOfType<Canvas>();
+        Canvas canvas = Object.FindFirstObjectByType<Canvas>();
         if (canvas == null)
         {
             GameObject canvasObj = new GameObject("Canvas");
@@ -70,7 +70,7 @@ public class HealthBarCreator : Editor
             
             canvasObj.AddComponent<GraphicRaycaster>();
 
-            if (Object.FindObjectOfType<UnityEngine.EventSystems.EventSystem>() == null)
+            if (Object.FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>() == null)
             {
                 GameObject eventSystem = new GameObject("EventSystem");
                 eventSystem.AddComponent<UnityEngine.EventSystems.EventSystem>();

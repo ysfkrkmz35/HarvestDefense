@@ -149,7 +149,7 @@ namespace YusufTest
             FindPlayer();
 
             // Kamera referansını al - Önce Cinemachine, sonra normal Camera
-            cinemachineCamera = FindObjectOfType<CinemachineCamera>();
+            cinemachineCamera = FindFirstObjectByType<CinemachineCamera>();
 
             if (cinemachineCamera != null)
             {
@@ -163,8 +163,8 @@ namespace YusufTest
                 mainCamera = Camera.main;
                 if (mainCamera == null)
                 {
-                    mainCamera = FindObjectOfType<Camera>();
-                    Log("Camera.main null, FindObjectOfType ile arandı");
+                    mainCamera = FindFirstObjectByType<Camera>();
+                    Log("Camera.main null, FindFirstObjectByType ile arandı");
                 }
 
                 if (mainCamera != null)
@@ -546,7 +546,7 @@ namespace YusufTest
             if (playerRigidbody != null)
             {
                 playerRigidbody.linearVelocity = Vector2.zero;
-                playerRigidbody.isKinematic = true;
+                playerRigidbody.bodyType = RigidbodyType2D.Kinematic;
             }
 
             // 5. Player'ı bot üzerine yerleştir
@@ -645,7 +645,7 @@ namespace YusufTest
             // 5. Player rigidbody'sini dinamik yap
             if (playerRigidbody != null)
             {
-                playerRigidbody.isKinematic = false;
+                playerRigidbody.bodyType = RigidbodyType2D.Dynamic;
                 playerRigidbody.linearVelocity = Vector2.zero;
             }
 
@@ -964,7 +964,7 @@ namespace YusufTest
             // Canvas bul veya oluştur
             if (promptCanvas == null)
             {
-                promptCanvas = FindObjectOfType<Canvas>();
+                promptCanvas = FindFirstObjectByType<Canvas>();
 
                 if (promptCanvas == null)
                 {

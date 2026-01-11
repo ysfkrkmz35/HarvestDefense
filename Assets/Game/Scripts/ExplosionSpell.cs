@@ -18,8 +18,8 @@ public class ExplosionSpell : MonoBehaviour
     [Tooltip("Büyü bekleme süresi (saniye)")]
     [SerializeField] private float cooldown = 2f;
     
-    [Tooltip("Mana maliyeti (opsiyonel)")]
-    [SerializeField] private float manaCost = 10f;
+    // [Tooltip("Mana maliyeti (opsiyonel)")]
+    // [SerializeField] private float manaCost = 10f;
     
     [Header("Menzil Ayarları")]
     [Tooltip("Maksimum büyü menzili")]

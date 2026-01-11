@@ -49,7 +49,7 @@ namespace YusufTest
         [SerializeField] private float attackWindup = 0.3f;      // Saldırı öncesi bekleme
         [Tooltip("Saldırı sonrası geri çekilme süresi")]
         [SerializeField] private float retreatDuration = 0.5f;
-        [SerializeField] private float retreatDistance = 1.5f;
+        // [SerializeField] private float retreatDistance = 1.5f; // Unused for now, duration based retreat implemented
 
         [Header("═══ PATROL ═══")]
         [SerializeField] private float patrolRadius = 5f;        // Dolaşma alanı
@@ -125,17 +125,108 @@ namespace YusufTest
             SetupRigidbody();
         }
 
+        // Animation Hashes
+        private int moveBoolHash = 0;
+        private int speedFloatHash = 0;
+        private bool hasMoveBool = false;
+        private bool hasSpeedFloat = false;
+        
+        // Attack Hashes
+        private int attackHash = 0;
+        private int attack02Hash = 0;
+        private bool hasAttack = false;
+        private bool hasAttack02 = false;
+
         void Start()
         {
             spawnPosition = transform.position;
             FindPlayer();
             FindAnimatorAndSprite();
             
+            // Auto-detect Animation Parameters
+            if (animator != null)
+            {
+                var parameters = result_params(animator);
+                
+                // Check for common boolean movement parameters (Merged from previous fix)
+                string[] boolParams = new string[] { "walk", "Walk", "isWalking", "IsWalking", "run", "Run", "isMoving", "IsMoving", "moving", "Moving" };
+                foreach (var param in parameters)
+                {
+                    foreach (var check in boolParams)
+                    {
+                        if (param.name == check && param.type == AnimatorControllerParameterType.Bool)
+                        {
+                            moveBoolHash = param.nameHash;
+                            hasMoveBool = true;
+                            // Debug.Log($"[SimpleEnemyAI] Found movement bool parameter: '{check}'");
+                            break;
+                        }
+                    }
+                    if (hasMoveBool) break;
+                }
+
+                // Check for common float speed parameters (Merged from previous fix)
+                string[] floatParams = new string[] { "Speed", "speed", "Velocity", "velocity" };
+                foreach (var param in parameters)
+                {
+                    foreach (var check in floatParams)
+                    {
+                        if (param.name == check && param.type == AnimatorControllerParameterType.Float)
+                        {
+                            speedFloatHash = param.nameHash;
+                            hasSpeedFloat = true;
+                            // Debug.Log($"[SimpleEnemyAI] Found speed float parameter: '{check}'");
+                            break;
+                        }
+                    }
+                    if (hasSpeedFloat) break;
+                }
+                
+                // Check for Attack parameters
+                // Primary Attack
+                string[] attackParams = new string[] { "attack", "Attack", "fire", "Fire", "slash", "Slash", "hit", "Hit" };
+                foreach (var param in parameters)
+                {
+                    foreach (var check in attackParams)
+                    {
+                        if (param.name == check && param.type == AnimatorControllerParameterType.Trigger)
+                        {
+                            attackHash = param.nameHash;
+                            hasAttack = true;
+                            Debug.Log($"[SimpleEnemyAI] Found primary attack parameter: '{check}'");
+                            break;
+                        }
+                    }
+                    if (hasAttack) break;
+                }
+                
+                // Secondary Attack (specific check for attack02 or similar)
+                string[] attack02Params = new string[] { "attack02", "Attack02", "attack2", "Attack2", "HeavyAttack" };
+                foreach (var param in parameters)
+                {
+                    foreach (var check in attack02Params)
+                    {
+                        if (param.name == check && param.type == AnimatorControllerParameterType.Trigger)
+                        {
+                            attack02Hash = param.nameHash;
+                            hasAttack02 = true;
+                            Debug.Log($"[SimpleEnemyAI] Found secondary attack parameter: '{check}'");
+                            break;
+                        }
+                    }
+                    if (hasAttack02) break;
+                }
+            }
+
             // Kendini listeye ekle
             allEnemies.Add(this);
             
             // Rastgele strafe yönü
             strafeDirection = Random.value > 0.5f ? 1 : -1;
+        }
+
+        private AnimatorControllerParameter[] result_params(Animator anim) {
+            return anim.parameters;
         }
 
         void OnDestroy()
@@ -577,8 +668,23 @@ namespace YusufTest
             // Animasyon tetikle
             if (animator != null)
             {
-                animator.SetTrigger(useAlternateAttack ? "attack02" : "attack");
-                useAlternateAttack = !useAlternateAttack;
+                if (hasAttack && hasAttack02)
+                {
+                    // Both available, alternate them
+                    animator.SetTrigger(useAlternateAttack ? attack02Hash : attackHash);
+                    useAlternateAttack = !useAlternateAttack;
+                }
+                else if (hasAttack)
+                {
+                    // Only primary available
+                    animator.SetTrigger(attackHash);
+                }
+                else if (hasAttack02)
+                {
+                    // Only secondary available (weird but possible)
+                    animator.SetTrigger(attack02Hash);
+                }
+                // If neither, do nothing (no error)
             }
 
             // Windup - saldırı hazırlığı
@@ -720,7 +826,17 @@ namespace YusufTest
             if (animator == null) return;
 
             bool isMoving = rb.linearVelocity.magnitude > 0.1f;
-            animator.SetBool("walk", isMoving && !isAttacking);
+            
+            // Smart Parameter Setting
+            if (hasMoveBool)
+            {
+                animator.SetBool(moveBoolHash, isMoving && !isAttacking);
+            }
+            
+            if (hasSpeedFloat)
+            {
+                animator.SetFloat(speedFloatHash, isMoving ? rb.linearVelocity.magnitude : 0f);
+            }
             
             // Body rotation güncelle
             UpdateBodyRotation();

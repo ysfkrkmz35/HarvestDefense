@@ -26,7 +26,7 @@ public class EventSystemChecker : MonoBehaviour
 
     public static void CheckAndFixEventSystems()
     {
-        EventSystem[] systems = FindObjectsOfType<EventSystem>();
+        EventSystem[] systems = FindObjectsByType<EventSystem>(FindObjectsSortMode.None);
         if (systems.Length > 1)
         {
             Debug.LogWarning($"[EventSystemChecker] Found {systems.Length} EventSystems. Cleaning up duplicates...");
@@ -77,7 +77,7 @@ public class EventSystemChecker : MonoBehaviour
         {
             yield return wait;
             // Lightweight check
-            if (EventSystem.current == null || FindObjectsOfType<EventSystem>().Length > 1)
+            if (EventSystem.current == null || FindObjectsByType<EventSystem>(FindObjectsSortMode.None).Length > 1)
             {
                 CheckAndFixEventSystems();
             }
