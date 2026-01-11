@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29be8237accfb124cb1e512762887e24, type: 3}
   m_Name: Intro_Hikayesi
   m_EditorClassIdentifier: Assembly-CSharp::StoryData
-  slides: []
-  backgroundMusic: {fileID: 0}
+  slides:
+  - {fileID: -855298285791758126, guid: 6be7934d14a964a48be68fd6da2e3bfc, type: 3}
+  - {fileID: 6937817954938267909, guid: 1bab558728264a34f9b05516070cd0e7, type: 3}
+  - {fileID: -6470460504253458178, guid: cb25e0d2e2da2d045bb0d0318d705549, type: 3}
+  - {fileID: -4178046375966092550, guid: 8eb7b8fce563b2a4191f7acdbdc4087a, type: 3}
+  - {fileID: 4130640169021434097, guid: 0d3ef44e9f184cf4f8b265ead860645b, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: 83dae6a5181c4fc4c8312976a1a92c42, type: 3}
   musicVolume: 1
   transitionDuration: 1
   autoAdvance: 0
