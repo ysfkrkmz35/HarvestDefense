@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpellData
   spellName: Nuke
   description: A very powerful nuke spell.It destryos everything.
-  icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  icon: {fileID: 1260695457241459870, guid: 8e30f6e3a01b36b41b763940787173ef, type: 3}
   spellType: 0
   damage: 150
   cooldown: 2

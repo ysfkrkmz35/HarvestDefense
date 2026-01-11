@@ -56,7 +56,7 @@ public class SpellSlotUI : MonoBehaviour
     [Header("═══ VISUAL SETTINGS ═══")]
     [SerializeField] private Color iconNormalColor = Color.white;
     [SerializeField] private Color iconCooldownColor = new Color(0.5f, 0.5f, 0.5f, 1f);
-    [SerializeField] private Color selectedBorderColor = new Color(1f, 0.8f, 0.2f, 1f);
+    [SerializeField] private Color selectedBorderColor = new Color(1f, 0.8f, 0.2f, 0.15f); // Very transparent selection
     [SerializeField] private Color unselectedBorderColor = new Color(0.3f, 0.3f, 0.3f, 0.5f);
     [SerializeField] private Color noManaColor = new Color(0.2f, 0.2f, 0.5f, 1f);
 
@@ -86,6 +86,7 @@ public class SpellSlotUI : MonoBehaviour
 
         // Subscribe to events
         SpellManager.OnSlotSelected += OnSlotSelected;
+        SpellManager.OnSpellEquipped += OnSpellEquipped;
 
         // Setup button listeners
         SetupButtonListeners();
@@ -98,6 +99,7 @@ public class SpellSlotUI : MonoBehaviour
     private void OnDestroy()
     {
         SpellManager.OnSlotSelected -= OnSlotSelected;
+        SpellManager.OnSpellEquipped -= OnSpellEquipped;
     }
 
     private void Update()
@@ -155,6 +157,11 @@ public class SpellSlotUI : MonoBehaviour
 
         // Play click animation
         StartCoroutine(PulseSlot(slotIndex));
+    }
+
+    private void OnSpellEquipped(int slotIndex, SpellData data)
+    {
+        UpdateSlotDisplay(slotIndex);
     }
 
     #endregion

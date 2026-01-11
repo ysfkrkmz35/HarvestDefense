@@ -8,14 +8,14 @@ using TMPro;
 public class SpellBarUICreator : MonoBehaviour
 {
     [Header("═══ SETTINGS ═══")]
-    [SerializeField] private Vector2 slotSize = new Vector2(45, 45); // Smaller slots
+    [SerializeField] private Vector2 slotSize = new Vector2(60, 60); // Larger slots for better visibility
     [SerializeField] private float spacing = 6f;
     [SerializeField] private float bottomMargin = 130f; // Above inventory bar - increased for better separation
 
     [Header("═══ COLORS ═══")]
     [SerializeField] private Color backgroundColor = new Color(0.15f, 0.15f, 0.15f, 0.9f);
     [SerializeField] private Color borderColor = new Color(0.4f, 0.4f, 0.4f, 1f);
-    [SerializeField] private Color selectedColor = new Color(1f, 0.8f, 0.2f, 1f);
+    [SerializeField] private Color selectedColor = new Color(1f, 0.8f, 0.2f, 0.15f); // Very transparent selection
 
     private Canvas rootCanvas;
     private RectTransform spellBarRect;
@@ -147,16 +147,18 @@ public class SpellBarUICreator : MonoBehaviour
         keyRect.sizeDelta = Vector2.zero;
         keyRect.anchoredPosition = new Vector2(4, 2);
 
-        // Cooldown text
+        // Cooldown text - larger with outline for visibility
         GameObject cdTextObj = new GameObject("CooldownText");
         cdTextObj.transform.SetParent(slotObj.transform, false);
         TextMeshProUGUI cdText = cdTextObj.AddComponent<TextMeshProUGUI>();
         cdText.text = "";
-        cdText.fontSize = 16;
+        cdText.fontSize = 20;
         cdText.alignment = TextAlignmentOptions.Center;
         cdText.color = Color.white;
         cdText.fontStyle = FontStyles.Bold;
         cdText.raycastTarget = false;
+        cdText.outlineWidth = 0.3f;
+        cdText.outlineColor = Color.black;
         RectTransform cdTextRect = cdText.rectTransform;
         cdTextRect.anchorMin = Vector2.zero;
         cdTextRect.anchorMax = Vector2.one;

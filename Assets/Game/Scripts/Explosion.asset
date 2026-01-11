@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpellData
   spellName: Expolsion
   description: A powerful explosion spell.
-  icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  icon: {fileID: -150440193849742616, guid: 8e30f6e3a01b36b41b763940787173ef, type: 3}
   spellType: 0
   damage: 25
   cooldown: 2
