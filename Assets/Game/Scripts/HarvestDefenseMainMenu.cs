@@ -188,6 +188,12 @@ public class HarvestDefenseMainMenu : MonoBehaviour
             es.AddComponent<EventSystem>();
             es.AddComponent<StandaloneInputModule>();
         }
+        
+        // Ensure single event system
+        if (GetComponent<EventSystemChecker>() == null)
+        {
+            gameObject.AddComponent<EventSystemChecker>();
+        }
 
         var canvasObj = new GameObject("MenuCanvas");
         mainCanvas = canvasObj.AddComponent<Canvas>();

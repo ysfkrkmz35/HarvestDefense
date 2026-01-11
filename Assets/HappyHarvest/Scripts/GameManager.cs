@@ -4,6 +4,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
+using UnityEngine.EventSystems;
 
 namespace HappyHarvest
 {
@@ -14,6 +15,37 @@ namespace HappyHarvest
     [DefaultExecutionOrder(-9999)]
     public class GameManager : MonoBehaviour
     {
+        // MERGED: Custom GameState Logic
+        public enum GameState { Day, Night, GameOver, Pause }
+        public GameState CurrentState;
+
+        public static event Action OnDayStart;
+        public static event Action OnNightStart;
+        public static event Action OnGameOver;
+
+        public void ChangeState(GameState newState)
+        {
+            CurrentState = newState;
+
+            switch (newState)
+            {
+                case GameState.Day:
+                    Debug.Log("Gündüz Oldu! İnşaat Vakti.");
+                    OnDayStart?.Invoke();
+                    break;
+
+                case GameState.Night:
+                    Debug.Log("Gece Oldu! Savaş Vakti.");
+                    OnNightStart?.Invoke();
+                    break;
+
+                case GameState.GameOver:
+                    Debug.Log("Oyun Bitti!");
+                    OnGameOver?.Invoke();
+                    Time.timeScale = 0;
+                    break;
+            }
+        }
         private static GameManager s_Instance;
         
         
@@ -78,8 +110,29 @@ namespace HappyHarvest
 
         private void Awake()
         {
+            if (s_Instance != null && s_Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             s_Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            // Cleanup potential duplicate EventSystem embedded in the prefab
+            var myEs = GetComponentInChildren<EventSystem>();
+            if (myEs != null)
+            {
+                // Simple search for other event systems
+                var allSystems = FindObjectsOfType<EventSystem>();
+                if (allSystems.Length > 1) 
+                {
+                    // If we found duplicates, assume the ONE in the scene currently is the master (or handled by checker)
+                    // and destroy the one that came with this prefab.
+                    // We only destroy ours if there is another one.
+                    Destroy(myEs.gameObject);
+                }
+            }
             
             m_IsTicking = true;
             
