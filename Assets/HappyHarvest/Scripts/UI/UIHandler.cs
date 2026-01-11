@@ -240,16 +240,28 @@ namespace HappyHarvest
                 clone.Q<VisualElement>("ItemIcone").style.backgroundImage = new StyleBackground(item.ItemSprite);
 
                 var button = clone.Q<Button>("ActionButton");
+                int count = GameManager.Instance.Player.Inventory.Entries[i].StackSize;
 
+                // Calculate sell price: Products use SellPrice, others use 50% of BuyPrice
+                int sellPrice = 0;
                 if (item is Product product)
                 {
-                    int count = GameManager.Instance.Player.Inventory.Entries[i].StackSize;
-                    button.text = $"Sell {count} for {product.SellPrice * count}";
+                    sellPrice = product.SellPrice;
+                }
+                else if (item.BuyPrice > 0)
+                {
+                    sellPrice = Mathf.Max(1, item.BuyPrice / 2); // 50% of buy price, minimum 1
+                }
+
+                if (sellPrice > 0)
+                {
+                    button.text = $"Sell {count} for {sellPrice * count}";
                     
                     int i1 = i;
+                    int price = sellPrice;
                     button.clicked += () =>
                     {
-                        GameManager.Instance.Player.SellItem(i1, count);
+                        GameManager.Instance.Player.SellItemGeneric(i1, count, price);
                         //we remove this entry, we just sold it.
                         m_MarketContentScrollview.contentContainer.Remove(clone.contentContainer);
                     };
