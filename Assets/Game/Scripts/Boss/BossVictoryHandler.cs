@@ -54,9 +54,12 @@ public class BossVictoryHandler : MonoBehaviour
             }
         }
 
-        // Hook for Game End Scene
-        // SceneManager.LoadScene("Credits");
-        Debug.Log("Game End Sequence Triggered!");
+        // Wait before loading win scene
+        yield return new WaitForSeconds(3f);
+
+        // Load Win Screen
+        Debug.Log("[BossVictoryHandler] 🏆 Loading Win Screen!");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("WinScreen");
     }
 
     private void OnDestroy()
