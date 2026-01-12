@@ -144,6 +144,9 @@ public class SpellData : ScriptableObject
     [Range(0.5f, 1f)]
     public float defenseMultiplier = 1.0f;
 
+    [Tooltip("If enabled, player takes NO damage while buff is active (for testing)")]
+    public bool grantImmortality = false;
+
     #region ═══════ HELPER METHODS ═══════
 
     /// <summary>
