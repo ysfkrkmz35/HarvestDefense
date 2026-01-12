@@ -8,7 +8,9 @@ public enum SpellType
 {
     Area,       // AoE damage at location
     Projectile, // Fires projectile toward target
-    Melee       // Single-target close range
+    Melee,      // Single-target close range
+    SelfHeal,   // Heals the caster
+    Buff        // Temporarily buffs the caster
 }
 
 /// <summary>
@@ -116,6 +118,28 @@ public class SpellData : ScriptableObject
     [Tooltip("Duration to wait before spell effect (for animation sync)")]
     [Min(0f)]
     public float castAnimationDelay = 0f;
+
+    [Header("═══ HEALING (SelfHeal spells) ═══")]
+    [Tooltip("Amount of health restored")]
+    [Min(0)]
+    public float healAmount = 25f;
+
+    [Header("═══ BUFF SETTINGS (Buff spells) ═══")]
+    [Tooltip("How long the buff lasts (seconds)")]
+    [Min(1f)]
+    public float buffDuration = 10f;
+
+    [Tooltip("Damage multiplier while buffed (1.5 = +50% damage)")]
+    [Range(1f, 3f)]
+    public float damageMultiplier = 1.5f;
+
+    [Tooltip("Movement speed multiplier while buffed (1.2 = +20% speed)")]
+    [Range(1f, 2f)]
+    public float speedMultiplier = 1.0f;
+
+    [Tooltip("Defense multiplier while buffed (0.8 = 20% damage reduction)")]
+    [Range(0.5f, 1f)]
+    public float defenseMultiplier = 1.0f;
 
     #region ═══════ HELPER METHODS ═══════
 
