@@ -117,14 +117,31 @@ public class BuffSpell : SpellBase
         // Use custom buff effect prefab if assigned
         if (buffEffectPrefab != null)
         {
-            Vector3 spawnPos = new Vector3(effectPosition.x, effectPosition.y, 0f);
-            GameObject effect = Instantiate(buffEffectPrefab, spawnPos, Quaternion.identity);
-
-            // Parent to player so effect follows (if followsCharacter is enabled)
+            GameObject effect;
+            
             if (shouldFollow && targetTransform != null)
             {
-                effect.transform.SetParent(targetTransform);
+                // FIX: Use the 4-parameter Instantiate to explicitly preserve prefab's rotation
+                // Then parent it to the target transform
+                effect = Instantiate(
+                    buffEffectPrefab, 
+                    targetTransform.position, 
+                    buffEffectPrefab.transform.rotation,  // Use world rotation from prefab
+                    targetTransform  // Set parent
+                );
+                
+                // Only reset position to center on player
+                // DO NOT touch rotation - Instantiate already set it correctly!
                 effect.transform.localPosition = Vector3.zero;
+                
+                // Scale can be set if needed
+                // effect.transform.localScale = Vector3.one;
+            }
+            else
+            {
+                // Not following - spawn at world position with prefab rotation
+                Vector3 spawnPos = new Vector3(effectPosition.x, effectPosition.y, 0f);
+                effect = Instantiate(buffEffectPrefab, spawnPos, buffEffectPrefab.transform.rotation);
             }
 
             // Start particle systems if present
@@ -143,12 +160,22 @@ public class BuffSpell : SpellBase
         // Fallback to spellData.effectPrefab
         else if (spellData?.effectPrefab != null)
         {
-            GameObject effect = Instantiate(spellData.effectPrefab, effectPosition, Quaternion.identity);
+            GameObject effect;
             
             if (shouldFollow && targetTransform != null)
             {
-                effect.transform.SetParent(targetTransform);
+                // FIX: Same approach - use 4-parameter Instantiate
+                effect = Instantiate(
+                    spellData.effectPrefab, 
+                    targetTransform.position, 
+                    spellData.effectPrefab.transform.rotation,
+                    targetTransform
+                );
                 effect.transform.localPosition = Vector3.zero;
+            }
+            else
+            {
+                effect = Instantiate(spellData.effectPrefab, effectPosition, spellData.effectPrefab.transform.rotation);
             }
             
             Destroy(effect, spellData.buffDuration);

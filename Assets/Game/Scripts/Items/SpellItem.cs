@@ -97,19 +97,72 @@ namespace HappyHarvest
             spellObj.transform.SetParent(SpellManager.Instance.transform);
 
             // Add AreaSpell component (or use spellPrefab if provided)
-            SpellBase spellBase;
+            SpellBase spellBase = null;
             if (spellPrefab != null)
             {
+                Debug.Log($"[SpellItem] Using spellPrefab: {spellPrefab.name}");
+                
                 // Instantiate from prefab
                 GameObject prefabInstance = Instantiate(spellPrefab, SpellManager.Instance.transform);
                 prefabInstance.name = spellData.spellName;
                 spellBase = prefabInstance.GetComponent<SpellBase>();
+                
+                if (spellBase == null)
+                {
+                    Debug.LogError($"[SpellItem] ⚠️ Prefab '{spellPrefab.name}' does not have a SpellBase component! Trying to add one dynamically...");
+                    
+                    // Try to add the correct component type dynamically based on spell type
+                    switch (spellData.spellType)
+                    {
+                        case SpellType.Buff:
+                            spellBase = prefabInstance.AddComponent<BuffSpell>();
+                            break;
+                        case SpellType.SelfHeal:
+                            spellBase = prefabInstance.AddComponent<HealSpell>();
+                            break;
+                        case SpellType.Area:
+                        case SpellType.Projectile:
+                        case SpellType.Melee:
+                        default:
+                            spellBase = prefabInstance.AddComponent<AreaSpell>();
+                            break;
+                    }
+                }
+                
                 Destroy(spellObj); // Don't need the empty object
             }
             else
             {
-                // Create AreaSpell dynamically
-                spellBase = spellObj.AddComponent<AreaSpell>();
+                // Create spell component dynamically based on spell type
+                Debug.Log($"[SpellItem] Creating spell component for type: {spellData.spellType}");
+                
+                try
+                {
+                    switch (spellData.spellType)
+                    {
+                        case SpellType.Buff:
+                            Debug.Log("[SpellItem] Adding BuffSpell component...");
+                            spellBase = spellObj.AddComponent<BuffSpell>();
+                            break;
+                        case SpellType.SelfHeal:
+                            Debug.Log("[SpellItem] Adding HealSpell component...");
+                            spellBase = spellObj.AddComponent<HealSpell>();
+                            break;
+                        case SpellType.Area:
+                        case SpellType.Projectile:
+                        case SpellType.Melee:
+                        default:
+                            Debug.Log("[SpellItem] Adding AreaSpell component...");
+                            spellBase = spellObj.AddComponent<AreaSpell>();
+                            break;
+                    }
+                    
+                    Debug.Log($"[SpellItem] AddComponent result: {(spellBase != null ? "Success" : "NULL")}");
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError($"[SpellItem] Exception adding component: {ex.Message}\n{ex.StackTrace}");
+                }
             }
 
             if (spellBase == null)

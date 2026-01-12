@@ -29,6 +29,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 0}
   effectDuration: 2
   spellColor: {r: 1, g: 0.5, b: 0, a: 1}
+  followsCharacter: 0
   castSound: {fileID: 0}
   impactSound: {fileID: 0}
   soundVolume: 0.7
@@ -37,3 +38,8 @@ MonoBehaviour:
   shakeDuration: 0.2
   castAnimationTrigger: Cast
   castAnimationDelay: 0
+  healAmount: 25
+  buffDuration: 10
+  damageMultiplier: 1.5
+  speedMultiplier: 1
+  defenseMultiplier: 1
