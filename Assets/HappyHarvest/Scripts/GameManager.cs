@@ -48,6 +48,27 @@ namespace HappyHarvest
         }
         private static GameManager s_Instance;
         
+        /// <summary>
+        /// Build'de de GameManager'ın otomatik yüklenmesini sağlar.
+        /// Editor'da zaten Instance property'si içinde yükleniyor.
+        /// </summary>
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void AutoCreateGameManager()
+        {
+            if (s_Instance == null)
+            {
+                var prefab = Resources.Load<GameManager>("GameManager");
+                if (prefab != null)
+                {
+                    Debug.Log("[GameManager] ✅ GameManager otomatik oluşturuluyor...");
+                    Instantiate(prefab);
+                }
+                else
+                {
+                    Debug.LogError("[GameManager] ❌ GameManager prefab Resources klasöründe bulunamadı!");
+                }
+            }
+        }
         
 #if UNITY_EDITOR
         //As our manager run first, it will also be destroyed first when the app will be exiting, which lead to s_Instance
@@ -55,6 +76,7 @@ namespace HappyHarvest
         //so this is set to true when destroyed, so we do not reinstantiate a new one
         private static bool s_IsQuitting = false;
 #endif
+
         public static GameManager Instance 
         {
             get

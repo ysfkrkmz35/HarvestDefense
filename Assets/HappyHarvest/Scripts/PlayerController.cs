@@ -90,35 +90,72 @@ namespace HappyHarvest
         
         void Start()
         {
+            // ===== DEBUG: Input System kontrolü =====
+            if (InputAction == null)
+            {
+                Debug.LogError("[PlayerController] ❌ InputAction asset NULL! Character prefab'ında InputAction referansı kaybolmuş olabilir.");
+                return;
+            }
+            
+            Debug.Log("[PlayerController] ✅ InputAction asset bulundu: " + InputAction.name);
+            
             //Retrieve the action from the InputAction asset, enable them and add the callbacks.
             
             //Move action doesn't have any callback as it will be polled in the movement code directly.
             m_MoveAction = InputAction.FindAction("Gameplay/Move");
-            m_MoveAction.Enable();
+            if (m_MoveAction == null)
+            {
+                Debug.LogError("[PlayerController] ❌ 'Gameplay/Move' action bulunamadı! Input asset'inde bu action var mı kontrol et.");
+            }
+            else
+            {
+                m_MoveAction.Enable();
+                Debug.Log("[PlayerController] ✅ Move action aktif: " + m_MoveAction.enabled);
+            }
 
             m_NextItemAction = InputAction.FindAction("Gameplay/EquipNext");
             m_PrevItemAction = InputAction.FindAction("Gameplay/EquipPrev");
 
-            m_NextItemAction.Enable();
-            m_NextItemAction.performed += context =>
+            if (m_NextItemAction != null)
             {
-                ToggleToolVisual(false);
-                m_Inventory.EquipNext();
-                ToggleToolVisual(true);
-            };
+                m_NextItemAction.Enable();
+                m_NextItemAction.performed += context =>
+                {
+                    ToggleToolVisual(false);
+                    m_Inventory.EquipNext();
+                    ToggleToolVisual(true);
+                };
+            }
+            else
+            {
+                Debug.LogError("[PlayerController] ❌ 'Gameplay/EquipNext' action bulunamadı!");
+            }
             
-            m_PrevItemAction.Enable();
-            m_PrevItemAction.performed += context =>
+            if (m_PrevItemAction != null)
             {
-                ToggleToolVisual(false);
-                m_Inventory.EquipPrev();
-                ToggleToolVisual(true);
-            };
+                m_PrevItemAction.Enable();
+                m_PrevItemAction.performed += context =>
+                {
+                    ToggleToolVisual(false);
+                    m_Inventory.EquipPrev();
+                    ToggleToolVisual(true);
+                };
+            }
+            else
+            {
+                Debug.LogError("[PlayerController] ❌ 'Gameplay/EquipPrev' action bulunamadı!");
+            }
 
             m_UseItemAction = InputAction.FindAction("Gameplay/Use");
-            m_UseItemAction.Enable();
-
-            m_UseItemAction.performed += context => UseObject();
+            if (m_UseItemAction != null)
+            {
+                m_UseItemAction.Enable();
+                m_UseItemAction.performed += context => UseObject();
+            }
+            else
+            {
+                Debug.LogError("[PlayerController] ❌ 'Gameplay/Use' action bulunamadı!");
+            }
             
             m_CurrentLookDirection = Vector2.right;
             
@@ -133,7 +170,10 @@ namespace HappyHarvest
             
             UIHandler.UpdateInventory(m_Inventory);
             UIHandler.UpdateCoins(m_Coins);
+            
+            Debug.Log("[PlayerController] ✅ Start() tamamlandı. m_CanControl=" + m_CanControl);
         }
+
 
         private void Update()
         {
@@ -236,6 +276,12 @@ namespace HappyHarvest
 
         void FixedUpdate()
         {
+            // Güvenlik kontrolü - m_MoveAction null ise hareket etme
+            if (m_MoveAction == null)
+            {
+                return;
+            }
+            
             var move = m_MoveAction.ReadValue<Vector2>();
 
             //note: == and != for vector2 is overriden to take in account floating point imprecision.
