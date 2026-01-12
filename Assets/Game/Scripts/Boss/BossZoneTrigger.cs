@@ -63,6 +63,16 @@ public class BossZoneTrigger : MonoBehaviour
             
             if (Application.CanStreamedLevelBeLoaded(bossSceneName))
             {
+                // === OPTION 1: Clear player reference before scene load ===
+                // This allows the boss scene's Character to register itself
+                var oldPlayer = HappyHarvest.GameManager.Instance.Player;
+                if (oldPlayer != null)
+                {
+                    Debug.Log("[BossZoneTrigger] Clearing old player reference and destroying...");
+                    HappyHarvest.GameManager.Instance.Player = null;
+                    Destroy(oldPlayer.gameObject);
+                }
+                
                 SceneManager.LoadScene(bossSceneName);
             }
             else
