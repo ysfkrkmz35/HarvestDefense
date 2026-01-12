@@ -13,11 +13,31 @@ public class TimeManager : MonoBehaviour
 
     private float currentTimer;
     private bool isTimerRunning = false;
+    private bool hasCompletedFirstCycle = false;  // Track if we've completed at least one night
 
     private void Start()
     {
-        // Gündüz ile başla
-        StartDay();
+        // Gündüz ile başla - ama gün sayacını artırma
+        StartDayInitial();
+    }
+
+    /// <summary>
+    /// Initial day start - does not trigger OnDayStart event
+    /// Used when the game first starts to avoid incrementing day counter
+    /// </summary>
+    void StartDayInitial()
+    {
+        Debug.Log($"[TimeManager] ☀️ GAME STARTED - Day phase ({dayDuration}s)");
+        
+        currentTimer = dayDuration;
+        isTimerRunning = true;
+        hasCompletedFirstCycle = false;
+        
+        // Set state directly without triggering OnDayStart (which would increment day counter)
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.CurrentState = GameManager.GameState.Day;
+        }
     }
 
     void Update()

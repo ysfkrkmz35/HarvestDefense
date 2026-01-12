@@ -46,10 +46,29 @@ public class GameSystemsBootstrap : MonoBehaviour
     {
         // Create managers container
         if (createUserDataManager || createDaysSurvivedTracker || createLeaderboardManager)
+        if (createUserDataManager || createDaysSurvivedTracker || createLeaderboardManager)
         {
-            managersObj = new GameObject("GameManagers");
-            managersObj.transform.SetParent(transform);
-            DontDestroyOnLoad(managersObj);
+            // 1. Try to use the existing persistent container if UserDataManager exists
+            if (UserDataManager.Instance != null)
+            {
+                managersObj = UserDataManager.Instance.gameObject;
+                if (showDebugLogs) Debug.Log($"[Bootstrap] ♻️ Reusing existing GameManagers from UserDataManager: '{managersObj.name}'");
+            }
+            // 2. Otherwise try to find by name (fallback)
+            else
+            {
+                managersObj = GameObject.Find("GameManagers");
+                if (managersObj == null)
+                {
+                    managersObj = new GameObject("GameManagers");
+                    DontDestroyOnLoad(managersObj);
+                    if (showDebugLogs) Debug.Log("[Bootstrap] 🆕 Created new GameManagers container");
+                }
+                else
+                {
+                    if (showDebugLogs) Debug.Log($"[Bootstrap] 🔍 Found existing GameManagers by name: '{managersObj.name}'");
+                }
+            }
         }
 
         // Create managers
@@ -59,10 +78,38 @@ public class GameSystemsBootstrap : MonoBehaviour
             if (showDebugLogs) Debug.Log("[Bootstrap] ✅ UserDataManager created");
         }
 
-        if (createDaysSurvivedTracker && DaysSurvivedTracker.Instance == null)
+        if (createDaysSurvivedTracker)
         {
-            managersObj.AddComponent<DaysSurvivedTracker>();
-            if (showDebugLogs) Debug.Log("[Bootstrap] ✅ DaysSurvivedTracker created");
+            if (DaysSurvivedTracker.Instance == null)
+            {
+                managersObj.AddComponent<DaysSurvivedTracker>();
+                if (showDebugLogs) Debug.Log("[Bootstrap] ✅ DaysSurvivedTracker created");
+            }
+            else
+            {
+                // CRITICAL FIX: Check if the existing instance is on the correct persistent object
+                if (UserDataManager.Instance != null && DaysSurvivedTracker.Instance.gameObject != UserDataManager.Instance.gameObject)
+                {
+                    Debug.LogWarning($"[Bootstrap] 🚨 Found Rogue DaysSurvivedTracker on '{DaysSurvivedTracker.Instance.gameObject.name}'. PROACTIVELY DESTROYING IT.");
+                    
+                    // Destroy the rogue component immediately so the new one can claim the Singleton Throne
+                    DestroyImmediate(DaysSurvivedTracker.Instance);
+                    
+                    // Creates the new valid one on the correct persistent object (managersObj)
+                    managersObj.AddComponent<DaysSurvivedTracker>();
+                    Debug.Log("[Bootstrap] ♻️ Re-created DaysSurvivedTracker on valid persistent object.");
+                }
+                else
+                {
+                    // Verify the existing instance (it's on the right object, just make sure it's enabled)
+                    Debug.LogWarning($"[Bootstrap] ⚠️ DaysSurvivedTracker already exists on object: '{DaysSurvivedTracker.Instance.gameObject.name}'");
+                    if (!DaysSurvivedTracker.Instance.enabled)
+                    {
+                        Debug.LogWarning("[Bootstrap] ⚠️ Existing DaysSurvivedTracker was DISABLED! Enabling it now.");
+                        DaysSurvivedTracker.Instance.enabled = true;
+                    }
+                }
+            }
         }
 
         if (createLeaderboardManager && LeaderboardManager.Instance == null)

@@ -5,7 +5,8 @@ using HappyHarvest;
 /// <summary>
 /// Days Survived Tracker
 /// - Tracks total days the player has survived
-/// - Subscribes to GameManager.OnDayStart to increment counter
+/// - Subscribes to TimeManager's GameManager.OnDayStart event
+/// - Skips the first call (game initialization) and increments on subsequent day starts
 /// - Broadcasts events for UI updates
 /// </summary>
 public class DaysSurvivedTracker : MonoBehaviour
@@ -30,7 +31,7 @@ public class DaysSurvivedTracker : MonoBehaviour
     #region ═══════ RUNTIME STATE ═══════
 
     private int daysSurvived;
-
+    
     /// <summary>Total days survived by the player</summary>
     public int DaysSurvived => daysSurvived;
 
@@ -55,9 +56,11 @@ public class DaysSurvivedTracker : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            Debug.Log($"[DaysSurvivedTracker] 🏗️ Instance Created on '{gameObject.name}' (ID: {GetInstanceID()})");
         }
         else
         {
+            Debug.Log($"[DaysSurvivedTracker] ⚠️ DUPLICATE detected on '{gameObject.name}' (ID: {GetInstanceID()}). Destroying it.");
             Destroy(gameObject);
             return;
         }
@@ -66,23 +69,35 @@ public class DaysSurvivedTracker : MonoBehaviour
         daysSurvived = startingDay;
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        // Subscribe to day start event
+        // Subscribe to TimeManager's day start event
         GameManager.OnDayStart += HandleDayStart;
+        string status = (Instance == this) ? "MAIN" : "DUPLICATE";
+        Debug.Log($"[DaysSurvivedTracker] 🟢 ENABLED ({status}) on '{gameObject.name}' (ID: {GetInstanceID()}). Subscribed (Day {daysSurvived})");
+    }
 
-        if (showDebugLogs)
-        {
-            Debug.Log($"[DaysSurvivedTracker] ✅ Initialized at Day {daysSurvived}");
-        }
+    private void OnDisable()
+    {
+        GameManager.OnDayStart -= HandleDayStart;
+        string status = (Instance == this) ? "MAIN" : "DUPLICATE";
+        Debug.Log($"[DaysSurvivedTracker] 🔴 DISABLED ({status}) on '{gameObject.name}' (ID: {GetInstanceID()}). Unsubscribed\nStack Trace: {Environment.StackTrace}");
     }
 
     private void OnDestroy()
     {
         if (Instance == this)
         {
-            GameManager.OnDayStart -= HandleDayStart;
             Instance = null;
+            Debug.Log($"[DaysSurvivedTracker] 💀 Destroyed MAIN Instance on '{gameObject.name}' (ID: {GetInstanceID()}). Singleton cleared.");
+        }
+    }
+
+    private void Start()
+    {
+        if (showDebugLogs)
+        {
+            Debug.Log($"[DaysSurvivedTracker] ✅ Start() on '{gameObject.name}' (ID: {GetInstanceID()}). Logic active.");
         }
     }
 
@@ -91,13 +106,18 @@ public class DaysSurvivedTracker : MonoBehaviour
     #region ═══════ DAY TRACKING ═══════
 
     /// <summary>
-    /// Handle the start of a new day
-    /// Increments the day counter
+    /// Handle the start of a new day from TimeManager
+    /// Called when TimeManager triggers OnDayStart (after a night cycle)
     /// </summary>
     private void HandleDayStart()
     {
+        // FORCE LOG: Trace if this method is called
+        Debug.Log($"[DaysSurvivedTracker] ⚡ HandleDayStart called! Instance: ID {GetInstanceID()}. Current Day: {daysSurvived}. Calling IncrementDay...");
+        
         IncrementDay();
     }
+
+
 
     /// <summary>
     /// Increment the day counter by 1
@@ -106,11 +126,7 @@ public class DaysSurvivedTracker : MonoBehaviour
     {
         int previousDay = daysSurvived;
         daysSurvived++;
-
-        if (showDebugLogs)
-        {
-            Debug.Log($"[DaysSurvivedTracker] 🌅 New day! Day {daysSurvived}");
-        }
+        Debug.Log($"[DaysSurvivedTracker] 📈 Day Incremented: {previousDay} -> {daysSurvived} (ID: {GetInstanceID()})");
 
         OnDaysChanged?.Invoke(daysSurvived, 1);
         OnNewDayStarted?.Invoke(daysSurvived);
@@ -129,7 +145,7 @@ public class DaysSurvivedTracker : MonoBehaviour
 
         if (showDebugLogs)
         {
-            Debug.Log($"[DaysSurvivedTracker] 📂 Days set to {daysSurvived} (was {previousDay})");
+            Debug.Log($"[DaysSurvivedTracker] 📂 Days set to {daysSurvived} (was {previousDay}) on ID {GetInstanceID()}");
         }
 
         if (delta != 0)
