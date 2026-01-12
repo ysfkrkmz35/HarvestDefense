@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a568d05d062aa3a479bcf173f6a1c125, type: 3}
   m_Name: SelfHealSpellItem
   m_EditorClassIdentifier: 
-  UniqueID: nuke_spell
-  DisplayName: Nuke Spell
+  UniqueID: self_heal_spell
+  DisplayName: Self Heal Spell
   ItemSprite: {fileID: 1260695457241459870, guid: 8e30f6e3a01b36b41b763940787173ef, type: 3}
   MaxStackSize: 1
   Consumable: 0
@@ -21,6 +21,6 @@ MonoBehaviour:
   VisualPrefab: {fileID: 0}
   PlayerAnimatorTriggerUse: 
   UseSound: []
-  spellData: {fileID: 11400000, guid: 286ca9330a5d125418c4eff6128a2df3, type: 2}
+  spellData: {fileID: 11400000, guid: 149707f2a2012834e83e426be3ee481d, type: 2}
   spellPrefab: {fileID: 0}
   targetSlotIndex: -1

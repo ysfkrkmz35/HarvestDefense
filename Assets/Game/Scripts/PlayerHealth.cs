@@ -102,6 +102,14 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         // Zaten ölü mü?
         if (isDead) return;
 
+        // Buff immortality kontrolü - test için
+        if (PlayerBuffManager.Instance != null && PlayerBuffManager.Instance.IsImmortal)
+        {
+            if (showDebugLogs)
+                Debug.Log($"[PlayerHealth] ⭐ IMMORTAL - Hasar bloklandı: {amount} (buff aktif)");
+            return;
+        }
+
         // Yenilmezlik süresi kontrolü
         if (Time.time < lastDamageTime + invincibilityDuration)
         {

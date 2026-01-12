@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Intro_Hikayesi
   m_EditorClassIdentifier: Assembly-CSharp::StoryData
   slides:
-  - {fileID: -855298285791758126, guid: 6be7934d14a964a48be68fd6da2e3bfc, type: 3}
-  - {fileID: 6937817954938267909, guid: 1bab558728264a34f9b05516070cd0e7, type: 3}
-  - {fileID: -6470460504253458178, guid: cb25e0d2e2da2d045bb0d0318d705549, type: 3}
-  - {fileID: -4178046375966092550, guid: 8eb7b8fce563b2a4191f7acdbdc4087a, type: 3}
-  - {fileID: 4130640169021434097, guid: 0d3ef44e9f184cf4f8b265ead860645b, type: 3}
+  - {fileID: -4093987921198194536, guid: 580f1fa2453c16442b2abf6103f7b14d, type: 3}
+  - {fileID: -2966200626249415253, guid: 48c3f0da8e311904fb7c161273b3b8dd, type: 3}
+  - {fileID: -8171957749544549224, guid: fd24846e05cd54749ab9f2fff1407fd8, type: 3}
+  - {fileID: -221603451687231205, guid: 9131d76e638b5ea4e851245778bbad28, type: 3}
+  - {fileID: 3533621480132283724, guid: e05bca2463efc4c418535b738b1f5961, type: 3}
+  - {fileID: 4264272444617015124, guid: 2f4ea07e4570eff4584ed9dca4c532f6, type: 3}
+  - {fileID: 1270202054031253846, guid: 08d11f4b73f137e4e96c5b6d4b7d166d, type: 3}
   backgroundMusic: {fileID: 8300000, guid: 83dae6a5181c4fc4c8312976a1a92c42, type: 3}
   musicVolume: 1
   transitionDuration: 1

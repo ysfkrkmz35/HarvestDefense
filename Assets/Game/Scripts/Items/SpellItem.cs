@@ -109,7 +109,7 @@ namespace HappyHarvest
                 
                 if (spellBase == null)
                 {
-                    Debug.LogError($"[SpellItem] ⚠️ Prefab '{spellPrefab.name}' does not have a SpellBase component! Trying to add one dynamically...");
+                    Debug.LogWarning($"[SpellItem] Prefab '{spellPrefab.name}' does not have a SpellBase component. Adding one dynamically based on spell type: {spellData.spellType}");
                     
                     // Try to add the correct component type dynamically based on spell type
                     switch (spellData.spellType)

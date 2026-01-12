@@ -29,6 +29,7 @@ public class PlayerBuffManager : MonoBehaviour
         public float damageMultiplier;
         public float speedMultiplier;
         public float defenseMultiplier;
+        public bool grantsImmortality;
         public SpellData sourceSpell;
 
         public ActiveBuff(SpellData spell)
@@ -38,6 +39,7 @@ public class PlayerBuffManager : MonoBehaviour
             damageMultiplier = spell.damageMultiplier;
             speedMultiplier = spell.speedMultiplier;
             defenseMultiplier = spell.defenseMultiplier;
+            grantsImmortality = spell.grantImmortality;
             sourceSpell = spell;
         }
     }
@@ -112,6 +114,19 @@ public class PlayerBuffManager : MonoBehaviour
 
     /// <summary>Number of active buffs</summary>
     public int ActiveBuffCount => activeBuffs.Count;
+
+    /// <summary>Is the player currently immortal (any buff with immortality)?</summary>
+    public bool IsImmortal
+    {
+        get
+        {
+            foreach (var buff in activeBuffs)
+            {
+                if (buff.grantsImmortality) return true;
+            }
+            return false;
+        }
+    }
 
     #endregion
 
