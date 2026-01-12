@@ -10,7 +10,7 @@
 
 #OpenSettingMenuButton {
     position: absolute;
-    top: 25px;
+    bottom: 100px;
     right: 20px;
     width: 100px;
     height: 40px;
