@@ -15,6 +15,9 @@ namespace YusufTest
         [SerializeField] private int maxHealth = 100;
         private int currentHealth;
 
+        // Event for death handling (used by BossVictoryHandler)
+        public event System.Action OnDeath;
+
         [Header("== REFERENCES ==")]
         private SimpleEnemyAI enemyAI;
         private EnemyDropHandler dropHandler;
@@ -99,6 +102,9 @@ namespace YusufTest
             {
                 dropHandler.OnEnemyDeath();
             }
+
+            // Invoke OnDeath event for victory handlers
+            OnDeath?.Invoke();
 
             // EnemyAI'ye haber ver
             if (enemyAI != null)

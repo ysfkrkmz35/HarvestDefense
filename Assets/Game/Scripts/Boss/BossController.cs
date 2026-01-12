@@ -75,13 +75,37 @@ public class BossController : MonoBehaviour
     {
         if (currentState != BossState.Dormant) return;
 
-        Debug.Log("[BossController] Waking up!");
+        Debug.Log("[BossController] 🔥 BOSS AWAKENING!");
+        StartCoroutine(SpawnSequence());
+    }
+
+    private IEnumerator SpawnSequence()
+    {
+        // Spawn Effects
+        if (spriteRenderer != null)
+        {
+            // Flash white briefly
+            Color originalColor = spriteRenderer.color;
+            spriteRenderer.color = Color.white;
+            yield return new WaitForSeconds(0.1f);
+            spriteRenderer.color = originalColor;
+        }
+
+        // TODO: Camera shake (if CameraShake component exists)
+        // var cameraShake = Camera.main.GetComponent<CameraShake>();
+        // if (cameraShake != null) cameraShake.Shake(0.5f, 0.3f);
+
+        // Activate
         currentState = BossState.Chasing;
         rb.bodyType = RigidbodyType2D.Dynamic;
         
         // Notify Health to show UI
         health.SetActive(true);
         FindPlayer();
+
+        // Small delay before starting chase
+        yield return new WaitForSeconds(0.3f);
+        Debug.Log("[BossController] Boss is now chasing player!");
     }
 
     private void FindPlayer()
