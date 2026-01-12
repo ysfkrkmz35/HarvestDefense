@@ -64,7 +64,7 @@ public class UserDataManager : MonoBehaviour
 
     [Header("═══ LEADERBOARD UPLOAD ═══")]
     [Tooltip("URL to upload leaderboard.json via POST")]
-    [SerializeField] private string leaderboardUploadUrl = "";
+    [SerializeField] private string leaderboardUploadUrl = "https://harvestdefense.onrender.com/api/leaderboard";
     
     [Tooltip("Enable/disable automatic upload after save")]
     [SerializeField] private bool enableLeaderboardUpload = true;
@@ -606,9 +606,22 @@ public class UserDataManager : MonoBehaviour
             }
             
             // Upload to server if enabled
+            if (showDebugLogs)
+            {
+                Debug.Log($"[UserDataManager] 🔍 Upload check: enabled={enableLeaderboardUpload}, url='{leaderboardUploadUrl}'");
+            }
+            
             if (enableLeaderboardUpload && !string.IsNullOrEmpty(leaderboardUploadUrl))
             {
+                Debug.Log($"[UserDataManager] 📤 Starting upload to: {leaderboardUploadUrl}");
                 StartCoroutine(UploadLeaderboard(json));
+            }
+            else
+            {
+                if (showDebugLogs)
+                {
+                    Debug.LogWarning($"[UserDataManager] ⚠️ Leaderboard upload skipped (enabled={enableLeaderboardUpload}, hasUrl={!string.IsNullOrEmpty(leaderboardUploadUrl)})");
+                }
             }
         }
         catch (Exception e)
