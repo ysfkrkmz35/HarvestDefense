@@ -62,11 +62,35 @@ namespace HappyHarvest
         private Label m_RainLabel;
         private Label m_ThunderLabel;
 
+        // Tooltip Reference
+        private Label m_TooltipLabel;
+
         void Awake()
         {
             s_Instance = this;
 
             m_Document = GetComponent<UIDocument>();
+
+            // --- TOOLTIP SETUP ---
+            m_TooltipLabel = new Label();
+            m_TooltipLabel.style.position = Position.Absolute;
+            m_TooltipLabel.style.backgroundColor = new StyleColor(new Color(0.1f, 0.1f, 0.1f, 0.9f));
+            m_TooltipLabel.style.color = Color.white;
+            m_TooltipLabel.style.paddingTop = 8;
+            m_TooltipLabel.style.paddingBottom = 8;
+            m_TooltipLabel.style.paddingLeft = 12;
+            m_TooltipLabel.style.paddingRight = 12;
+            m_TooltipLabel.style.borderTopLeftRadius = 5;
+            m_TooltipLabel.style.borderTopRightRadius = 5;
+            m_TooltipLabel.style.borderBottomLeftRadius = 5;
+            m_TooltipLabel.style.borderBottomRightRadius = 5;
+            m_TooltipLabel.style.fontSize = 14;
+            m_TooltipLabel.style.whiteSpace = WhiteSpace.Normal;
+            m_TooltipLabel.style.maxWidth = 250;
+            m_TooltipLabel.visible = false;
+            m_TooltipLabel.pickingMode = PickingMode.Ignore; // Important: clickable through
+            m_Document.rootVisualElement.Add(m_TooltipLabel);
+            // ---------------------
 
             m_InventorySlots = m_Document.rootVisualElement.Query<VisualElement>("InventoryEntry").ToList();
             m_ItemCountLabels = m_Document.rootVisualElement.Query<Label>("ItemCount").ToList();
@@ -127,6 +151,18 @@ namespace HappyHarvest
         void Update()
         {
             m_TimerLabel.text = GameManager.Instance.CurrentTimeAsString();
+
+            // Move Tooltip
+            if (m_TooltipLabel.visible)
+            {
+                Vector2 mousePos = Input.mousePosition;
+                // Convert screen space (bottom-left origin) to panel space (top-left origin)
+                // Note: RuntimePanelUtils.ScreenToPanel might be better, but for simple overlay:
+                Vector2 panelPos = RuntimePanelUtils.ScreenToPanel(m_Document.rootVisualElement.panel, new Vector2(mousePos.x, Screen.height - mousePos.y));
+                
+                m_TooltipLabel.style.left = panelPos.x + 15; // Offset
+                m_TooltipLabel.style.top = panelPos.y + 15;
+            }
         }
 
         private void OnApplicationFocus(bool hasFocus)
@@ -159,6 +195,8 @@ namespace HappyHarvest
         {
             SoundManager.Instance.PlayUISound();
             s_Instance.m_MarketPopup.visible = false;
+            // Hide tooltip when closing market
+            s_Instance.m_TooltipLabel.visible = false;
             GameManager.Instance.Resume();
         }
 
@@ -264,6 +302,7 @@ namespace HappyHarvest
                         GameManager.Instance.Player.SellItemGeneric(i1, count, price);
                         //we remove this entry, we just sold it.
                         m_MarketContentScrollview.contentContainer.Remove(clone.contentContainer);
+                        m_TooltipLabel.visible = false; // Hide tooltip if item removed
                     };
                 }
                 else
@@ -297,6 +336,29 @@ namespace HappyHarvest
                 clone.Q<Label>("ItemName").text = item.DisplayName;
                 clone.Q<VisualElement>("ItemIcone").style.backgroundImage = new StyleBackground(item.ItemSprite);
                 
+                // --- TOOLTIP LOGIC ---
+                if (item is SpellItem spellItem && spellItem.spellData != null)
+                {
+                    string desc = spellItem.spellData.description;
+                    if (!string.IsNullOrEmpty(desc))
+                    {
+                        // Get the main visual element of the entry
+                        VisualElement entryRoot = clone.contentContainer; // Or clone if clone is the root? CloneTree usually returns a TemplateContainer
+                        
+                        entryRoot.RegisterCallback<MouseEnterEvent>(evt => 
+                        {
+                            m_TooltipLabel.text = desc;
+                            m_TooltipLabel.visible = true;
+                        });
+                        
+                        entryRoot.RegisterCallback<MouseLeaveEvent>(evt => 
+                        {
+                            m_TooltipLabel.visible = false;
+                        });
+                    }
+                }
+                // ---------------------
+
                 var button = clone.Q<Button>("ActionButton");
 
                 if (GameManager.Instance.Player.Coins >= item.BuyPrice)
@@ -373,7 +435,6 @@ namespace HappyHarvest
                     m_ItemCountLabels[i].style.visibility = Visibility.Visible;
                     m_ItemCountLabels[i].text = system.Entries[i].StackSize.ToString();
                 }
-
 
                 if (system.EquippedItemIdx == i)
                 {
