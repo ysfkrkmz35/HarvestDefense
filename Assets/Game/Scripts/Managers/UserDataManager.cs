@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Networking;
 using HappyHarvest;
 
 /// <summary>
@@ -60,6 +61,13 @@ public class UserDataManager : MonoBehaviour
 
     [Header("═══ DEBUG ═══")]
     [SerializeField] private bool showDebugLogs = true;
+
+    [Header("═══ LEADERBOARD UPLOAD ═══")]
+    [Tooltip("URL to upload leaderboard.json via POST")]
+    [SerializeField] private string leaderboardUploadUrl = "";
+    
+    [Tooltip("Enable/disable automatic upload after save")]
+    [SerializeField] private bool enableLeaderboardUpload = true;
 
     #endregion
 
@@ -596,10 +604,44 @@ public class UserDataManager : MonoBehaviour
             {
                 Debug.Log($"[UserDataManager] 🏆 Leaderboard updated: {filePath} ({leaderboard.players.Count} players)");
             }
+            
+            // Upload to server if enabled
+            if (enableLeaderboardUpload && !string.IsNullOrEmpty(leaderboardUploadUrl))
+            {
+                StartCoroutine(UploadLeaderboard(json));
+            }
         }
         catch (Exception e)
         {
             Debug.LogError($"[UserDataManager] ❌ Failed to update leaderboard: {e.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Upload leaderboard JSON to server via HTTP POST
+    /// </summary>
+    private IEnumerator UploadLeaderboard(string jsonContent)
+    {
+        using (UnityWebRequest request = new UnityWebRequest(leaderboardUploadUrl, "POST"))
+        {
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonContent);
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                if (showDebugLogs)
+                {
+                    Debug.Log($"[UserDataManager] 🌐 Leaderboard uploaded successfully to {leaderboardUploadUrl}");
+                }
+            }
+            else
+            {
+                Debug.LogError($"[UserDataManager] ❌ Leaderboard upload failed: {request.error}");
+            }
         }
     }
 
