@@ -17,7 +17,7 @@ public class CleanupPersistentObjects : MonoBehaviour
     private void FixPersistentObjects()
     {
         // Find the persistent Character
-        var player = FindObjectOfType<HappyHarvest.PlayerController>();
+        var player = FindFirstObjectByType<HappyHarvest.PlayerController>();
         if (player != null)
         {
             Debug.Log($"[Cleanup] Found player: {player.name}");
@@ -42,8 +42,7 @@ public class CleanupPersistentObjects : MonoBehaviour
             Debug.LogError("[Cleanup] ❌ No player found! Boss scene needs a Character.");
         }
 
-        // Only destroy DUPLICATE GameManagers (keep one)
-        var gameManagers = FindObjectsOfType<HappyHarvest.GameManager>();
+        var gameManagers = FindObjectsByType<HappyHarvest.GameManager>(FindObjectsSortMode.None);
         if (gameManagers.Length > 1)
         {
             for (int i = 1; i < gameManagers.Length; i++)

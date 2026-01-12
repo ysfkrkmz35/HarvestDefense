@@ -34,7 +34,7 @@ public class BossZoneTrigger : MonoBehaviour
         if (player == null)
         {
             // Fallback: find PlayerController
-            var pc = FindObjectOfType<HappyHarvest.PlayerController>();
+            var pc = FindFirstObjectByType<HappyHarvest.PlayerController>();
             if (pc != null) player = pc.gameObject;
         }
 

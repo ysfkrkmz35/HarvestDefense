@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Spell Manager
@@ -101,6 +102,58 @@ public class SpellManager : MonoBehaviour
         {
             Destroy(gameObject);
             return;
+        }
+
+        // AUTO-LOAD FIX: If inspector list is empty, try to find all SpellData assets
+        if (allSpells == null || allSpells.Count == 0)
+        {
+            Debug.LogWarning("[SpellManager] ⚠️ 'All Spells' list is empty! Attempting to auto-load...");
+            
+            // Try 1: Resources folder
+            allSpells = new List<SpellData>(Resources.LoadAll<SpellData>(""));
+            
+            // Try 2: Resources/Spells subfolder
+            if (allSpells.Count == 0)
+            {
+                allSpells = new List<SpellData>(Resources.LoadAll<SpellData>("Spells"));
+            }
+            
+            // Try 3: FindObjectsOfTypeAll (works in editor, finds all loaded assets)
+            #if UNITY_EDITOR
+            if (allSpells.Count == 0)
+            {
+                var foundAssets = UnityEditor.AssetDatabase.FindAssets("t:SpellData");
+                foreach (var guid in foundAssets)
+                {
+                    var path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                    var spellData = UnityEditor.AssetDatabase.LoadAssetAtPath<SpellData>(path);
+                    if (spellData != null && !allSpells.Contains(spellData))
+                    {
+                        allSpells.Add(spellData);
+                    }
+                }
+                if (allSpells.Count > 0)
+                {
+                    Debug.Log($"[SpellManager] ✅ Found {allSpells.Count} spells via AssetDatabase (Editor only).");
+                }
+            }
+            #endif
+            
+            // Try 4: Runtime fallback - search loaded ScriptableObjects
+            if (allSpells.Count == 0)
+            {
+                var allLoadedSpells = Resources.FindObjectsOfTypeAll<SpellData>();
+                allSpells = new List<SpellData>(allLoadedSpells);
+            }
+            
+            if (allSpells.Count > 0)
+            {
+                Debug.Log($"[SpellManager] ✅ Auto-loaded {allSpells.Count} spells: {string.Join(", ", allSpells.ConvertAll(s => s.spellName))}");
+            }
+            else
+            {
+                Debug.LogError("[SpellManager] ❌ Could not find any SpellData! Please assign spells in the inspector or move assets to Resources/Spells/");
+            }
         }
 
         // Initialize spell slots array
@@ -329,6 +382,191 @@ public class SpellManager : MonoBehaviour
 
         unlockedSpells.Add(spell);
         OnSpellUnlocked?.Invoke(spell);
+    }
+
+    /// <summary>
+    /// Set unlocked spells from a list of spell names (for loading saves)
+    /// </summary>
+    public void SetUnlockedSpellsByName(List<string> spellNames)
+    {
+        if (spellNames == null) return;
+
+        // Clear current unlocked spells (except defaults)
+        unlockedSpells.Clear();
+
+        // Debug: List all available spells
+        if (showDebugLogs)
+        {
+             Debug.Log($"[SpellManager] 🔍 Available spells in database ({allSpells.Count}): " + 
+                       string.Join(", ", allSpells.Select(s => s != null ? $"'{s.spellName}'" : "null")));
+             Debug.Log($"[SpellManager] 🔍 Trying to restore names: " + string.Join(", ", spellNames));
+        }
+
+        // Re-add default unlocked spells
+        foreach (var spell in allSpells)
+        {
+            if (spell != null && spell.unlockedByDefault)
+            {
+                unlockedSpells.Add(spell);
+            }
+        }
+
+        // Add saved unlocked spells
+        foreach (var spellName in spellNames)
+        {
+            if (string.IsNullOrEmpty(spellName)) continue;
+
+            // Trim name just in case
+            var cleanName = spellName.Trim();
+            
+            var spell = allSpells.Find(s => s != null && s.spellName == cleanName);
+            if (spell != null && !unlockedSpells.Contains(spell))
+            {
+                unlockedSpells.Add(spell);
+                if (showDebugLogs)
+                {
+                    Debug.Log($"[SpellManager] 📂 Restored unlocked spell: '{cleanName}'");
+                }
+            }
+            else
+            {
+                if (showDebugLogs) Debug.LogWarning($"[SpellManager] ⚠️ Could not find spell with name: '{cleanName}'");
+            }
+        }
+
+        if (showDebugLogs)
+        {
+            Debug.Log($"[SpellManager] 📂 Restored {unlockedSpells.Count} unlocked spells");
+        }
+    }
+
+    /// <summary>
+    /// Get the names of spells equipped in each slot (for saving)
+    /// Returns array of 4 strings (empty string if slot is empty)
+    /// </summary>
+    public string[] GetEquippedSpellNames()
+    {
+        string[] names = new string[4];
+        for (int i = 0; i < 4; i++)
+        {
+            names[i] = spellSlots[i]?.Data?.spellName ?? "";
+        }
+        return names;
+    }
+
+    /// <summary>
+    /// Set equipped spells by name (for restoring saves)
+    /// Creates SpellBase components if they don't exist
+    /// </summary>
+    public void SetEquippedSpellsByName(string[] slotNames)
+    {
+        if (slotNames == null || slotNames.Length != 4) return;
+
+        if (showDebugLogs) Debug.Log($"[SpellManager] 📂 Restoring equipped spells: [{string.Join(", ", slotNames)}]");
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (string.IsNullOrEmpty(slotNames[i]))
+            {
+                // Clear the slot
+                spellSlots[i] = null;
+                continue;
+            }
+
+            // Find the spell data by name
+            var spellData = allSpells.Find(s => s != null && s.spellName == slotNames[i]);
+            if (spellData == null)
+            {
+                if (showDebugLogs) Debug.LogWarning($"[SpellManager] ⚠️ Could not find spell data for: '{slotNames[i]}'");
+                continue;
+            }
+
+            // Try to find existing SpellBase component
+            var existingSpell = GetComponentsInChildren<SpellBase>(true)
+                .FirstOrDefault(s => s.Data == spellData);
+            
+            if (existingSpell != null)
+            {
+                spellSlots[i] = existingSpell;
+                if (showDebugLogs) Debug.Log($"[SpellManager] 📂 Restored slot {i + 1}: {slotNames[i]} (existing)");
+            }
+            else
+            {
+                // CREATE spell component dynamically (like SpellItem does)
+                SpellBase newSpell = CreateSpellComponent(spellData);
+                if (newSpell != null)
+                {
+                    spellSlots[i] = newSpell;
+                    if (showDebugLogs) Debug.Log($"[SpellManager] ✨ Created and restored slot {i + 1}: {slotNames[i]}");
+                }
+                else
+                {
+                    if (showDebugLogs) Debug.LogError($"[SpellManager] ❌ Failed to create spell: {slotNames[i]}");
+                }
+            }
+        }
+
+        // Update serialized fields
+        spellSlot1 = spellSlots[0];
+        spellSlot2 = spellSlots[1];
+        spellSlot3 = spellSlots[2];
+        spellSlot4 = spellSlots[3];
+        
+        if (showDebugLogs)
+        {
+            Debug.Log($"[SpellManager] 📂 Equipped slots after restore: " +
+                $"[{spellSlots[0]?.Data?.spellName ?? "Empty"}, " +
+                $"{spellSlots[1]?.Data?.spellName ?? "Empty"}, " +
+                $"{spellSlots[2]?.Data?.spellName ?? "Empty"}, " +
+                $"{spellSlots[3]?.Data?.spellName ?? "Empty"}]");
+        }
+    }
+
+    /// <summary>
+    /// Create a SpellBase component for the given SpellData
+    /// Used for restoring spells from saves
+    /// </summary>
+    private SpellBase CreateSpellComponent(SpellData spellData)
+    {
+        if (spellData == null) return null;
+
+        // Create spell object as child of SpellManager
+        GameObject spellObj = new GameObject(spellData.spellName);
+        spellObj.transform.SetParent(transform);
+
+        SpellBase spellBase = null;
+        try
+        {
+            // Add appropriate component based on spell type
+            switch (spellData.spellType)
+            {
+                case SpellType.Buff:
+                    spellBase = spellObj.AddComponent<BuffSpell>();
+                    break;
+                case SpellType.SelfHeal:
+                    spellBase = spellObj.AddComponent<HealSpell>();
+                    break;
+                case SpellType.Area:
+                case SpellType.Projectile:
+                case SpellType.Melee:
+                default:
+                    spellBase = spellObj.AddComponent<AreaSpell>();
+                    break;
+            }
+
+            if (spellBase != null)
+            {
+                spellBase.SetSpellData(spellData);
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"[SpellManager] Exception creating spell component: {ex.Message}");
+            if (spellObj != null) Destroy(spellObj);
+            return null;
+        }
+
+        return spellBase;
     }
 
     #endregion

@@ -239,14 +239,32 @@ namespace HappyHarvest
         }
 
         // Load the content in the given list inside that inventory.
+        // Load the content in the given list inside that inventory.
         public void Load(List<InventorySaveData> data)
         {
+            Debug.Log($"[InventorySystem] 📂 Loading {data.Count} inventory items...");
             for (int i = 0; i < data.Count; ++i)
             {
-                if (data[i] != null)
+                if (i >= Entries.Length) break;
+
+                // Skip null entries or entries with empty ItemID (empty slots)
+                if (data[i] != null && !string.IsNullOrEmpty(data[i].ItemID))
                 {
-                    Entries[i].Item = GameManager.Instance.ItemDatabase.GetFromID(data[i].ItemID);
-                    Entries[i].StackSize = data[i].Amount;
+                    Debug.Log($"[InventorySystem] ⏳ Loading slot {i}: ID '{data[i].ItemID}' x{data[i].Amount}");
+                    var item = GameManager.Instance.ItemDatabase.GetFromID(data[i].ItemID);
+                    
+                    if (item == null)
+                    {
+                        Debug.LogWarning($"[InventorySystem] ⚠️ Item not in database: '{data[i].ItemID}' - skipping");
+                        Entries[i].Item = null;
+                        Entries[i].StackSize = 0;
+                    }
+                    else
+                    {
+                        Entries[i].Item = item;
+                        Entries[i].StackSize = data[i].Amount;
+                        Debug.Log($"[InventorySystem] ✅ Loaded slot {i}: {item.DisplayName}");
+                    }
                 }
                 else
                 {
@@ -254,6 +272,8 @@ namespace HappyHarvest
                     Entries[i].StackSize = 0;
                 }
             }
+            // Ensure UI update happens after load
+            UIHandler.UpdateInventory(this);
         }
     }
 

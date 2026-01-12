@@ -238,6 +238,43 @@ public class PlayerProgression : MonoBehaviour
 
     #endregion
 
+    #region ═══════ SAVE/LOAD SUPPORT ═══════
+
+    /// <summary>
+    /// Set all progression values directly (for loading saved data)
+    /// </summary>
+    /// <param name="level">Level to set</param>
+    /// <param name="xp">Current XP to set</param>
+    /// <param name="gold">Gold to set</param>
+    public void SetValues(int level, int xp, int gold)
+    {
+        CurrentLevel = Mathf.Clamp(level, 1, maxLevel);
+        CurrentXP = Mathf.Max(0, xp);
+        Gold = Mathf.Max(0, gold);
+        XPToNextLevel = CalculateXPForLevel(CurrentLevel);
+
+        if (showDebugLogs)
+        {
+            Debug.Log($"[PlayerProgression] 📂 Loaded values - Level: {CurrentLevel}, XP: {CurrentXP}/{XPToNextLevel}, Gold: {Gold}");
+        }
+
+        // Fire events to update UIs
+        OnXPChanged?.Invoke(CurrentXP, XPToNextLevel);
+        OnGoldChanged?.Invoke(Gold, 0);
+        OnLevelUp?.Invoke(CurrentLevel);
+    }
+
+    /// <summary>
+    /// Set gold directly (for loading saved data)
+    /// </summary>
+    public void SetGold(int amount)
+    {
+        Gold = Mathf.Max(0, amount);
+        OnGoldChanged?.Invoke(Gold, 0);
+    }
+
+    #endregion
+
     #region ═══════ EDITOR TESTS ═══════
 
     [ContextMenu("⭐ Test: Add 50 XP")]

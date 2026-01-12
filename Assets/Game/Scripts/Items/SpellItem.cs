@@ -175,6 +175,9 @@ namespace HappyHarvest
             // Assign spell data and equip to slot
             spellBase.SetSpellData(spellData);
             SpellManager.Instance.AssignSpellToSlot(slot, spellBase);
+            
+            // IMPORTANT: Ensure it's added to unlocked list for saving
+            SpellManager.Instance.ForceUnlock(spellData);
 
             Debug.Log($"[SpellItem] ✨ Equipped {DisplayName} to slot {slot + 1}!");
             return true;

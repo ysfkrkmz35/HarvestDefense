@@ -15,6 +15,7 @@ namespace HappyHarvest
     public class UIHandler : MonoBehaviour
     {
         protected static UIHandler s_Instance;
+        public static UIHandler Instance => s_Instance;
 
         public enum CursorType
         {

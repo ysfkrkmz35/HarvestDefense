@@ -12,7 +12,7 @@ using TMPro;
 public class HarvestDefenseMainMenu : MonoBehaviour
 {
     [Header("=== SCENE SETTINGS ===")]
-    public string gameSceneName = "Yusuf_Test 11";
+    public string gameSceneName = "Game_Main_Scene";
     public KeyCode pauseKey = KeyCode.Escape;
     
     [Header("=== PAUSE MODE ===")]
@@ -47,6 +47,10 @@ public class HarvestDefenseMainMenu : MonoBehaviour
     // Settings & Credits panels
     private GameObject settingsPanel;
     private GameObject creditsPanel;
+    private GameObject loginPanel;
+    private TMP_InputField usernameInput;
+    private TextMeshProUGUI loginStatusText;
+    private TextMeshProUGUI loginErrorText;
     private GameObject buttonsContainer;
     private Slider masterVolumeSlider;
     private Slider musicVolumeSlider;
@@ -105,6 +109,7 @@ public class HarvestDefenseMainMenu : MonoBehaviour
         CreateVersionText();
         CreateSettingsPanel();
         CreateCreditsPanel();
+        CreateLoginPanel();
 
         ready = true;
         Debug.Log($"[HarvestDefenseMainMenu] All UI created. menuRoot = {(menuRoot != null ? menuRoot.name : "NULL")}");
@@ -1017,7 +1022,123 @@ public class HarvestDefenseMainMenu : MonoBehaviour
         if (clip != null) sfxSource.PlayOneShot(clip, sfxVolume);
     }
 
-    void OnPlay() => StartCoroutine(TransitionTo(gameSceneName));
+    void OnPlay()
+    {
+        // Show login panel instead of immediately loading scene
+        buttonsContainer.SetActive(false);
+        loginPanel.SetActive(true);
+        
+        // Clear and focus input
+        if (usernameInput != null)
+        {
+            usernameInput.text = "";
+            usernameInput.Select();
+            usernameInput.ActivateInputField();
+        }
+        
+        ClearLoginError();
+        UpdateLoginStatus("");
+    }
+    
+    void AttemptLogin()
+    {
+        string username = usernameInput?.text?.Trim();
+        
+        // Basic validation
+        if (string.IsNullOrEmpty(username))
+        {
+            ShowLoginError("Please enter a username");
+            return;
+        }
+        
+        // Check if UserDataManager exists
+        if (UserDataManager.Instance == null)
+        {
+            // Create UserDataManager if it doesn't exist
+            var managerObj = new GameObject("UserDataManager");
+            managerObj.AddComponent<UserDataManager>();
+            DontDestroyOnLoad(managerObj);
+        }
+        
+        // Validate username
+        var validation = UserDataManager.Instance.ValidateUsername(username);
+        if (!validation.isValid)
+        {
+            ShowLoginError(validation.errorMessage);
+            return;
+        }
+        
+        // Perform login
+        var userData = UserDataManager.Instance.Login(username);
+        if (userData == null)
+        {
+            ShowLoginError("Login failed, please try again");
+            return;
+        }
+        
+        // Success! Load game
+        Debug.Log($"[MainMenu] Login successful: {username}");
+        ShowLoginSuccess($"Welcome, {username}!");
+        StartCoroutine(LoginSuccessTransition());
+    }
+    
+    IEnumerator LoginSuccessTransition()
+    {
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(TransitionTo(gameSceneName));
+    }
+    
+    void ShowLoginError(string message)
+    {
+        if (loginErrorText != null)
+        {
+            loginErrorText.text = message;
+            loginErrorText.color = redTitle;
+            loginErrorText.gameObject.SetActive(true);
+        }
+        PlaySFX(clickSound);
+    }
+    
+    void ShowLoginSuccess(string message)
+    {
+        if (loginErrorText != null)
+        {
+            loginErrorText.text = message;
+            loginErrorText.color = goldLight;
+            loginErrorText.gameObject.SetActive(true);
+        }
+    }
+    
+    void ClearLoginError()
+    {
+        if (loginErrorText != null)
+        {
+            loginErrorText.text = "";
+            loginErrorText.gameObject.SetActive(false);
+        }
+    }
+    
+    void UpdateLoginStatus(string username)
+    {
+        if (loginStatusText == null) return;
+        
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            loginStatusText.text = "";
+            return;
+        }
+        
+        if (UserDataManager.Instance != null && UserDataManager.Instance.UserExists(username))
+        {
+            loginStatusText.text = "Welcome back!";
+            loginStatusText.color = goldLight;
+        }
+        else
+        {
+            loginStatusText.text = "New adventurer!";
+            loginStatusText.color = new Color(0.5f, 0.8f, 1f, 1f);
+        }
+    }
     
     void OnContinue()
     {
@@ -1529,5 +1650,190 @@ public class HarvestDefenseMainMenu : MonoBehaviour
         });
 
         creditsPanel.SetActive(false);
+    }
+
+    void CreateLoginPanel()
+    {
+        loginPanel = CreateUI("LoginPanel", mainCanvas.transform);
+        var panelRect = loginPanel.GetComponent<RectTransform>();
+        Stretch(panelRect);
+
+        // Dark overlay background
+        var overlay = loginPanel.AddComponent<Image>();
+        overlay.color = new Color(0, 0, 0, 0.85f);
+
+        // Login container
+        var container = CreateUI("LoginContainer", loginPanel.transform);
+        var containerRect = container.GetComponent<RectTransform>();
+        containerRect.anchorMin = containerRect.anchorMax = new Vector2(0.5f, 0.5f);
+        containerRect.sizeDelta = new Vector2(480, 380);
+
+        // Background panel
+        var bgImage = container.AddComponent<Image>();
+        bgImage.sprite = buttonBgSprite;
+        bgImage.type = Image.Type.Sliced;
+        bgImage.color = bgMedium;
+
+        // Title
+        var titleObj = CreateUI("Title", container.transform);
+        var titleTxt = titleObj.AddComponent<TextMeshProUGUI>();
+        titleTxt.text = "ENTER YOUR NAME";
+        titleTxt.fontSize = 32;
+        titleTxt.fontStyle = FontStyles.Bold;
+        titleTxt.alignment = TextAlignmentOptions.Center;
+        titleTxt.color = goldLight;
+        var titleR = titleObj.GetComponent<RectTransform>();
+        titleR.anchorMin = new Vector2(0, 0.82f);
+        titleR.anchorMax = new Vector2(1, 0.95f);
+        titleR.offsetMin = titleR.offsetMax = Vector2.zero;
+
+        // Subtitle
+        var subObj = CreateUI("Subtitle", container.transform);
+        var subTxt = subObj.AddComponent<TextMeshProUGUI>();
+        subTxt.text = "Your journey awaits, adventurer";
+        subTxt.fontSize = 16;
+        subTxt.alignment = TextAlignmentOptions.Center;
+        subTxt.color = new Color(cream.r, cream.g, cream.b, 0.6f);
+        var subR = subObj.GetComponent<RectTransform>();
+        subR.anchorMin = new Vector2(0, 0.72f);
+        subR.anchorMax = new Vector2(1, 0.82f);
+        subR.offsetMin = subR.offsetMax = Vector2.zero;
+
+        // Input field background
+        var inputBg = CreateUI("InputBg", container.transform);
+        var inputBgImg = inputBg.AddComponent<Image>();
+        inputBgImg.sprite = buttonBgSprite;
+        inputBgImg.type = Image.Type.Sliced;
+        inputBgImg.color = bgDark;
+        var inputBgRect = inputBg.GetComponent<RectTransform>();
+        inputBgRect.anchorMin = new Vector2(0.1f, 0.52f);
+        inputBgRect.anchorMax = new Vector2(0.9f, 0.68f);
+        inputBgRect.offsetMin = inputBgRect.offsetMax = Vector2.zero;
+
+        // Input field
+        var inputObj = CreateUI("UsernameInput", inputBg.transform);
+        var inputRect = inputObj.GetComponent<RectTransform>();
+        Stretch(inputRect);
+        inputRect.offsetMin = new Vector2(15, 5);
+        inputRect.offsetMax = new Vector2(-15, -5);
+
+        usernameInput = inputObj.AddComponent<TMP_InputField>();
+        usernameInput.characterLimit = 15;
+
+        // Text area
+        var textArea = CreateUI("TextArea", inputObj.transform);
+        var textAreaRect = textArea.GetComponent<RectTransform>();
+        Stretch(textAreaRect);
+
+        // Placeholder
+        var placeholderObj = CreateUI("Placeholder", textArea.transform);
+        var placeholderRect = placeholderObj.GetComponent<RectTransform>();
+        Stretch(placeholderRect);
+        var placeholder = placeholderObj.AddComponent<TextMeshProUGUI>();
+        placeholder.text = "Enter username...";
+        placeholder.fontSize = 22;
+        placeholder.color = new Color(cream.r, cream.g, cream.b, 0.35f);
+        placeholder.alignment = TextAlignmentOptions.MidlineLeft;
+
+        // Input text
+        var inputTextObj = CreateUI("Text", textArea.transform);
+        var inputTextRect = inputTextObj.GetComponent<RectTransform>();
+        Stretch(inputTextRect);
+        var inputText = inputTextObj.AddComponent<TextMeshProUGUI>();
+        inputText.fontSize = 22;
+        inputText.color = cream;
+        inputText.alignment = TextAlignmentOptions.MidlineLeft;
+
+        usernameInput.textViewport = textAreaRect;
+        usernameInput.textComponent = inputText;
+        usernameInput.placeholder = placeholder;
+        usernameInput.onValueChanged.AddListener(UpdateLoginStatus);
+        usernameInput.onSubmit.AddListener(_ => AttemptLogin());
+
+        // Status text
+        var statusObj = CreateUI("StatusText", container.transform);
+        loginStatusText = statusObj.AddComponent<TextMeshProUGUI>();
+        loginStatusText.text = "";
+        loginStatusText.fontSize = 16;
+        loginStatusText.alignment = TextAlignmentOptions.Center;
+        loginStatusText.color = goldLight;
+        var statusRect = statusObj.GetComponent<RectTransform>();
+        statusRect.anchorMin = new Vector2(0, 0.44f);
+        statusRect.anchorMax = new Vector2(1, 0.52f);
+        statusRect.offsetMin = statusRect.offsetMax = Vector2.zero;
+
+        // Play button
+        var playBtn = CreateUI("PlayBtn", container.transform);
+        var playBtnRect = playBtn.GetComponent<RectTransform>();
+        playBtnRect.anchorMin = new Vector2(0.2f, 0.24f);
+        playBtnRect.anchorMax = new Vector2(0.8f, 0.38f);
+        playBtnRect.offsetMin = playBtnRect.offsetMax = Vector2.zero;
+
+        var playBg = playBtn.AddComponent<Image>();
+        playBg.sprite = buttonBgSprite;
+        playBg.type = Image.Type.Sliced;
+        playBg.color = goldDark;
+
+        var playTxtObj = CreateUI("Text", playBtn.transform);
+        var playTxt = playTxtObj.AddComponent<TextMeshProUGUI>();
+        playTxt.text = "START ADVENTURE";
+        playTxt.fontSize = 22;
+        playTxt.fontStyle = FontStyles.Bold;
+        playTxt.alignment = TextAlignmentOptions.Center;
+        playTxt.color = bgDark;
+        Stretch(playTxtObj.GetComponent<RectTransform>());
+
+        var playButton = playBtn.AddComponent<Button>();
+        playButton.targetGraphic = playBg;
+        playButton.onClick.AddListener(() =>
+        {
+            PlaySFX(clickSound);
+            AttemptLogin();
+        });
+
+        // Error text
+        var errorObj = CreateUI("ErrorText", container.transform);
+        loginErrorText = errorObj.AddComponent<TextMeshProUGUI>();
+        loginErrorText.text = "";
+        loginErrorText.fontSize = 16;
+        loginErrorText.alignment = TextAlignmentOptions.Center;
+        loginErrorText.color = redTitle;
+        var errorRect = errorObj.GetComponent<RectTransform>();
+        errorRect.anchorMin = new Vector2(0, 0.14f);
+        errorRect.anchorMax = new Vector2(1, 0.22f);
+        errorRect.offsetMin = errorRect.offsetMax = Vector2.zero;
+        errorObj.SetActive(false);
+
+        // Back button
+        var backBtn = CreateUI("BackBtn", container.transform);
+        var backBtnRect = backBtn.GetComponent<RectTransform>();
+        backBtnRect.anchorMin = new Vector2(0.3f, 0.04f);
+        backBtnRect.anchorMax = new Vector2(0.7f, 0.12f);
+        backBtnRect.offsetMin = backBtnRect.offsetMax = Vector2.zero;
+
+        var backBg = backBtn.AddComponent<Image>();
+        backBg.sprite = buttonBgSprite;
+        backBg.type = Image.Type.Sliced;
+        backBg.color = brownDark;
+
+        var backTxtObj = CreateUI("Text", backBtn.transform);
+        var backTxt = backTxtObj.AddComponent<TextMeshProUGUI>();
+        backTxt.text = "BACK";
+        backTxt.fontSize = 18;
+        backTxt.fontStyle = FontStyles.Bold;
+        backTxt.alignment = TextAlignmentOptions.Center;
+        backTxt.color = cream;
+        Stretch(backTxtObj.GetComponent<RectTransform>());
+
+        var backButton = backBtn.AddComponent<Button>();
+        backButton.targetGraphic = backBg;
+        backButton.onClick.AddListener(() =>
+        {
+            PlaySFX(clickSound);
+            loginPanel.SetActive(false);
+            buttonsContainer.SetActive(true);
+        });
+
+        loginPanel.SetActive(false);
     }
 }

@@ -21,24 +21,15 @@ namespace HappyHarvest
 
         private Dictionary<string, T> m_LookupDictionnary;
 
-        public T GetFromID(string uniqueID)
-        {
-            if (m_LookupDictionnary.TryGetValue(uniqueID, out var entry))
-            {
-                return entry;
-            }
-
-            return null;
-        }
-
-        //This need to be called by whoever use this database to rebuild the lookup.
-        //Used to use OnAfterDeserialize but we cannot control the order of deserialization, and Item could be
-        //deserialized AFTER the database is, so the unique ID for that item was not ready yet.
         public void Init()
         {
             m_LookupDictionnary = new Dictionary<string, T>();
 
+            Debug.Log($"[BaseDatabase] 🆕 Initializing {this.name} with {Entries?.Count ?? 0} entries");
+
             //rebuild the lookup
+            if (Entries == null) return;
+            
             foreach (var entry in Entries)
             {
                 if (entry == null)
@@ -49,8 +40,37 @@ namespace HappyHarvest
                 //TryAdd as there seems to be case where entries are duplicated. My guess is when drag and dropping, it
                 //will first duplicate an entry, which trigger a deserialize THEN assign the new entry, which led to
                 //error.
-                m_LookupDictionnary.TryAdd(entry.Key, entry);
+                if (!m_LookupDictionnary.TryAdd(entry.Key, entry))
+                {
+                    Debug.LogWarning($"[BaseDatabase] ⚠️ Duplicate key found: {entry.Key} in {this.name}");
+                }
             }
+            
+            // Debug: Print all keys
+            string keys = string.Join(", ", m_LookupDictionnary.Keys);
+            Debug.Log($"[BaseDatabase] ✅ Initialized {this.name} with {m_LookupDictionnary.Count} lookup entries. Keys: [{keys}]");
+        }
+        
+        public T GetFromID(string uniqueID)
+        {
+            if (string.IsNullOrEmpty(uniqueID)) return null;
+
+            if (m_LookupDictionnary == null)
+            {
+                Debug.LogError($"[BaseDatabase] ❌ Database {this.name} not initialized! Call Init() first.");
+                return null;
+            }
+
+            if (m_LookupDictionnary.TryGetValue(uniqueID, out var entry))
+            {
+                return entry;
+            }
+
+            Debug.LogWarning($"[BaseDatabase] ⚠️ Entry not found for ID: '{uniqueID}' in {this.name}");
+            // Debug dump keys
+            // Debug.Log($"[BaseDatabase] Available keys: {string.Join(", ", m_LookupDictionnary.Keys)}");
+
+            return null;
         }
     }
 }
