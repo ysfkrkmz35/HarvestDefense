@@ -92,9 +92,27 @@ public class BuffSpell : SpellBase
     /// </summary>
     private void SpawnBuffEffect()
     {
-        if (playerTransform == null) return;
+        // Find player by tag if followsCharacter is enabled
+        Transform targetTransform = null;
+        if (spellData != null && spellData.followsCharacter)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                targetTransform = player.transform;
+            }
+        }
 
-        Vector2 effectPosition = playerTransform.position;
+        // Fallback to playerTransform from SpellBase
+        if (targetTransform == null)
+        {
+            targetTransform = playerTransform;
+        }
+
+        if (targetTransform == null) return;
+
+        Vector2 effectPosition = targetTransform.position;
+        bool shouldFollow = spellData != null && spellData.followsCharacter;
 
         // Use custom buff effect prefab if assigned
         if (buffEffectPrefab != null)
@@ -102,9 +120,12 @@ public class BuffSpell : SpellBase
             Vector3 spawnPos = new Vector3(effectPosition.x, effectPosition.y, 0f);
             GameObject effect = Instantiate(buffEffectPrefab, spawnPos, Quaternion.identity);
 
-            // Parent to player so effect follows
-            effect.transform.SetParent(playerTransform);
-            effect.transform.localPosition = Vector3.zero;
+            // Parent to player so effect follows (if followsCharacter is enabled)
+            if (shouldFollow && targetTransform != null)
+            {
+                effect.transform.SetParent(targetTransform);
+                effect.transform.localPosition = Vector3.zero;
+            }
 
             // Start particle systems if present
             ParticleSystem ps = effect.GetComponent<ParticleSystem>();
@@ -123,28 +144,41 @@ public class BuffSpell : SpellBase
         else if (spellData?.effectPrefab != null)
         {
             GameObject effect = Instantiate(spellData.effectPrefab, effectPosition, Quaternion.identity);
-            effect.transform.SetParent(playerTransform);
-            effect.transform.localPosition = Vector3.zero;
+            
+            if (shouldFollow && targetTransform != null)
+            {
+                effect.transform.SetParent(targetTransform);
+                effect.transform.localPosition = Vector3.zero;
+            }
+            
             Destroy(effect, spellData.buffDuration);
         }
         // Create procedural buff effect if no prefab
         else
         {
-            StartCoroutine(CreateProceduralBuffEffect());
+            StartCoroutine(CreateProceduralBuffEffect(targetTransform, shouldFollow));
         }
     }
 
     /// <summary>
     /// Create a simple buff aura effect without prefab
     /// </summary>
-    private IEnumerator CreateProceduralBuffEffect()
+    private IEnumerator CreateProceduralBuffEffect(Transform targetTransform, bool shouldFollow)
     {
-        if (playerTransform == null) yield break;
+        if (targetTransform == null) yield break;
 
         // Create visual object
         GameObject visual = new GameObject("BuffAuraEffect");
-        visual.transform.SetParent(playerTransform);
-        visual.transform.localPosition = Vector3.zero;
+        
+        if (shouldFollow)
+        {
+            visual.transform.SetParent(targetTransform);
+            visual.transform.localPosition = Vector3.zero;
+        }
+        else
+        {
+            visual.transform.position = targetTransform.position;
+        }
 
         // Add sprite renderer with circle
         SpriteRenderer sr = visual.AddComponent<SpriteRenderer>();

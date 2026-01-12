@@ -97,9 +97,28 @@ public class HealSpell : SpellBase
     /// </summary>
     private void SpawnHealEffect()
     {
-        Vector2 effectPosition = playerTransform != null 
-            ? (Vector2)playerTransform.position 
+        // Find player by tag if followsCharacter is enabled
+        Transform targetTransform = null;
+        if (spellData != null && spellData.followsCharacter)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                targetTransform = player.transform;
+            }
+        }
+
+        // Fallback to playerTransform from SpellBase
+        if (targetTransform == null)
+        {
+            targetTransform = playerTransform;
+        }
+
+        Vector2 effectPosition = targetTransform != null 
+            ? (Vector2)targetTransform.position 
             : (Vector2)transform.position;
+
+        bool shouldFollow = spellData != null && spellData.followsCharacter;
 
         // Use custom heal effect prefab if assigned
         if (healEffectPrefab != null)
@@ -107,10 +126,11 @@ public class HealSpell : SpellBase
             Vector3 spawnPos = new Vector3(effectPosition.x, effectPosition.y, 0f);
             GameObject effect = Instantiate(healEffectPrefab, spawnPos, Quaternion.identity);
 
-            // Optionally parent to player so effect follows
-            if (playerTransform != null)
+            // Parent to player so effect follows (if followsCharacter is enabled)
+            if (shouldFollow && targetTransform != null)
             {
-                effect.transform.SetParent(playerTransform);
+                effect.transform.SetParent(targetTransform);
+                effect.transform.localPosition = Vector3.zero;
             }
 
             // Start particle systems if present
@@ -133,23 +153,23 @@ public class HealSpell : SpellBase
         // Create procedural heal effect if no prefab
         else
         {
-            StartCoroutine(CreateProceduralHealEffect(effectPosition));
+            StartCoroutine(CreateProceduralHealEffect(effectPosition, targetTransform, shouldFollow));
         }
     }
 
     /// <summary>
     /// Create a simple green healing effect without prefab
     /// </summary>
-    private IEnumerator CreateProceduralHealEffect(Vector2 position)
+    private IEnumerator CreateProceduralHealEffect(Vector2 position, Transform targetTransform, bool shouldFollow)
     {
         // Create visual object
         GameObject visual = new GameObject("HealEffect");
         visual.transform.position = position;
 
-        // Parent to player
-        if (playerTransform != null)
+        // Parent to player if followsCharacter is enabled
+        if (shouldFollow && targetTransform != null)
         {
-            visual.transform.SetParent(playerTransform);
+            visual.transform.SetParent(targetTransform);
             visual.transform.localPosition = Vector3.zero;
         }
 

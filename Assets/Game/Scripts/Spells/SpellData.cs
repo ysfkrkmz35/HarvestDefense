@@ -89,6 +89,9 @@ public class SpellData : ScriptableObject
     [Tooltip("Spell color for procedural effects")]
     public Color spellColor = new Color(1f, 0.5f, 0f, 1f);
 
+    [Tooltip("If true, effect follows the player (found by 'Player' tag)")]
+    public bool followsCharacter = true;
+
     [Header("═══ AUDIO ═══")]
     [Tooltip("Sound when spell is cast")]
     public AudioClip castSound;

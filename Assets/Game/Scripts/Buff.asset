@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5eab03e19302c54e9cfd49d0d0f44f3, type: 3}
   m_Name: Buff
   m_EditorClassIdentifier: Assembly-CSharp::SpellData
-  spellName: New Spell
-  description: A powerful spell.
+  spellName: Buff
+  description: DEFENSE
   icon: {fileID: 0}
-  spellType: 0
+  spellType: 4
   damage: 25
   cooldown: 2
   manaCost: 10
@@ -25,10 +25,11 @@ MonoBehaviour:
   requiredLevel: 1
   goldCost: 0
   unlockedByDefault: 0
-  effectPrefab: {fileID: 0}
+  effectPrefab: {fileID: 4971983192253675576, guid: 528ade5dd1d39274ea07c2c3eaeed8d9, type: 3}
   projectilePrefab: {fileID: 0}
   effectDuration: 2
   spellColor: {r: 1, g: 0.5, b: 0, a: 1}
+  followsCharacter: 1
   castSound: {fileID: 0}
   impactSound: {fileID: 0}
   soundVolume: 0.7
@@ -40,5 +41,5 @@ MonoBehaviour:
   healAmount: 25
   buffDuration: 10
   damageMultiplier: 1.5
-  speedMultiplier: 1
+  speedMultiplier: 1.508
   defenseMultiplier: 1
