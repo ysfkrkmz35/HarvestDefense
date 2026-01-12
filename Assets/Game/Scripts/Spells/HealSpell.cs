@@ -148,7 +148,37 @@ public class HealSpell : SpellBase
         // Fallback to spellData.effectPrefab
         else if (spellData?.effectPrefab != null)
         {
-            SpawnEffect(effectPosition);
+            GameObject effect;
+            
+            if (shouldFollow && targetTransform != null)
+            {
+                // FIX: Use 4-parameter Instantiate to properly parent and follow character
+                effect = Instantiate(
+                    spellData.effectPrefab, 
+                    targetTransform.position, 
+                    spellData.effectPrefab.transform.rotation,
+                    targetTransform  // Set parent so effect follows player
+                );
+                effect.transform.localPosition = Vector3.zero;
+            }
+            else
+            {
+                // Not following - spawn at world position with prefab rotation
+                Vector3 spawnPos = new Vector3(effectPosition.x, effectPosition.y, 0f);
+                effect = Instantiate(spellData.effectPrefab, spawnPos, spellData.effectPrefab.transform.rotation);
+            }
+
+            // Start particle systems if present
+            ParticleSystem ps = effect.GetComponent<ParticleSystem>();
+            if (ps != null) ps.Play();
+
+            ParticleSystem[] childPS = effect.GetComponentsInChildren<ParticleSystem>();
+            foreach (var child in childPS)
+            {
+                child.Play();
+            }
+
+            Destroy(effect, healEffectDuration);
         }
         // Create procedural heal effect if no prefab
         else
